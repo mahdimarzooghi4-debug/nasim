@@ -24,3 +24,13 @@
 - **وضعیت:** Accepted
 - **تصمیم:** مخزن `mahdimarzooghi4-debug/nasim` مرجع رسمی ثبت تصمیمات پروژه نسیم است.
 - **قاعده:** از این پس تصمیمات تأییدشده پروژه باید در همین مخزن ثبت و نگهداری شوند.
+
+
+## D-0003 — فرآیند مادر توسعه محصول
+
+- **تاریخ:** 2026-10-06
+- **حوزه:** Product / Delivery Governance
+- **وضعیت:** Accepted
+- **تصمیم:** توسعه نسیم بر اساس فرآیند مادر زیر انجام می‌شود:
+  `Business → Technical → Scrum/Product Backlog → Sprint → Code → Code Review → Stage → QA/Testing → Release Approval → Production → Monitoring → Improvement`
+- **قاعده:** عبور از هر مرحله به مرحله بعد باید بر مبنای خروجی مرحله قبل انجام شود و تصمیم‌های محصولی/فنی مصوب در همین مخزن ثبت شوند.
