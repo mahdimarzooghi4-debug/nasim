@@ -332,3 +332,36 @@ BC-007 موارد زیر را تصویب نمی‌کند:
 - Data provenance نباید حذف شود.
 - AI-generated data باید از Human-recorded data قابل تمایز باشد.
 - مدل Consent، Retention و Deletion نباید در Code حدس زده شود.
+
+
+## 21. D-0005 — Automatic Dataset Generation
+
+بر اساس D-0005، پس از تعیین قواعد Training Eligibility، ساخت و به‌روزرسانی Dataset باید به‌صورت **خودکار و مستمر** انجام شود.
+
+تفکیک حاکمیتی:
+
+`Automatic Eligibility Execution ≠ Universal Data Eligibility`
+
+یعنی:
+
+- Rule تعیین می‌کند چه داده‌ای مجاز است.
+- Pipeline همان Rule را به‌صورت خودکار اجرا می‌کند.
+- داده‌های مجاز به Dataset Version جدید وارد می‌شوند.
+- داده‌های غیرمجاز یا Excluded وارد Training Dataset نمی‌شوند.
+- هر Dataset جدید باید Version و Lineage مستقل داشته باشد.
+
+بنابراین عبارت «Automatic dataset inclusion» فقط در معنای «ورود خودکار داده واجد شرایط پس از اعمال Rule مصوب» پذیرفته شده است؛ ورود خودکار همه داده‌های خام Production همچنان ممنوع/تصمیم‌نشده باقی می‌ماند.
+
+## 22. Continuous Dataset Versioning
+
+Dataset در نسیم یک فایل ثابت نیست؛ یک دارایی Versioned و رو‌به‌رشد است.
+
+هر بار که حجم/بازه/Trigger مصوب برای داده جدید محقق شود، سامانه باید بتواند:
+
+1. داده جدید را ارزیابی Eligibility کند؛
+2. قواعد Preparation/Curation را اجرا کند؛
+3. Dataset جدید یا Version جدید Dataset را بسازد؛
+4. Lineage و Source Window را ثبت کند؛
+5. آن نسخه را برای Training/Evaluation قابل استفاده کند.
+
+Trigger دقیق، cadence، windowing و batching در Technical مشخص می‌شود.
