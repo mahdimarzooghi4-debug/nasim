@@ -240,3 +240,21 @@ Dataset Lifecycle در نسیم یک فرآیند دوره‌ایِ دستی ن�
 در نسیم، «خودکار» در این تصمیم حداقل به این معناست که پس از تعریف قواعد Data Governance، سیستم باید بدون نیاز به انتخاب دستی موردبه‌مورد، داده‌های واجد شرایط را وارد Pipeline ساخت Dataset کند و Dataset Version جدید ایجاد کند.
 
 این تصمیم مجوز ورود خودکار **همه** داده‌های خام Production نیست.
+
+
+## 16. D-0005 — Continuous automatic Dataset Lifecycle
+
+بر اساس D-0005، AI و چرخه Learning از روز اول بهره‌برداری عملیاتی فعال هستند.
+
+چرخه Dataset به‌صورت دستی و مقطعی طراحی نمی‌شود. پس از تعریف قواعد مجاز، سیستم باید با ورود داده‌های جدید به‌صورت مستمر و خودکار Datasetهای Versioned جدید ایجاد کند.
+
+نمای مفهومی:
+
+`Production Events → Eligibility Rules → Automatic Preparation/Curation → Versioned Dataset → Training/Evaluation`
+
+قواعد:
+- Dataset باید Version و Lineage داشته باشد.
+- داده غیرمجاز صرفاً به دلیل وجود در Production وارد Dataset نمی‌شود.
+- ساخت Dataset نیازمند انتخاب دستی موردبه‌مورد نیست.
+- Trigger/Cadence/Batching در Technical تعیین می‌شود.
+- Model Promotion به Production از Dataset generation جدا است و سیاست مستقل دارد.
