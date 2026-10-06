@@ -293,7 +293,7 @@ BC-007 موارد زیر را تصویب نمی‌کند:
 - De-identification algorithm
 - Training on raw Production data
 - Online continual learning
-- Automatic dataset inclusion
+- Automatic inclusion of data that has not passed approved Training Eligibility rules
 - Automatic model promotion
 - استفاده از تمام داده‌های سلامت برای Training
 - دسترسی کارفرما به پرونده فردی
@@ -365,3 +365,12 @@ Dataset در نسیم یک فایل ثابت نیست؛ یک دارایی Versio
 5. آن نسخه را برای Training/Evaluation قابل استفاده کند.
 
 Trigger دقیق، cadence، windowing و batching در Technical مشخص می‌شود.
+
+
+## 21. D-0005 — Dataset Automation
+
+بر اساس D-0005، نسیم باید از روز اول، داده‌های واجد شرایط را طبق قواعد مصوب به‌صورت خودکار پردازش کند و Datasetهای نسخه‌دار جدید بسازد.
+
+قواعد Eligibility تعیین می‌کنند چه داده‌ای مجاز است. خودکار بودن این چرخه به معنی مجاز بودن همه داده‌های Production نیست.
+
+هر نسخه Dataset باید قابل ردیابی به داده‌های منبع و قواعد Eligibility خود باشد. جزئیات زمان‌بندی و نحوه اجرای فنی در مرحله Technical تعیین می‌شود.
