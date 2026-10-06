@@ -70,3 +70,17 @@
 
 ## قاعده
 تا زمانی که پاسخ یک سؤال به‌عنوان Decision پذیرفته و در Decision Register ثبت نشده است، Technical Design و Code نباید آن را به‌عنوان واقعیت قطعی فرض کنند.
+
+
+## هوش مصنوعی داخلی
+- Use Caseهای دقیق AI برای سالمند چیست؟
+- Use Caseهای دقیق AI برای سالمندیار چیست؟
+- چه اقداماتی برای AI ممنوع است؟
+- کدام داده‌های Production مجاز به ورود به Training هستند؟
+- آیا Training فقط روی داده Curated انجام می‌شود یا مسیر دیگری دارد؟
+- Consent، Privacy و De-identification چگونه مدیریت می‌شوند؟
+- Training cadence و Evaluation policy چیست؟
+- نسخه مدل چگونه Version، Promote و Rollback می‌شود؟
+- Human Review / Approval Gate کجاست؟
+- Runtime و Hosting داخلی دقیقاً چه تعریفی دارد؟
+- در نبود مدل، خطا یا عدم اطمینان AI، Fail-safe چیست؟
