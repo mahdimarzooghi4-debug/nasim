@@ -209,3 +209,34 @@ BC-006 موارد زیر را تصویب نمی‌کند:
 - مدل جدید نباید بدون Promotion policy جایگزین مدل فعال شود.
 - UI باید بتواند AI output را از Human decision متمایز کند.
 - Audit design باید منشأ AI output و پذیرش/رد انسانی را قابل ردیابی کند.
+
+
+## 16. D-0005 — Day-one Learning System
+
+بر اساس D-0005، AI و زیرساخت Learning آن باید از **روز اول بهره‌برداری عملیاتی** جزء معماری محصول باشند.
+
+نسیم نباید ابتدا بدون AI عملیاتی شود و سپس AI را به‌عنوان فاز بعدی اضافه کند.
+
+## 17. Automatic Continuous Dataset Lifecycle — Accepted Direction
+
+Dataset Lifecycle در نسیم یک فرآیند دوره‌ایِ دستی نیست. سیستم باید با ورود داده‌های جدید، به‌صورت مستمر و خودکار Datasetهای Versioned جدید بسازد یا Datasetهای موجود را به نسخه جدید ارتقا دهد.
+
+زنجیره مفهومی به این صورت اصلاح می‌شود:
+
+`Production Events → Eligibility Rules → Automatic Preparation/Curation Pipeline → New Versioned Dataset → Training/Evaluation Pipeline`
+
+### قواعد ثابت
+
+- Dataset باید Versioned باشد.
+- هر نسخه باید Lineage داشته باشد.
+- داده غیرمجاز نباید صرفاً به دلیل ورود به Production وارد Dataset شود.
+- ایجاد Dataset نیازمند مونتاژ دستی روزمره نیست.
+- Trigger، cadence یا event-driven بودن ساخت Dataset در Technical تعیین می‌شود.
+- Training می‌تواند بر Datasetهای جدید اجرا شود، اما Policy دقیق Training هنوز باید تعیین شود.
+- Model Promotion به Production همچنان فرآیندی جدا از Dataset generation است.
+
+## 18. Clarification of “Automatic”
+
+در نسیم، «خودکار» در این تصمیم حداقل به این معناست که پس از تعریف قواعد Data Governance، سیستم باید بدون نیاز به انتخاب دستی موردبه‌مورد، داده‌های واجد شرایط را وارد Pipeline ساخت Dataset کند و Dataset Version جدید ایجاد کند.
+
+این تصمیم مجوز ورود خودکار **همه** داده‌های خام Production نیست.
