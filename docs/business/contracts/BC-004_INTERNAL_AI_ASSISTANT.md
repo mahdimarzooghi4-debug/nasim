@@ -110,3 +110,27 @@ AI باید در کنار سالمندیار نیز به‌عنوان دستیا
 - UI نباید پیشنهاد AI را به‌عنوان تصمیم قطعی انسانی/پزشکی نمایش دهد.
 - AI نباید جایگزین مسئولیت سالمندیار یا Provider تخصصی فرض شود.
 - هیچ Training/Promotion path بدون Versioning، Evaluation و Governance نهایی تلقی نشود.
+
+
+## 10. D-0005 Clarification — Day-one AI
+
+بر اساس D-0005، هوش مصنوعی داخلی نسیم **از روز اول بهره‌برداری عملیاتی** باید در محصول حضور داشته باشد.
+
+بنابراین:
+
+- AI قابلیت فاز دوم یا Feature اختیاری پس از پایلوت نیست.
+- طراحی پایلوت و نسخه اولیه عملیاتی باید AI را به‌عنوان جزء اصلی محصول در نظر بگیرد.
+- سالمند و سالمندیار از همان شروع بهره‌برداری، در محدوده Use Caseهای مصوب، به دستیار AI دسترسی خواهند داشت.
+- نبود AI در نسخه اولیه با تصمیم محصول سازگار نیست.
+
+## 11. D-0005 Clarification — Continuous Dataset Lifecycle
+
+چرخه Dataset باید از شروع عملیات فعال باشد و با تولید داده‌های جدید نسیم به‌صورت **مستمر و خودکار** Dataset جدید یا Version جدید Dataset ایجاد کند.
+
+اصل پذیرفته‌شده:
+
+`Eligible Production Data → Automatic Dataset Build/Update → Versioned Dataset`
+
+این خودکارسازی فقط روی داده‌ای اعمال می‌شود که طبق Data Governance و Training Eligibility مجاز شده باشد.
+
+خودکار بودن Dataset Lifecycle به معنی Auto-Promotion مدل به Production نیست.
