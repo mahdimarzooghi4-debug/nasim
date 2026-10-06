@@ -1,13 +1,13 @@
 # BR-003 — Pilot Scope + Services Decision Batch
 
-- **Status:** AWAITING PRODUCT OWNER INPUT
+- **Status:** OPEN — PARKED UNTIL CONTEXT REQUIRES DECISION
 - **Stage:** Business — Decision Closure
 - **Date:** 2026-10-06
 - **Source basis:** BR-002 P1…P6 + DC-001 + DC-002
 - **Scope:** P1…P6 only
 - **Purpose:** بستن نخستین Batch از Blockerهای واقعی پایلوت، بدون اختراع Geography، Count، Duration، Eligibility یا Service Activation.
 
-> این سند هیچ Candidate Decision از D-0006…D-0010 را Accepted نمی‌کند و هیچ مقدار باز را از روی حدس پر نمی‌کند.
+> این سند هیچ Candidate Decision از D-0006…D-0010 را Accepted نمی‌کند و هیچ مقدار باز را از روی حدس پر نمی‌کند. طبق D-0118، P1…P6 تا زمانی که Context واقعی تصمیم یا Gate مربوطه به آنها نیاز نداشته باشد OPEN می‌مانند و پاسخ فوری مالک محصول الزامی نیست.
 
 ## 1. Source-supported facts already available
 
@@ -227,7 +227,7 @@ D-0006…D-0010 همچنان در DA-001 **PENDING** هستند.
 - Accepted Candidateهای DA-001 را جایگزین نمی‌کند.
 - فقط Blockerهای مقداری/اجرایی Pilot را می‌بندد.
 
-## 10. Recommended response format
+## 10. Response format when the decision context arrives
 
 مالک محصول می‌تواند فقط این قالب کوتاه را پر کند:
 
@@ -293,12 +293,10 @@ Home Visit =
 Out-of-catalog =
 ```
 
-## 11. Current gate status
+## 11. Current status under D-0118
 
-تا زمان پاسخ صریح به P1…P6:
+P1…P6 در وضعیت **OPEN** نگهداری می‌شوند و پاسخ فوری لازم نیست.
 
-**Business → Technical: NOT READY**
+این وضعیت به معنی ACCEPT یا DEFER نیست. Technical نیز تا زمان بسته‌شدن هر موردی که واقعاً برای Gate لازم شود، حق حدس‌زدن آن را ندارد.
 
-و:
-
-**BR-003: WAITING FOR PRODUCT OWNER INPUT**
+**BR-003: OPEN / PARKED**
