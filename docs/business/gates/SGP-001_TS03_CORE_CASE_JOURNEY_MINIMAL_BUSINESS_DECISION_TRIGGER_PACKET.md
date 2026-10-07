@@ -50,33 +50,17 @@ Initial trigger reason: TS-03 needed to know whether Case creation was scoped di
 
 **Q1 resolution:** D-0119 selected the post-enrollment boundary. Therefore D-0006 is **NO LONGER REQUIRED FOR TS-03 GATE** and returns to the unrelated OPEN/not-accepted candidate pool. It is neither Accepted nor Deferred by TS-03.
 
-### CT-D-0012 — Caregiver base responsibility boundary
-Candidate direction: caregiver base responsibility includes contact, monitoring, recording, coordination, Referral and Follow-up; specialist medical/financial/provider-activation/final-eligibility authority is not inferred.
+### CT-D-0012 — Caregiver base responsibility boundary — RESOLVED
+Accepted as **D-0012** under D-0124.
 
-Reason triggered: TS-03 needs a safe operational boundary for who may act around Case/Monitoring.
+### CT-D-0013 — Role is not Permission — RESOLVED
+Accepted as **D-0013** under D-0124.
 
-Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
+### CT-D-0014 — System is not independent Business Authority — RESOLVED
+Accepted as **D-0014** under D-0124.
 
-### CT-D-0013 — Role is not Permission
-Candidate direction: job title/career level does not itself create Permission or Approval Right.
-
-Reason triggered: Case ownership must not silently become authorization.
-
-Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
-
-### CT-D-0014 — System is not independent Business Authority
-Candidate direction: the NASIM system executes/records approved rules; automation does not create independent Business Decision Right.
-
-Reason triggered: TS-03 will represent Case actions and must not infer authority from system execution.
-
-Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
-
-### CT-D-0015 — Actor provenance
-Candidate direction: important actions must distinguish Human / System / AI / Automation origin for audit.
-
-Reason triggered: TS-03 requires action provenance/history.
-
-Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
+### CT-D-0015 — Actor provenance — RESOLVED
+Accepted as **D-0015** under D-0124.
 
 ### CT-D-0016 — Single Point of Contact
 Candidate direction: elder should have a close, traceable contact point and caregiver is the primary coordination interface; substitution/change of Case Owner remains separate.
@@ -92,19 +76,11 @@ Initial trigger reason: TS-03 needed to define which early interactions belong t
 
 **Q2 resolution:** D-0120 fixes the TS-03 boundary at `Contact → Case/Profile → Monitoring → Observation / Need capture`. Therefore D-0017 remains **NOT ACCEPTED AS A WHOLE** and is no longer a blocker for the remaining later Journey stages in TS-03.
 
-### CT-D-0021 — Purpose-limited data use
-Candidate direction: each Data Class is used only for an approved Purpose; Service Delivery, Reporting, AI Runtime and AI Training are separate purposes.
+### CT-D-0021 — Purpose-limited data use — RESOLVED
+Accepted as **D-0021** under D-0124.
 
-Reason triggered: Case/Profile data needs a declared operational purpose.
-
-Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
-
-### CT-D-0028 — Provenance must be preserved
-Candidate direction: source of data must remain distinguishable across Elder, Family, Caregiver, Provider, System, AI and human-reviewed AI.
-
-Reason triggered: TS-03 requires record/history provenance.
-
-Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
+### CT-D-0028 — Provenance must be preserved — RESOLVED
+Accepted as **D-0028** under D-0124.
 
 ## 4. Candidate Decisions deliberately NOT triggered
 
@@ -158,16 +134,16 @@ Field-level schema remains Technical; access and Training Eligibility remain sep
 
 Decision Record: **D-0122**.
 
-### Q5 — Correction / history — STILL CONTEXT TRIGGERED
-Proposed rule remains pending explicit Product Owner confirmation:
-- preserve prior value/history
-- record Actor + Time + Reason
-- distinguish correction from silent overwrite
-- preserve provenance/evidence linkage where applicable
+### Q5 — Correction / history — RESOLVED
+Accepted under D-0124:
+- preserve prior value/history;
+- record Actor + Time + Reason;
+- no silent overwrite;
+- preserve provenance/evidence linkage where applicable.
 
-Exact technical event/version mechanism remains Technical.
+Exact technical mechanism remains Technical.
 
-**Status:** OPEN WITHIN TS-03 GATE PREPARATION — NOT ACCEPTED / NOT DEFERRED.
+Decision Record: **D-0125**.
 
 ### Q6 — Access boundary for TS-03 data — RESOLVED
 **Accepted minimum boundary:**
@@ -218,10 +194,11 @@ Close in this order:
 2. Q2 — early journey scope — **RESOLVED by D-0120**
 3. Q3 — Case operational owner / assignment — **RESOLVED by D-0121**
 4. Q4 — minimum Case/Profile Data Classes — **RESOLVED by D-0122**
-5. Q5 — correction/history — **STILL OPEN / CONTEXT TRIGGERED**
+5. Q5 — correction/history — **RESOLVED by D-0125**
 6. Q6 — minimum access boundary — **RESOLVED by D-0123**
-7. Q5 remains unresolved; then review Context-Triggered Candidate Decisions for explicit acceptance/modification
-8. create SG-001 for TS-03
+7. Context-Triggered Candidate review — **RESOLVED: D-0012, D-0013, D-0014, D-0015, D-0021, D-0028 Accepted**
+8. Exact named supervisory Role/Permission mapping — **EXPLICITLY DEFERRED to TS-05 by D-0126**
+9. create SG-001 for TS-03
 
 Only one small decision set should be discussed at a time.
 
@@ -230,27 +207,18 @@ Only one small decision set should be discussed at a time.
 - Selected Technical Slice: **TS-03**
 - TS-03 status: **SELECTED FOR GATE PREPARATION**
 - SGP-001: **ACTIVE**
-- Context-triggered Candidate Decisions still active for TS-03: D-0012, D-0013, D-0014, D-0015, D-0021, D-0028
+- Context-triggered Candidate Decisions still active for TS-03: **NONE**
 - Resolved boundary references: D-0006 released by D-0119; D-0017 bounded by D-0120; D-0016 no longer blocks TS-03 case ownership because D-0121 establishes the slice-specific owner/assignment rule.
-- Accepted decisions created from this packet: **D-0119, D-0120, D-0121, D-0122, D-0123**
-- Explicitly Deferred from this packet: **0**
+- Accepted decisions created/confirmed for this packet: **D-0012, D-0013, D-0014, D-0015, D-0021, D-0028, D-0119, D-0120, D-0121, D-0122, D-0123, D-0125**
+- Explicitly Deferred from this packet: **1 — exact named supervisory Role/Permission mapping → TS-05 (D-0126)**
 - Unrelated decisions: **OPEN / unchanged**
-- TS-03 Slice Gate: **NOT YET READY**
+- TS-03 Slice Gate: **READY TO RECORD**
 - Global Business → Technical Gate: **NOT PASSED**
 - Technical: **NOT STARTED**
 - Code: **NOT STARTED**
 
-## 10. Next Product Owner question
+## 10. Closure result
 
-Q6 is resolved by D-0123.
+All TS-03 Business blockers required for the bounded Slice are now either Accepted or explicitly Deferred.
 
-**Q5 — Correction / History remains the only unresolved TS-03 scope choice before candidate review.**
-
-Proposed rule:
-- correction never silently overwrites prior value;
-- prior value/history is preserved;
-- every correction records **Actor + Time + Reason**;
-- provenance/evidence linkage is preserved where applicable;
-- exact technical mechanism remains Technical.
-
-**Confirm or modify this correction/history rule.**
+Next artifact: **SG-001 — TS-03 Technical Entry Gate Record**.
