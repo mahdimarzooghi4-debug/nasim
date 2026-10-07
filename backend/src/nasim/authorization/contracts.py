@@ -6,7 +6,10 @@ from uuid import UUID
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from nasim.identity_context.contracts import ActorType
-from nasim.provider_registry.contracts import PROVIDER_CANDIDATE_PERMISSIONS
+from nasim.provider_registry.contracts import (
+    PROVIDER_CANDIDATE_PERMISSIONS,
+    PROVIDER_QUALIFICATION_EVIDENCE_PERMISSIONS,
+)
 from nasim.referral.contracts import REFERRAL_PERMISSIONS
 
 PERMISSIONS = (
@@ -19,6 +22,7 @@ PERMISSIONS = (
     "case.read.oversight",
     *REFERRAL_PERMISSIONS,
     *PROVIDER_CANDIDATE_PERMISSIONS,
+    *PROVIDER_QUALIFICATION_EVIDENCE_PERMISSIONS,
 )
 # BC-005 §§1/5 and DC-003 §§1/3. Vocabulary only, not final Pilot inventory/authority.
 ROLES = {
