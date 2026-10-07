@@ -1,0 +1,1 @@
+"""Provider candidate registry foundation."""
