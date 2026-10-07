@@ -19,6 +19,18 @@ def upgrade() -> None:
     # Shared technical effects are allowed to represent non-Case bounded contexts.
     op.alter_column("audit_entry", "case_id", existing_type=sa.Uuid(), nullable=True)
     op.alter_column("outbox_event", "case_id", existing_type=sa.Uuid(), nullable=True)
+    op.create_check_constraint(
+        "ck_audit_case_or_provider_candidate",
+        "audit_entry",
+        "case_id IS NOT NULL OR "
+        "(action = 'provider.candidate_registered.v1' "
+        "AND resource_type = 'provider_candidate_record')",
+    )
+    op.create_check_constraint(
+        "ck_outbox_case_or_provider_candidate",
+        "outbox_event",
+        "case_id IS NOT NULL OR event_type = 'provider.candidate_registered.v1'",
+    )
 
     op.create_table(
         "provider_candidate_record",
@@ -198,5 +210,11 @@ def downgrade() -> None:
     op.drop_table("provider_candidate_record")
     op.execute("DROP FUNCTION nasim_provider_candidate_effects_guard()")
 
+    op.drop_constraint(
+        "ck_outbox_case_or_provider_candidate", "outbox_event", type_="check"
+    )
+    op.drop_constraint(
+        "ck_audit_case_or_provider_candidate", "audit_entry", type_="check"
+    )
     op.alter_column("outbox_event", "case_id", existing_type=sa.Uuid(), nullable=False)
     op.alter_column("audit_entry", "case_id", existing_type=sa.Uuid(), nullable=False)
