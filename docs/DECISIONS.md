@@ -234,3 +234,16 @@
 - **مرز:** این تصمیم فقط TS-03 را وارد Technical می‌کند؛ Global Business → Technical Gate برای Sliceهای دیگر Pass نشده است.
 - **قاعده:** هیچ Code تا تکمیل Technical، Product Backlog و Sprint برای TS-03 آغاز نمی‌شود.
 
+## D-0128 — پذیرش Technical Baseline و ورود TS-03 به Product Backlog
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Technical / Delivery Governance / TS-03
+- **وضعیت:** Accepted
+- **تصمیم:** Technical Baseline ثبت‌شده در `T-001_TS03_CORE_CASE_JOURNEY_TECHNICAL_BASELINE.md` برای TS-03 پذیرفته شد و بر اساس TG-001، این Slice وارد مرحله **Scrum/Product Backlog** می‌شود.
+- **معماری:** modular monolith، backend-first.
+- **Stack:** Python 3.12، FastAPI، PostgreSQL، async SQLAlchemy، Alembic، Pydantic؛ Pytest/Ruff/Pyright برای quality.
+- **Integrity:** correctionها با append-only superseding revision؛ audit و outbox transactional.
+- **Authorization:** ActorContext + capability checks؛ named Role mapping مطابق D-0126 در TS-05.
+- **مرز:** هیچ Referral/Provider/Outcome/AI/Enrollment/Emergency behavior وارد TS-03 نمی‌شود.
+- **منبع:** T-001 + TG-001؛ پذیرفته‌شده تحت D-0124.
+
