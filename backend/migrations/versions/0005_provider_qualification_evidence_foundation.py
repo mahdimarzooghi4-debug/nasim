@@ -16,12 +16,8 @@ depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
-    op.drop_constraint(
-        "ck_audit_case_or_provider_candidate", "audit_entry", type_="check"
-    )
-    op.drop_constraint(
-        "ck_outbox_case_or_provider_candidate", "outbox_event", type_="check"
-    )
+    op.drop_constraint("ck_audit_case_or_provider_candidate", "audit_entry", type_="check")
+    op.drop_constraint("ck_outbox_case_or_provider_candidate", "outbox_event", type_="check")
     op.create_check_constraint(
         "ck_audit_case_or_provider_candidate",
         "audit_entry",
