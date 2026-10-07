@@ -119,7 +119,7 @@
 ## Current state
 
 - Stage: **Business — Technical Entry Preparation**
-- Accepted: D-0001…D-0005 + D-0118 + D-0119 + D-0120 + D-0121 + D-0122 + D-0123
+- Accepted: D-0001…D-0005 + D-0012 + D-0013 + D-0014 + D-0015 + D-0021 + D-0028 + D-0118 + D-0119 + D-0120 + D-0121 + D-0122 + D-0123 + D-0124 + D-0125 + D-0126
 - D-0006…D-0117: هنوز Accepted نشده‌اند.
 - BR-003 P1…P6: **OPEN / PARKED**
 - BX-001…BX-015: Exploration / Technical-entry candidate mapping completed.
@@ -130,7 +130,10 @@
 - TS-03 Q3 Case Operational Owner / Assignment: **RESOLVED — caregiver primary owner/contact; authorized supervisory/operations assignment; reassignment reason + audit (D-0121)**
 - TS-03 Q4 Minimum Case/Profile Data Classes: **RESOLVED — six bounded Data Classes; medical/provider/outcome/AI-training data excluded from current slice (D-0122)**
 - TS-03 Q6 Minimum Access Boundary: **RESOLVED — assigned caregiver + bounded supervisory/operations access only; elder/family/provider/employer/AI access outside current slice (D-0123)**
-- Remaining TS-03 question: **Q5 — Correction / History**
+- TS-03 Q5 Correction / History: **RESOLVED — no silent overwrite; history + actor/time/reason + provenance preserved (D-0125)**
+- TS-03 named supervisory Role/Permission mapping: **EXPLICITLY DEFERRED TO TS-05 (D-0126)**
+- TS-03 Business blockers: **CLOSED FOR SLICE GATE RECORD**
+- Next TS-03 artifact: **SG-001 — Technical Entry Gate Record**
 - کار غیرالزام‌آور Documentation/Gate Preparation می‌تواند ادامه یابد.
 
 ## Current next path
