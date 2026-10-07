@@ -1,3 +1,3 @@
 """Expected serving schema, advanced only alongside a reviewed migration."""
 
-SCHEMA_REVISION = "0005_provider_qe"
+SCHEMA_REVISION = "0006_provider_qreview"

@@ -15,15 +15,22 @@ from nasim.infrastructure.provider_qualification_evidence_effects import (
     ProviderQualificationEvidenceEffects,
     evidence_digest,
 )
+from nasim.infrastructure.provider_qualification_review_request_effects import (
+    ProviderQualificationReviewRequestEffects,
+    review_request_digest,
+)
 from nasim.provider_registry.contracts import (
     ProviderCandidateView,
     ProviderQualificationEvidenceView,
+    ProviderQualificationReviewRequestView,
     RecordProviderQualificationEvidence,
     RegisterProviderCandidate,
+    RequestProviderQualificationReview,
 )
 from nasim.provider_registry.models import (
     ProviderCandidateRecord,
     ProviderQualificationEvidenceRecord,
+    ProviderQualificationReviewRequestRecord,
 )
 
 
@@ -228,3 +235,115 @@ class ProviderQualificationEvidence:
             if row is None:
                 raise DomainError("PROVIDER_QUALIFICATION_EVIDENCE_NOT_FOUND", 404)
             return ProviderQualificationEvidenceView.model_validate(row)
+
+
+class ProviderQualificationReviewRequests:
+    def __init__(
+        self,
+        sessions: async_sessionmaker[AsyncSession],
+        effects: ProviderQualificationReviewRequestEffects | None = None,
+    ) -> None:
+        self.sessions = sessions
+        self.effects = effects or ProviderQualificationReviewRequestEffects()
+
+    async def request(
+        self,
+        candidate_id: UUID,
+        command: RequestProviderQualificationReview,
+        actor: ActorContext,
+        key: str,
+    ) -> dict[str, Any]:
+        require_capability(actor, "provider_qualification_review.request")
+        if actor.actor_type == ActorType.AI:
+            raise DomainError("CAPABILITY_REQUIRED", 403)
+        if not key.strip() or len(key) > 200:
+            raise DomainError("INVALID_IDEMPOTENCY_KEY", 422)
+
+        scope = self.effects.scope(actor, candidate_id, key)
+        payload_hash = review_request_digest(
+            {
+                "candidate_id": str(candidate_id),
+                **command.model_dump(mode="json"),
+            }
+        )
+        async with self.sessions() as session, session.begin():
+            await self.effects.lock(session, scope)
+            prior = await self.effects.prior(session, scope, payload_hash)
+            if prior is not None:
+                return prior
+
+            if await session.get(ProviderCandidateRecord, candidate_id) is None:
+                raise DomainError("PROVIDER_CANDIDATE_NOT_FOUND", 404)
+
+            now = (await session.execute(select(func.statement_timestamp()))).scalar_one()
+            row = ProviderQualificationReviewRequestRecord(
+                id=uuid4(),
+                provider_candidate_id=candidate_id,
+                requested_at=now,
+                requested_by_actor_id=actor.actor_id,
+                requested_by_actor_type=actor.actor_type.value,
+                reason=command.reason,
+                correlation_id=actor.correlation_id,
+            )
+            session.add(row)
+            await session.flush()
+            record = ProviderQualificationReviewRequestView.model_validate(row)
+            await self.effects.append(session, record, actor, scope, payload_hash)
+            return record.model_dump(mode="json")
+
+    @staticmethod
+    def _require_read(actor: ActorContext) -> None:
+        require_capability(actor, "provider_qualification_review.read")
+
+    async def list(
+        self,
+        candidate_id: UUID,
+        actor: ActorContext,
+        cursor: str | None = None,
+        limit: int = 50,
+    ) -> Page[ProviderQualificationReviewRequestView]:
+        self._require_read(actor)
+        if not 1 <= limit <= 100:
+            raise DomainError("INVALID_PAGE_LIMIT", 422)
+        async with self.sessions() as session:
+            if await session.get(ProviderCandidateRecord, candidate_id) is None:
+                raise DomainError("PROVIDER_CANDIDATE_NOT_FOUND", 404)
+            query = select(ProviderQualificationReviewRequestRecord).where(
+                ProviderQualificationReviewRequestRecord.provider_candidate_id == candidate_id
+            )
+            if cursor:
+                stamp, identifier = decode_cursor(cursor)
+                query = query.where(
+                    tuple_(
+                        ProviderQualificationReviewRequestRecord.requested_at,
+                        ProviderQualificationReviewRequestRecord.id,
+                    )
+                    > tuple_(literal(stamp), literal(identifier))
+                )
+            rows = (
+                await session.scalars(
+                    query.order_by(
+                        ProviderQualificationReviewRequestRecord.requested_at,
+                        ProviderQualificationReviewRequestRecord.id,
+                    ).limit(limit + 1)
+                )
+            ).all()
+            selected = rows[:limit]
+            return Page[ProviderQualificationReviewRequestView](
+                items=[
+                    ProviderQualificationReviewRequestView.model_validate(row) for row in selected
+                ],
+                next_cursor=encode_cursor(selected[-1].requested_at, selected[-1].id)
+                if len(rows) > limit
+                else None,
+            )
+
+    async def get(
+        self, request_id: UUID, actor: ActorContext
+    ) -> ProviderQualificationReviewRequestView:
+        self._require_read(actor)
+        async with self.sessions() as session:
+            row = await session.get(ProviderQualificationReviewRequestRecord, request_id)
+            if row is None:
+                raise DomainError("PROVIDER_QUALIFICATION_REVIEW_REQUEST_NOT_FOUND", 404)
+            return ProviderQualificationReviewRequestView.model_validate(row)

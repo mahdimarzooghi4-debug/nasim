@@ -12,6 +12,8 @@ EXPECTED_ROUTES = {
     "/api/v1/provider-candidates/{candidate_id}": {"get"},
     "/api/v1/provider-candidates/{candidate_id}/qualification-evidence": {"get", "post"},
     "/api/v1/provider-qualification-evidence/{evidence_id}": {"get"},
+    "/api/v1/provider-candidates/{candidate_id}/qualification-review-requests": {"get", "post"},
+    "/api/v1/provider-qualification-review-requests/{request_id}": {"get"},
     "/api/v1/cases/{case_id}/referrals": {"get", "post"},
     "/api/v1/referrals/{referral_id}": {"get"},
     "/api/v1/authorization/self": {"get"},
@@ -144,6 +146,42 @@ def validate_http(base_url: str) -> None:
         if status != 401:
             raise RuntimeError("Anonymous qualification evidence read did not fail closed")
 
+    review_request_id = uuid4()
+    status, _ = request(
+        base_url,
+        f"/api/v1/provider-candidates/{candidate_id}/qualification-review-requests",
+        "POST",
+        {"reason": "review request foundation smoke"},
+    )
+    if status != 401:
+        raise RuntimeError("Anonymous qualification review request did not fail closed")
+    for path in (
+        f"/api/v1/provider-candidates/{candidate_id}/qualification-review-requests",
+        f"/api/v1/provider-qualification-review-requests/{review_request_id}",
+    ):
+        status, _ = request(base_url, path)
+        if status != 401:
+            raise RuntimeError("Anonymous qualification review request read did not fail closed")
+    for action in (
+        "assign",
+        "review",
+        "decide",
+        "qualify",
+        "approve",
+        "reject",
+        "activate",
+        "close",
+        "reopen",
+    ):
+        status, _ = request(
+            base_url,
+            f"/api/v1/provider-qualification-review-requests/{review_request_id}/{action}",
+            "POST",
+            {},
+        )
+        if status != 404:
+            raise RuntimeError("Undecided qualification review decision route is reachable")
+
     for action in ("activate", "approve", "reject", "suspend", "qualify", "capacity", "contract"):
         status, _ = request(
             base_url, f"/api/v1/provider-candidates/{candidate_id}/{action}", "POST", {}
@@ -162,7 +200,7 @@ def validate_http(base_url: str) -> None:
 
     print(
         "Stage HTTP smoke passed: readiness, Case/Referral/Provider Candidate/"
-        "Qualification Evidence routes, anonymous denial and excluded routes"
+        "Qualification Evidence/Review Request routes, anonymous denial and excluded routes"
     )
 
 
