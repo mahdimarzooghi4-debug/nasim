@@ -29,7 +29,7 @@ curl --fail --silent http://127.0.0.1:8000/health
 ```
 
 Expected response: `{"status":"ok"}`. Health verifies database connectivity and migration
-revision `0003_referral`; it returns 503 if unavailable/unmigrated. Processes must be restarted
+revision `0004_provider_candidate`; it returns 503 if unavailable/unmigrated. Processes must be restarted
 in future cloud tasks; an installed dependency or retained database volume is not a live
 service. Stop only the server you started (Ctrl-C). `docker compose stop postgres` stops
 the repository's database without removing its volume.
@@ -208,7 +208,7 @@ force until actual provisioning and admission. It adds no identity or TS-03 busi
 ## TS-05 Identity / Authorization foundation
 
 See [TS-05 developer contract](../docs/technical/TS05_DEVELOPER_GUIDE.md).
-The current migration head is `0003_referral`. The registry seeds vocabulary only;
+The current migration head is `0004_provider_candidate`. The registry seeds vocabulary only;
 no actor-role assignments or role-permission grants are seeded. The serving DB
 role has read-only access to authorization tables. External authentication and
 public management commands remain outside scope.
@@ -217,7 +217,14 @@ public management commands remain outside scope.
 ## Sprint 003 Referral record foundation
 
 See [Referral developer guide](../docs/technical/REFERRAL_FOUNDATION_DEVELOPER_GUIDE.md).
-Migration `0003_referral` adds immutable `referral_record` and three technical
+Migration `0004_provider_candidate` adds immutable `referral_record` and three technical
 permission definitions, with no role/actor grants. Only record create/list/detail
 APIs are added. Provider selection, lifecycle, delivery and final authorization
 policy remain OPEN. The serving role receives SELECT/INSERT, never UPDATE/DELETE.
+
+
+## Provider Candidate foundation
+
+Sprint 004 adds a pre-operational, immutable Provider Candidate registry. A candidate record is
+not an activated Provider, has no Service eligibility or Referral selection authority, and does
+not grant Case/Elder access. The current schema head is `0004_provider_candidate`.
