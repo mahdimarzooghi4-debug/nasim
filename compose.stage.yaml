@@ -1,0 +1,58 @@
+# Local/CI Stage-like validation only. Hosted infrastructure is not provisioned by this file.
+name: ${NASIM_STAGE_PROJECT:?Set an isolated validation project name}
+x-backend: &backend
+  image: ${NASIM_STAGE_IMAGE:?Set a local image tag or approved image reference}
+  read_only: true
+  tmpfs:
+    - /tmp
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: backend/stage/Dockerfile.postgres
+    environment:
+      POSTGRES_USER: ${NASIM_STAGE_MIGRATION_USER:?Supply migration owner}
+      POSTGRES_PASSWORD: ${NASIM_STAGE_MIGRATION_PASSWORD:?Supply migration password externally}
+      POSTGRES_DB: ${NASIM_STAGE_DB_NAME:?Supply Stage validation database name}
+      NASIM_STAGE_DB_USER: ${NASIM_STAGE_DB_USER:?Supply restricted runtime role}
+      NASIM_STAGE_DB_PASSWORD: ${NASIM_STAGE_DB_PASSWORD:?Supply runtime password externally}
+    volumes:
+      - stage_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    # Database has no host-published port; service DNS exists only inside this Compose network.
+  migrate:
+    <<: *backend
+    environment:
+      NASIM_ENVIRONMENT: stage
+      NASIM_DATABASE_URL: ${NASIM_DATABASE_URL:?Supply complete runtime DSN}
+      NASIM_MIGRATION_DATABASE_URL: ${NASIM_MIGRATION_DATABASE_URL:?Supply distinct migration DSN}
+    command: [/app/stage-migrate.sh]
+    healthcheck:
+      disable: true
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+  backend:
+    <<: *backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      NASIM_ENVIRONMENT: stage
+      NASIM_DATABASE_URL: ${NASIM_DATABASE_URL:?Supply complete runtime DSN}
+    ports:
+      - "${NASIM_STAGE_BIND_ADDRESS:?Supply validation bind address}:${NASIM_STAGE_HTTP_PORT:?Supply validation port}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+volumes:
+  stage_pgdata:

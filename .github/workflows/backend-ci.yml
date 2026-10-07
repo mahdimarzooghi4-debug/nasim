@@ -1,0 +1,140 @@
+name: Backend and Stage foundation CI
+on:
+  pull_request:
+    paths: ['backend/**', 'compose*.yaml', '.dockerignore', '.github/workflows/backend-ci.yml', 'docs/stage/**']
+  push:
+    branches: [main, stage-foundation]
+    paths: ['backend/**', 'compose*.yaml', '.dockerignore', '.github/workflows/backend-ci.yml', 'docs/stage/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: backend-ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          version: '0.12.19'
+      - name: Frozen dependencies
+        working-directory: backend
+        run: uv sync --locked
+      - name: Ruff, format and Pyright
+        working-directory: backend
+        run: |
+          uv run --locked ruff check .
+          uv run --locked ruff format --check .
+          uv run --locked pyright
+          uv run --locked pyright scripts/prepare-ci-database.py
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17@sha256:ae69c452f483507a6b99fb654cf93aad7fe156ffd2c56247707eef4e36d3c12b
+        env:
+          POSTGRES_USER: ci_owner
+          POSTGRES_PASSWORD: CI_ONLY_NOT_A_SECRET_owner
+          POSTGRES_DB: nasim_ci_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U ci_owner -d nasim_ci_test"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      NASIM_TEST_DATABASE_URL: postgresql://ci_owner:CI_ONLY_NOT_A_SECRET_owner@127.0.0.1:5432/nasim_ci_test
+      NASIM_TEST_APP_DATABASE_URL: postgresql://nasim_app:CI_ONLY_NOT_A_SECRET_runtime@127.0.0.1:5432/nasim_ci_test
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          version: '0.12.19'
+      - name: Frozen install, migration and restricted test role
+        working-directory: backend
+        run: |
+          uv sync --locked
+          uv run --locked python scripts/prepare-ci-database.py
+      - name: Full Pytest including PostgreSQL, races, OpenAPI and Stage tests
+        working-directory: backend
+        run: uv run --locked pytest --junitxml=/tmp/nasim-pytest.xml
+  migration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17@sha256:ae69c452f483507a6b99fb654cf93aad7fe156ffd2c56247707eef4e36d3c12b
+        env:
+          POSTGRES_USER: ci_owner
+          POSTGRES_PASSWORD: CI_ONLY_NOT_A_SECRET_owner
+          POSTGRES_DB: nasim_ci_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U ci_owner -d nasim_ci_test"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      NASIM_TEST_DATABASE_URL: postgresql://ci_owner:CI_ONLY_NOT_A_SECRET_owner@127.0.0.1:5432/nasim_ci_test
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          version: '0.12.19'
+      - working-directory: backend
+        run: uv sync --locked
+      - name: Dedicated-test upgrade, downgrade, upgrade and Alembic check
+        run: bash backend/scripts/validate-migrations.sh
+  container-stage-smoke:
+    needs: [quality, test, migration]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # Public sentinel credentials for disposable CI databases only. No hosted secrets.
+    env:
+      NASIM_STAGE_PROJECT: nasim-stage-ci-${{ github.run_id }}-${{ github.run_attempt }}
+      NASIM_STAGE_IMAGE: nasim-stage-validation:ci
+      NASIM_STAGE_BIND_ADDRESS: 127.0.0.1
+      NASIM_STAGE_HTTP_PORT: '18000'
+      NASIM_STAGE_SMOKE_URL: http://127.0.0.1:18000
+      NASIM_STAGE_DB_NAME: stage_validation
+      NASIM_STAGE_MIGRATION_USER: stage_owner
+      NASIM_STAGE_MIGRATION_PASSWORD: CI_ONLY_NOT_A_SECRET_owner
+      NASIM_STAGE_DB_USER: stage_runtime
+      NASIM_STAGE_DB_PASSWORD: CI_ONLY_NOT_A_SECRET_runtime
+      NASIM_DATABASE_URL: postgresql+asyncpg://stage_runtime:CI_ONLY_NOT_A_SECRET_runtime@postgres:5432/stage_validation
+      NASIM_MIGRATION_DATABASE_URL: postgresql+asyncpg://stage_owner:CI_ONLY_NOT_A_SECRET_owner@postgres:5432/stage_validation
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          version: '0.12.19'
+      - working-directory: backend
+        run: uv sync --locked
+      - name: Docker build, Stage-like boot, HTTP smoke, restart and schema check
+        run: bash backend/scripts/stage-validate.sh
+      - name: Keep failure diagnostics in job logs
+        if: failure()
+        run: cat "/tmp/${NASIM_STAGE_PROJECT}-stage-validation/compose.log"
+      - name: Remove only this run's disposable data
+        if: always()
+        run: docker compose -f compose.stage.yaml down --volumes --remove-orphans

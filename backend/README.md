@@ -195,3 +195,11 @@ HUMAN/SYSTEM/AI/AUTOMATION without granting those types authority by itself.
 
 [Code Review evidence](../docs/sprints/SPRINT-001_CODE_REVIEW_EVIDENCE.md) records verification.
 Review is the next gate. No automatic main merge, Stage admission or production release.
+
+## Stage Foundation
+
+The provider-neutral container, explicit Stage environment contract, independent validation
+composition and GitHub Actions pipeline are documented in
+[STAGE-001](../docs/stage/STAGE-001_ENVIRONMENT_FOUNDATION.md). This repository-side
+foundation is distinct from Hosted Stage; D-0130's Stage-unavailable decision remains in
+force until actual provisioning and admission. It adds no identity or TS-03 business feature.
