@@ -46,9 +46,9 @@ Only the following existing Candidate Decisions are now relevant enough to revie
 ### CT-D-0006 — Phase-1 Target Population
 Candidate text: Phase-1 target population is elderly people under support of Imam Khomeini Relief Foundation.
 
-Reason triggered: TS-03 must know whether Case creation is scoped to this accepted Phase-1 population or starts after an upstream enrollment decision.
+Initial trigger reason: TS-03 needed to know whether Case creation was scoped directly to Phase-1 eligibility or began after an upstream enrollment decision.
 
-Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
+**Q1 resolution:** D-0119 selected the post-enrollment boundary. Therefore D-0006 is **NO LONGER REQUIRED FOR TS-03 GATE** and returns to the unrelated OPEN/not-accepted candidate pool. It is neither Accepted nor Deferred by TS-03.
 
 ### CT-D-0012 — Caregiver base responsibility boundary
 Candidate direction: caregiver base responsibility includes contact, monitoring, recording, coordination, Referral and Follow-up; specialist medical/financial/provider-activation/final-eligibility authority is not inferred.
@@ -122,10 +122,10 @@ Reason: their detailed behavior is outside the current bounded TS-03 design unle
 
 These are the actual Product Owner choices needed before TS-03 can be gate-checked.
 
-### Q1 — Case entry boundary
-Choose one:
-- **A — TS-03 starts after enrollment:** Case/Profile foundation assumes an elder has already been admitted by an upstream Business process; enrollment eligibility enforcement is outside this Slice.
-- **B — TS-03 includes enrollment boundary:** minimum Phase-1 enrollment rule must be closed now before Case creation design.
+### Q1 — Case entry boundary — RESOLVED
+**Accepted: Option A.** TS-03 starts after enrollment. Case/Profile assumes the elder has already been admitted by an upstream Business process; enrollment eligibility enforcement is outside this Slice.
+
+Decision Record: **D-0119**.
 
 ### Q2 — Early journey scope
 Proposed minimal TS-03 sequence:
@@ -206,7 +206,7 @@ Technical must not assume:
 ## 8. Closure sequence for SGP-001
 
 Close in this order:
-1. Q1 — Case entry boundary
+1. Q1 — Case entry boundary — **RESOLVED by D-0119**
 2. Q2 — early journey scope
 3. Q3 — Case operational owner / assignment
 4. Q4 — minimum Case/Profile Data Classes
@@ -222,8 +222,9 @@ Only one small decision set should be discussed at a time.
 - Selected Technical Slice: **TS-03**
 - TS-03 status: **SELECTED FOR GATE PREPARATION**
 - SGP-001: **ACTIVE**
-- Context-triggered Candidate Decisions: D-0006, D-0012, D-0013, D-0014, D-0015, D-0016, D-0017, D-0021, D-0028
-- Accepted from this packet: **0**
+- Context-triggered Candidate Decisions still active for TS-03: D-0012, D-0013, D-0014, D-0015, D-0016, D-0017, D-0021, D-0028
+- Released from TS-03 trigger set: D-0006 → OPEN / NOT ACCEPTED
+- Accepted decisions created from this packet: **D-0119**
 - Explicitly Deferred from this packet: **0**
 - Unrelated decisions: **OPEN / unchanged**
 - TS-03 Slice Gate: **NOT YET READY**
@@ -233,4 +234,8 @@ Only one small decision set should be discussed at a time.
 
 ## 10. Next Product Owner question
 
-**Q1 — Case entry boundary:** should TS-03 begin **after enrollment** (A), or should it **include the minimum enrollment rule** now (B)?
+**Q2 — Early journey scope:** confirm or modify the proposed minimal TS-03 sequence:
+
+`Contact → Case/Profile → Monitoring → Observation / Need capture`
+
+Referral, Service, Follow-up and Outcome remain outside TS-03.
