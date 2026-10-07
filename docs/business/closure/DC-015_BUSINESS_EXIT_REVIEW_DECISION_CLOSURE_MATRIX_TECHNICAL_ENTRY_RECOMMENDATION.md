@@ -323,7 +323,7 @@ Starting Technical for an unselected or ungated scope would still force Business
 
 Candidate D-0006…D-0117 remain available as references when a selected Slice actually triggers them.
 
-## 9. Recommended next action — Product Owner Decision Acceptance Round
+## 9. Recommended next action — Bounded Technical Slice Selection
 
 The current default next action is **not** bulk review of D-0006…D-0117.
 
@@ -387,14 +387,7 @@ No forced Decision Acceptance artifact is required under D-0118.
 Current reference path:
 - BX-015 — Technical Entry Slice Candidate Map
 - BX-016 — Gate Preparation / Documentation Consistency Cleanup
-- then explicit Product Owner Slice selection before any Business decision set is triggered.
+- after cleanup verification, Product Owner explicitly selects the first bounded Technical Slice
+- only that Slice's minimal Business blocker set becomes CONTEXT TRIGGERED
 
-
-
-**DA-001 — Product Owner Decision Acceptance Round: Pilot Scope + Service Boundary**
-
-Scope:
-- review D-0006…D-0010
-- Accept / Modify / Reject / Defer
-- update Decision Register
-- update Business Blocker Matrix
+DA-001…DA-008 remain reference material and may be reused when a selected Slice triggers their decisions.
