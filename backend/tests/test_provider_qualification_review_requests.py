@@ -87,7 +87,9 @@ async def candidate_id(candidate_service, candidate_actor) -> UUID:
     return UUID(result["id"])
 
 
-def command(reason: str = "Request human qualification review") -> RequestProviderQualificationReview:
+def command(
+    reason: str = "Request human qualification review",
+) -> RequestProviderQualificationReview:
     return RequestProviderQualificationReview(reason=reason)
 
 
