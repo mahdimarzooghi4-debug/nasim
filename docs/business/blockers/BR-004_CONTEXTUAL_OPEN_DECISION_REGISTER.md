@@ -3,7 +3,7 @@
 - **Status:** ACTIVE
 - **Stage:** Business — Contextual Decision Governance
 - **Date:** 2026-10-06
-- **Source basis:** D-0118 + BR-001 + BR-002 + BR-003 + BC-025
+- **Source basis:** D-0118 + BR-001 + BR-002 + BR-003 + BC-025 + BX-015 + BX-016
 
 این سند تصمیم‌های باز را نگه می‌دارد تا فقط زمانی بسته شوند که Context واقعی کار به آنها نیاز داشته باشد.
 
@@ -118,15 +118,21 @@
 
 ## Current state
 
-- Stage: **Business**
+- Stage: **Business — Technical Entry Preparation**
 - Accepted: D-0001…D-0005 + D-0118
 - D-0006…D-0117: هنوز Accepted نشده‌اند.
 - BR-003 P1…P6: **OPEN / PARKED**
-- Business → Technical: **NOT READY**
-- کار می‌تواند در حالت Business/Exploration غیرالزام‌آور ادامه یابد.
+- BX-001…BX-015: Exploration / Technical-entry candidate mapping completed.
+- Selected Technical Slice: **NONE**
+- Global Business → Technical Gate: **NOT PASSED**
+- کار غیرالزام‌آور Documentation/Gate Preparation می‌تواند ادامه یابد.
 
-## Next artifact
+## Current next path
 
-**BX-001 — Business Exploration Workstream Map**
+از BX-015 برای انتخاب صریح یک Technical Slice محدود استفاده می‌شود. فقط پس از Selection:
+1. کوچک‌ترین Decision Set وابسته به همان Slice به **CONTEXT TRIGGERED** می‌رود.
+2. همان مجموعه Accept/Modify/Reject/Explicitly Defer می‌شود.
+3. Slice Gate Evidence ساخته می‌شود.
+4. Technical فقط در صورت Pass شدن همان Slice Gate آغاز می‌شود.
 
-هدف: مشخص‌کردن کارهایی که بدون بستن زودهنگام Open Decisionها می‌توان اکنون جلو برد و Trigger دقیق هر تصمیم را در مسیر واقعی کار مشخص کرد.
+تا قبل از Selection، هیچ Decision نامرتبط نباید به‌اجبار بسته شود.
