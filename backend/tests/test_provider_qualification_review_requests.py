@@ -413,8 +413,7 @@ async def test_review_request_history_is_immutable(
         "DELETE FROM provider_qualification_review_request_record WHERE id=:id"
         if operation == "DELETE"
         else (
-            "UPDATE provider_qualification_review_request_record "
-            "SET reason='tampered' WHERE id=:id"
+            "UPDATE provider_qualification_review_request_record SET reason='tampered' WHERE id=:id"
         )
     )
     async with admin_engine.begin() as conn:
@@ -422,9 +421,7 @@ async def test_review_request_history_is_immutable(
             await conn.execute(text(statement), {"id": UUID(result["id"])})
 
 
-async def test_direct_insert_without_atomic_effects_fails(
-    admin_engine, review_actor, candidate_id
-):
+async def test_direct_insert_without_atomic_effects_fails(admin_engine, review_actor, candidate_id):
     row = ProviderQualificationReviewRequestRecord(
         id=uuid4(),
         provider_candidate_id=candidate_id,
@@ -442,9 +439,7 @@ async def test_direct_insert_without_atomic_effects_fails(
     assert await review_counts(admin_engine) == (0, 0, 0, 0)
 
 
-async def test_read_list_detail_and_pagination(
-    review_service, review_actor, candidate_id
-):
+async def test_read_list_detail_and_pagination(review_service, review_actor, candidate_id):
     first = await review_service.request(candidate_id, command("One"), review_actor, "one")
     second = await review_service.request(candidate_id, command("Two"), review_actor, "two")
     page = await review_service.list(candidate_id, review_actor, limit=1)
@@ -461,9 +456,7 @@ async def test_read_list_detail_and_pagination(
         first["id"],
         second["id"],
     }
-    assert (
-        await review_service.get(UUID(first["id"]), review_actor)
-    ).reason == "One"
+    assert (await review_service.get(UUID(first["id"]), review_actor)).reason == "One"
 
     no_read = review_actor.model_copy(
         update={"capabilities": frozenset({"provider_qualification_review.request"})}
@@ -474,9 +467,7 @@ async def test_read_list_detail_and_pagination(
 
 
 async def test_http_anonymous_denial_and_no_review_decision_routes():
-    app = create_app(
-        Settings(database_url=PostgresDsn("postgresql://unused@127.0.0.1:1/unused"))
-    )
+    app = create_app(Settings(database_url=PostgresDsn("postgresql://unused@127.0.0.1:1/unused")))
     candidate_id = uuid4()
     request_id = uuid4()
     try:
@@ -495,9 +486,7 @@ async def test_http_anonymous_denial_and_no_review_decision_routes():
                 )
             ).status_code == 401
             assert (
-                await client.get(
-                    f"/api/v1/provider-qualification-review-requests/{request_id}"
-                )
+                await client.get(f"/api/v1/provider-qualification-review-requests/{request_id}")
             ).status_code == 401
 
             for action in (
@@ -534,9 +523,7 @@ async def test_http_request_with_trusted_context(
         "http-candidate",
     )
     candidate_id = UUID(candidate["id"])
-    app = create_app(
-        Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"]))
-    )
+    app = create_app(Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"])))
     app.dependency_overrides[get_actor] = lambda: review_actor
     try:
         async with httpx.AsyncClient(
