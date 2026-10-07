@@ -216,7 +216,9 @@ class AuditEntry(Identified, Base):
         CheckConstraint(
             "case_id IS NOT NULL OR "
             "(action = 'provider.candidate_registered.v1' "
-            "AND resource_type = 'provider_candidate_record')",
+            "AND resource_type = 'provider_candidate_record') OR "
+            "(action = 'provider.qualification_evidence_recorded.v1' "
+            "AND resource_type = 'provider_qualification_evidence_record')",
             name="ck_audit_case_or_provider_candidate",
         ),
         Index("ix_audit_timeline", "case_id", "timestamp", "id"),
@@ -233,7 +235,9 @@ class OutboxEvent(Identified, Base):
     payload: Mapped[dict[str, Any]] = mapped_column(JSONB)
     __table_args__ = (
         CheckConstraint(
-            "case_id IS NOT NULL OR event_type = 'provider.candidate_registered.v1'",
+            "case_id IS NOT NULL OR event_type IN "
+            "('provider.candidate_registered.v1', "
+            "'provider.qualification_evidence_recorded.v1')",
             name="ck_outbox_case_or_provider_candidate",
         ),
     )
