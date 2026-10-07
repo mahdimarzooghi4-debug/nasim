@@ -1,19 +1,19 @@
 # BR-001 — Pre-Acceptance Remaining Business Blocker Register
 
-- **Status:** PRE-ACCEPTANCE DRAFT
+- **Status:** REFERENCE / CONTEXTUAL BLOCKER REGISTER
 - **Stage:** Business — Decision Closure
 - **Date:** 2026-10-06
-- **Source basis:** DC-015 + DA-008
-- **Purpose:** آماده‌سازی فهرست Blockerهای واقعی باقی‌مانده بدون فرض Acceptance برای D-0006…D-0117.
+- **Source basis:** DC-015 + DA-008 + D-0118 + BX-015
+- **Purpose:** نگهداری فهرست مرجع Blockerهای Business بدون فرض Acceptance برای D-0006…D-0117؛ هر Blocker فقط وقتی Slice/Work Item مرتبط آن را نیاز داشته باشد Context Triggered می‌شود.
 
-> این سند به معنی Acceptance هیچ Candidate Decision نیست. تا زمانی که مالک محصول D-0006…D-0117 یا subset مربوطه را صریحاً Accept نکند، این Register فقط یک Working Draft برای مرحله بعد است.
+> این سند به معنی Acceptance هیچ Candidate Decision نیست. طبق D-0118، subset مربوط به یک Slice فقط زمانی نیازمند تصمیم می‌شود که همان Slice صریحاً انتخاب و Dependency آن Trigger شود؛ Decisionهای نامرتبط OPEN می‌مانند.
 
 ## 1. Current governance state
 
-- Accepted decisions: D-0001…D-0005
+- Accepted decisions: D-0001…D-0005 + D-0118
 - Pending candidates: D-0006…D-0117
 - Pending count: 112
-- Technical Entry Gate: **NOT READY**
+- Global Technical Entry Gate: **NOT PASSED**
 - DA-001…DA-008: prepared, awaiting Product Owner decision
 
 اصل:
@@ -24,7 +24,7 @@
 
 هر موضوع باز باید در یکی از این کلاس‌ها قرار گیرد:
 
-- **A — MUST DECIDE BEFORE TECHNICAL**
+- **A — MUST DECIDE BEFORE RELEVANT TECHNICAL SLICE WHEN TRIGGERED**
 - **B — EXPLICITLY DEFER FOR CURRENT PILOT**
 - **C — TECHNICAL DECISION**
 - **D — LATER DELIVERY / OPERATIONS**
@@ -33,7 +33,7 @@
 
 `Unknown ≠ Deferred`
 
-## 3. A — MUST DECIDE BEFORE TECHNICAL
+## 3. A — MUST DECIDE BEFORE RELEVANT TECHNICAL SLICE WHEN TRIGGERED
 
 ### A1. Pilot Scope
 - Pilot geography
@@ -216,23 +216,27 @@ Can be closed at later gates only if not required for initial Technical architec
 
 ## 7. Minimum package required before Technical Entry
 
-Before Business → Technical can change from NOT READY, at minimum the following must become traceable Accepted Business decisions or explicit Deferrals:
+The following list is a **cross-domain inventory**, not a requirement to close all items before every Technical activity.
 
-1. Pilot scope baseline
-2. active service baseline
-3. minimum authority matrix
-4. minimum legal/data/access baseline
-5. AI Day-one governance baseline
-6. Training Eligibility baseline
-7. Provider Pilot baseline
-8. KPI/evidence baseline
-9. Funding/payment scope baseline
-10. Integration Inventory
-11. minimum Safety/Continuity baseline
-12. Outcome/Reassessment baseline
-13. Policy/Activation governance baseline
-14. Explicit Deferred Decision Register
-15. Business Exit Gate Record
+For a selected Technical Slice, only applicable items become required and must be traceable Accepted decisions or explicit Deferrals:
+
+1. Pilot/scope baseline if the Slice depends on it
+2. active service baseline if service/referral is in scope
+3. authority baseline for consequential actions in scope
+4. legal/data/access baseline for Data Classes in scope
+5. AI Day-one governance if AI behavior is in scope
+6. Training Eligibility if Dataset Builder/learning is in scope
+7. Provider baseline if Provider capability is in scope
+8. KPI/evidence baseline if measurement is in scope
+9. Funding/payment scope if financial capability is in scope
+10. Integration Inventory if external integration is in scope
+11. Safety/Continuity baseline if safety/continuity behavior is in scope
+12. Outcome/Reassessment baseline if longitudinal outcome is in scope
+13. Policy/Activation governance for versioned runtime rules in scope
+14. Explicit Deferrals used by the Slice Gate
+15. Slice Gate Record
+
+Unrelated items remain OPEN under D-0118.
 
 ## 8. Acceptance dependency
 
@@ -248,22 +252,30 @@ After Product Owner Acceptance:
 
 ## 9. Current result
 
-**Business → Technical: NOT READY**
+**Global Business → Technical: NOT PASSED**
 
 Reason:
-- 112 Candidate Decisions remain Pending.
-- multiple Pilot-specific values remain unresolved.
-- no Explicit Deferred Register exists yet.
-- no passable Business Exit Gate Record exists yet.
+- D-0006…D-0117 remain not accepted.
+- no bounded Technical Slice has been selected.
+- therefore no minimal Slice-specific blocker set has been fully closed/gated.
+
+The existence of 112 pending Candidate Decisions does **not** require bulk closure under D-0118.
 
 ## 10. Next allowed step without implicit acceptance
 
-Because Product Owner has not yet explicitly accepted D-0006…D-0117, the next safe action is:
+The safe next action is:
+- complete documentation/gate preparation;
+- then explicitly select one bounded Technical Slice using BX-015;
+- Context Trigger only that Slice's minimal blocker set.
 
-**BR-002 — Pilot-specific Decision Input Sheet**
-
-It will request only the remaining concrete values that cannot be inferred from the source, while keeping all pending Candidate Decisions untouched.
+BR-002 remains a reference input sheet for values that a selected Slice actually needs.
 
 ## 11. Next step after explicit acceptance
 
-If Product Owner explicitly accepts D-0006…D-0117, this BR-001 should be revised into the authoritative **Remaining Business Blocker Register**, then Decision Register and Gate status should be updated.
+When Product Owner explicitly accepts or defers a Slice-specific decision:
+- update Decision/Deferral records;
+- remove only resolved blockers from that Slice's unresolved set;
+- preserve unrelated OPEN items;
+- re-run only the relevant Slice Gate.
+
+This Register does not require D-0006…D-0117 to be accepted as one batch.
