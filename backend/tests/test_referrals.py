@@ -736,7 +736,7 @@ async def test_migration_rollback_with_authorization_history_fails_closed(admin_
         async with admin_engine.connect() as conn:
             assert (
                 await conn.scalar(text("SELECT version_num FROM alembic_version"))
-                == "0005_provider_qualification_evidence"
+                == "0005_provider_qe"
             )
             assert await conn.scalar(text("SELECT to_regclass('referral_record') IS NOT NULL"))
     finally:
