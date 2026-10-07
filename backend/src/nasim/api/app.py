@@ -38,8 +38,13 @@ from nasim.identity_context.contracts import ActorContext
 from nasim.infrastructure.config import Settings, load_settings
 from nasim.infrastructure.database import make_engine, make_sessions
 from nasim.infrastructure.schema import SCHEMA_REVISION
-from nasim.provider_registry.contracts import ProviderCandidateView, RegisterProviderCandidate
-from nasim.provider_registry.service import ProviderCandidates
+from nasim.provider_registry.contracts import (
+    ProviderCandidateView,
+    ProviderQualificationEvidenceView,
+    RecordProviderQualificationEvidence,
+    RegisterProviderCandidate,
+)
+from nasim.provider_registry.service import ProviderCandidates, ProviderQualificationEvidence
 from nasim.referral.contracts import CreateReferral, ReferralView
 from nasim.referral.service import Referrals
 
@@ -62,6 +67,10 @@ def get_provider_candidates(request: Request) -> ProviderCandidates:
     return request.app.state.provider_candidates
 
 
+def get_provider_qualification_evidence(request: Request) -> ProviderQualificationEvidence:
+    return request.app.state.provider_qualification_evidence
+
+
 def get_referrals(request: Request) -> Referrals:
     return request.app.state.referrals
 
@@ -74,6 +83,9 @@ Actor = Annotated[ActorContext, Depends(get_actor)]
 Service = Annotated[Casework, Depends(get_casework)]
 ReferralService = Annotated[Referrals, Depends(get_referrals)]
 ProviderCandidateService = Annotated[ProviderCandidates, Depends(get_provider_candidates)]
+ProviderQualificationEvidenceService = Annotated[
+    ProviderQualificationEvidence, Depends(get_provider_qualification_evidence)
+]
 Key = Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)]
 Cursor = Annotated[str | None, Query(max_length=500)]
 Limit = Annotated[int, Query(ge=1, le=100)]
@@ -90,7 +102,8 @@ ERRORS: dict[int | str, dict[str, Any]] = {
     404: {
         "model": ErrorResponse,
         "description": (
-            "CASE_NOT_FOUND / RECORD_NOT_FOUND / REFERRAL_NOT_FOUND / PROVIDER_CANDIDATE_NOT_FOUND"
+            "CASE_NOT_FOUND / RECORD_NOT_FOUND / REFERRAL_NOT_FOUND / PROVIDER_CANDIDATE_NOT_FOUND / "
+            "PROVIDER_QUALIFICATION_EVIDENCE_NOT_FOUND"
         ),
     },
     409: {
@@ -118,6 +131,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.authorization = AuthorizationResolver(make_sessions(engine))
     app.state.referrals = Referrals(make_sessions(engine))
     app.state.provider_candidates = ProviderCandidates(make_sessions(engine))
+    app.state.provider_qualification_evidence = ProviderQualificationEvidence(
+        make_sessions(engine)
+    )
 
     @app.post(
         "/api/v1/provider-candidates",
@@ -155,6 +171,47 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         candidate_id: UUID, actor: Actor, service: ProviderCandidateService
     ) -> Any:
         return await service.get(candidate_id, actor)
+
+    @app.post(
+        "/api/v1/provider-candidates/{candidate_id}/qualification-evidence",
+        response_model=ProviderQualificationEvidenceView,
+        responses=ERRORS,
+        status_code=201,
+    )
+    async def record_provider_qualification_evidence(
+        candidate_id: UUID,
+        body: RecordProviderQualificationEvidence,
+        actor: Actor,
+        service: ProviderQualificationEvidenceService,
+        key: Key,
+    ) -> Any:
+        return await service.record(candidate_id, body, actor, key)
+
+    @app.get(
+        "/api/v1/provider-candidates/{candidate_id}/qualification-evidence",
+        response_model=Page[ProviderQualificationEvidenceView],
+        responses=ERRORS,
+    )
+    async def list_provider_qualification_evidence(
+        candidate_id: UUID,
+        actor: Actor,
+        service: ProviderQualificationEvidenceService,
+        cursor: Cursor = None,
+        limit: Limit = 50,
+    ) -> Any:
+        return await service.list(candidate_id, actor, cursor, limit)
+
+    @app.get(
+        "/api/v1/provider-qualification-evidence/{evidence_id}",
+        response_model=ProviderQualificationEvidenceView,
+        responses=ERRORS,
+    )
+    async def get_provider_qualification_evidence_record(
+        evidence_id: UUID,
+        actor: Actor,
+        service: ProviderQualificationEvidenceService,
+    ) -> Any:
+        return await service.get(evidence_id, actor)
 
     @app.post(
         "/api/v1/cases/{case_id}/referrals",
