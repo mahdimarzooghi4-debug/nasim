@@ -218,7 +218,9 @@ class AuditEntry(Identified, Base):
             "(action = 'provider.candidate_registered.v1' "
             "AND resource_type = 'provider_candidate_record') OR "
             "(action = 'provider.qualification_evidence_recorded.v1' "
-            "AND resource_type = 'provider_qualification_evidence_record')",
+            "AND resource_type = 'provider_qualification_evidence_record') OR "
+            "(action = 'provider.qualification_review_requested.v1' "
+            "AND resource_type = 'provider_qualification_review_request_record')",
             name="ck_audit_case_or_provider_candidate",
         ),
         Index("ix_audit_timeline", "case_id", "timestamp", "id"),
@@ -237,7 +239,8 @@ class OutboxEvent(Identified, Base):
         CheckConstraint(
             "case_id IS NOT NULL OR event_type IN "
             "('provider.candidate_registered.v1', "
-            "'provider.qualification_evidence_recorded.v1')",
+            "'provider.qualification_evidence_recorded.v1', "
+            "'provider.qualification_review_requested.v1')",
             name="ck_outbox_case_or_provider_candidate",
         ),
     )
