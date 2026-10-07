@@ -3,10 +3,10 @@
 - **Status:** DRAFT
 - **Stage:** Business
 - **Date:** 2026-10-06
-- **Source basis:** D-0002 + D-0003 + D-0004 + D-0005 + `docs/PRODUCT_PROCESS.md` + `docs/business/OPEN_QUESTIONS.md` + BC-001…BC-024
+- **Source basis:** D-0002 + D-0003 + D-0004 + D-0005 + D-0118 + `docs/PRODUCT_PROCESS.md` + `docs/business/OPEN_QUESTIONS.md` + BC-001…BC-024 + BX-014 + BX-015
 - **Depends on:** BC-001…BC-024
 
-> این سند Gate عبور رسمی نسیم از مرحله **Business** به **Technical** را تعریف می‌کند. این Gate به معنی Accepted شدن خودکار هیچ Business Contract یا Open Decision نیست. تا زمانی که تصمیم‌های Blocking بسته یا به‌صورت صریح و کنترل‌شده خارج از Scope فاز قرار نگرفته باشند، Technical نباید پاسخ آنها را اختراع کند.
+> این سند Gate عبور رسمی نسیم از مرحله **Business** به **Technical** را تعریف می‌کند. این Gate به معنی Accepted شدن خودکار هیچ Business Contract یا Open Decision نیست. طبق D-0118، فقط Blockerهایی که برای Scope/Technical Slice انتخاب‌شده واقعاً لازم‌اند باید Context Triggered و سپس Accepted یا صریحاً Deferred شوند؛ Technical نباید پاسخ Decisionهای OPEN را اختراع کند.
 
 ## 1. Parent Process
 
@@ -52,21 +52,23 @@ Gate برای جلوگیری از تبدیل «ابهام Business» به «فر
 
 ## 4. Current Readiness Assessment
 
-در زمان ایجاد BC-025:
+ارزیابی به‌روزشده در 2026-10-07:
 
-- D-0001 تا D-0005 در Decision Register وضعیت **Accepted** دارند.
-- BC-001 تا BC-024 در وضعیت **DRAFT** قرار دارند.
-- `OPEN_QUESTIONS.md` هنوز تصمیم‌های باز در Scope، Catalog، Journey، Role، Economic، Provider، KPI، Legal/Data، Technology، Pilot و AI دارد.
+- D-0001 تا D-0005 و D-0118 در Decision Register وضعیت **Accepted** دارند.
+- D-0006…D-0117 همچنان **Not Accepted** هستند.
+- BX-001…BX-015 Business Exploration و Technical-entry preparation را پوشش داده‌اند.
+- Candidate Technical Sliceها Map شده‌اند، اما **هیچ Slice انتخاب نشده است**.
+- Open Decisionها طبق D-0118 فقط وقتی Slice/Work Item واقعی به آنها وابسته شود Context Triggered می‌شوند.
 
-بنابراین ارزیابی فعلی:
+بنابراین:
 
-**Technical Entry Gate: NOT READY**
+**Global Business → Technical Gate: NOT PASSED**
 
-این یک Assessment بر اساس وضعیت فعلی مخزن است و نه یک Decision جدید برای Decision Register.
+این نتیجه به معنی توقف Exploration نیست. یک Technical Slice محدود فقط بعد از انتخاب صریح Slice، بستن یا Deferral صریح Blockerهای همان Slice و ثبت Slice Gate Evidence می‌تواند برای Technical توصیه شود.
 
 ## 5. Closure Classification
 
-هر Open Decision باید پیش از Gate در یکی از این کلاس‌ها قرار گیرد:
+هر Open Decision که برای Technical Scope/Slice انتخاب‌شده لازم شود باید در Gate همان Scope در یکی از این کلاس‌ها قرار گیرد. Decisionهای نامرتبط می‌توانند OPEN بمانند:
 
 ### A. BUSINESS BLOCKER
 بدون پاسخ آن، Technical مجبور به اختراع رفتار محصول، اختیار، داده، Safety Rule یا Scope می‌شود.
@@ -491,40 +493,36 @@ Candidate fields:
 
 ## 29. Current Gate Result
 
-بر اساس وضعیت فعلی مخزن در 2026-10-06:
+بر اساس وضعیت فعلی مخزن در 2026-10-07:
 
-**NOT READY**
+**Global Business → Technical Gate: NOT PASSED**
 
 دلایل:
 
-- BC-001 تا BC-024 هنوز DRAFT هستند.
-- Open Questions اصلی هنوز به Accepted Decisions تبدیل نشده‌اند.
-- Decision Register فقط D-0001 تا D-0005 را به‌عنوان Accepted ثبت کرده است.
-- Phase/Pilot Scope، Service Catalog، Journey authority، Decision Rights، Consent/Data Access، Training Eligibility، AI Use-case boundaries، KPI/Scale criteria و چند حوزه Blocking دیگر هنوز Decision Closure ندارند.
+- Accepted baseline اکنون D-0001…D-0005 + D-0118 است.
+- D-0006…D-0117 هنوز Accepted نشده‌اند.
+- Candidate Technical Sliceها در BX-015 Map شده‌اند، اما Slice منتخب وجود ندارد.
+- تا زمانی که Slice انتخاب نشود، Blockerهای آن Slice نیز نباید دسته‌ای Context Triggered شوند.
+- هیچ Slice Gate Record پاس‌شده‌ای وجود ندارد.
 
-بنابراین شروع Technical به‌عنوان مرحله رسمی فرآیند مادر هنوز مجاز نیست.
+بنابراین ورود رسمی و سراسری به Technical مجاز نیست. ورود محدود به یک Technical Slice نیز فقط پس از Selection صریح و Gate همان Slice ممکن است.
 
 ## 30. Recommended Closure Sequence — DRAFT
 
-برای بستن Business بدون پراکندگی، ترتیب پیشنهادی Review/Decision:
+طبق D-0118 مسیر پیش‌فرض دیگر بستن همه Decisionهای Pilot به‌صورت یک‌جا نیست.
 
-1. **Phase/Pilot Scope**
-2. **Service Catalog + Need/Referral rules**
-3. **Roles + Decision Rights**
-4. **Provider model**
-5. **Elder Journey + Operations + Emergency boundary**
-6. **Legal/Consent/Data/Access**
-7. **AI Day-one Use Cases + Human Oversight**
-8. **Training Eligibility + Dataset Governance**
-9. **Outcome/Reassessment**
-10. **Quality/KPI/Pilot Success**
-11. **Economic/Funding scope**
-12. **Integrations required for Pilot**
-13. **Security/Continuity business targets**
-14. **Configuration/Change Governance**
-15. **Business Exit Review**
+Sequence فعلی:
 
-این ترتیب پیشنهاد اجرایی است و خودش Acceptance ایجاد نمی‌کند.
+1. **Select one bounded Technical Slice explicitly**
+2. **Identify only the Business decisions required by that Slice**
+3. **Move only those decisions to CONTEXT TRIGGERED**
+4. **Accept / Modify / Reject / Explicitly Defer only that minimal set**
+5. **Create Slice Gate Evidence**
+6. **Enter Technical only for that bounded Slice if the Gate passes**
+
+Candidate Sliceها و Minimal Decision Set هرکدام در BX-015 ثبت شده‌اند.
+
+این Sequence هیچ Slice یا Decision را به‌صورت خودکار انتخاب/پذیرفته نمی‌کند.
 
 ## 31. No Premature Architecture Freeze
 
@@ -592,6 +590,8 @@ BC-025 موارد زیر را تصویب نمی‌کند:
 - formal workflow/status enum
 
 ## 36. Open Decisions Required to Accept BC-025
+
+این فهرست مربوط به Governance خود Gate است و نباید به معنی اجبار به بستن همه Domain Decisionهای نامرتبط پیش از یک Slice محدود تفسیر شود.
 
 1. Technical Entry Gate owner/approver
 2. Formal gate outcomes/statuses
