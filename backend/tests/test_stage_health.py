@@ -67,5 +67,5 @@ async def test_stage_health_fails_closed_with_unavailable_schema(admin_engine, f
                 )
             else:
                 await connection.execute(
-                    text("UPDATE alembic_version SET version_num='0003_referral'")
+                    text("UPDATE alembic_version SET version_num='0004_provider_candidate'")
                 )
