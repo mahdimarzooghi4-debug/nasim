@@ -92,3 +92,15 @@
 - **اثر بر Candidateها:** D-0017 برای Gate فعلی TS-03 فقط به‌عنوان Source/Reference باقی می‌ماند و با این تصمیم به‌طور کامل Accepted نمی‌شود؛ بخش بعدی Journey همچنان OPEN است تا Slice مربوطه آن را Trigger کند.
 - **منبع تصمیم:** تأیید صریح Product Owner در SGP-001، Q2.
 
+## D-0121 — مالک عملیاتی Case و قاعده Assignment در TS-03
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / TS-03 Case Ownership
+- **وضعیت:** Accepted
+- **تصمیم:** در TS-03، **سالمندیار Primary Operational Case Owner / Contact** است.
+- **Assignment:** تخصیص اولیه سالمندیار و هرگونه Reassignment/Substitution باید توسط یک **نقش بالادستی/عملیاتیِ مجاز** انجام شود؛ Self-assignment یا تغییر مالکیت صرفاً از روی عنوان شغلی فرض نمی‌شود.
+- **Audit:** هر Reassignment/Substitution باید حداقل دارای **Reason + Actor + Time + Audit Trail** باشد.
+- **مرز اختیار:** این تصمیم Business responsibility را مشخص می‌کند و به‌خودی‌خود Permission Model یا RBAC نمی‌سازد. نگاشت دقیق «نقش بالادستی مجاز» به Role/Permission مشخص همچنان OPEN است و در Context Identity/Authorization بسته می‌شود.
+- **قاعده:** `Case Ownership ≠ Authorization` و `Role Title ≠ Permission`.
+- **منبع تصمیم:** تأیید صریح Product Owner در SGP-001، Q3.
+
