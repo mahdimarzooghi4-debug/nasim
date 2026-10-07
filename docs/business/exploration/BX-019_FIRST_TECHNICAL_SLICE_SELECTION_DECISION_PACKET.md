@@ -1,12 +1,12 @@
 # BX-019 — First Technical Slice Selection Decision Packet
 
-- **Status:** AWAITING EXPLICIT PRODUCT OWNER SELECTION
+- **Status:** RESOLVED — TS-03 SELECTED FOR GATE PREPARATION
 - **Stage:** Business — Technical Entry Preparation
 - **Date:** 2026-10-07
 - **Source basis:** BX-015 + BX-018 + D-0118 + BC-025 + BR-004
 - **Purpose:** تبدیل Candidate Technical Sliceها به یک Decision Packet کوچک برای انتخاب نخستین Slice؛ بدون انتخاب ضمنی، بدون Context Trigger کردن Decisionها و بدون ورود به Technical.
 
-> Bare «بعدی» selection نیست. این Packet فقط Choice Surface را آماده می‌کند.
+> Product Owner explicitly agreed to the recommendation to use **TS-03 — Core Case / Journey Foundation** as the first Technical Slice. This selects the Slice for Gate Preparation only; it does not pass the Gate or accept any Business Decision.
 
 ## 1. Decision required
 
@@ -151,15 +151,25 @@ Neither closure burden nor artifact order authorizes an automatic default.
 
 ## 10. Current state
 
-- Ready for selection: YES
-- Selected Slice: NONE
+- Ready for selection: RESOLVED
+- Selected Slice: **TS-03 — Core Case / Journey Foundation**
+- Slice status: **SELECTED FOR GATE PREPARATION**
 - D-0006…D-0117: NOT ACCEPTED
-- Context-triggered minimal decision set: NONE
+- Context-triggered minimal decision set: defined in SGP-001
 - Global Business → Technical Gate: NOT PASSED
+- TS-03 Slice Gate: NOT YET PASSED
 - Technical: NOT STARTED
 - Code: NOT STARTED
 - Codex handoff: NOT YET TRIGGERED
 
-## 11. Next action
+## 11. Selection record
 
-**Explicit Product Owner selection of one TS-01…TS-10.**
+- **Selected:** TS-03 — Core Case / Journey Foundation
+- **Selection authority:** Product Owner
+- **Selection date:** 2026-10-07
+- **Meaning:** prepare only TS-03 minimal Business blockers for contextual closure.
+- **Non-effect:** no D-0006…D-0117 decision is Accepted/Deferred by this selection.
+
+## 12. Next action
+
+Create **SGP-001 — TS-03 Core Case / Journey Minimal Business Decision Trigger Packet**.
