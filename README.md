@@ -20,3 +20,7 @@
 - [Business Concept Baseline](docs/business/CONCEPT_BASELINE.md)
 - [Business Open Questions](docs/business/OPEN_QUESTIONS.md)
 - [Product Process](docs/PRODUCT_PROCESS.md)
+
+## توسعه Backend — Sprint 001
+
+راهنمای نصب، اجرا، migrationها و آزمون‌های TS-03 در [Backend README](backend/README.md) ثبت شده است. پیاده‌سازی در مرز Code Review قرار دارد و هنوز برای Stage یا Production تأیید نشده است.

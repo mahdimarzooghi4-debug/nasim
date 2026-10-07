@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17@sha256:ae69c452f483507a6b99fb654cf93aad7fe156ffd2c56247707eef4e36d3c12b
+    environment:
+      POSTGRES_USER: nasim
+      POSTGRES_PASSWORD: nasim_dev_only
+      POSTGRES_DB: nasim_dev
+    ports:
+      - "127.0.0.1:55432:5432"
+    volumes:
+      - nasim_pgdata:/var/lib/postgresql/data
+      - ./backend/dev/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nasim -d nasim_dev"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  nasim_pgdata:
