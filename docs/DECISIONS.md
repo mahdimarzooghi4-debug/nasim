@@ -271,3 +271,75 @@
 - **مسیر بعدی:** یا باید Stage Environment به‌صورت واقعی ساخته و Gate آن اجرا شود، یا مالک محصول بعداً یک تغییر صریح در فرآیند/Scope تصویب کند.
 - **منبع تصمیم:** اعلام صریح مالک محصول: «الان استیج نداریم».
 
+
+
+## D-0036 — Provider نقش تخصصی مستقل است
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Business / Provider Network
+- **وضعیت:** Accepted
+- **تصمیم:** Provider تخصصی Actor مستقلی از سالمندیار و اپراتور نسیم است و فقط در دامنه Service/Contract مصوب می‌تواند خدمت تخصصی ارائه کند.
+- **مرز:** عضویت یا ثبت Provider در شبکه به‌خودی‌خود Full Case Authority یا Full Elder Record Access ایجاد نمی‌کند.
+- **منبع:** DC-007؛ source-supported؛ پذیرفته‌شده تحت D-0124.
+
+## D-0037 — Registry Entry ≠ Operational Activation
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Business / Provider Governance
+- **وضعیت:** Accepted
+- **تصمیم:** ثبت Provider در Registry به‌تنهایی به معنی مجاز بودن ارائه خدمت یا استفاده عملیاتی در Referral نیست.
+- **مرز:** Qualification، مدارک، Reviewer/Approver، Activation Workflow و Service eligibility همچنان OPEN هستند.
+- **منبع:** DC-007؛ governance-safe boundary؛ پذیرفته‌شده تحت D-0124.
+
+## D-0038 — Provider Eligibility ≠ Provider Selection
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Business / Referral / Provider
+- **وضعیت:** Accepted
+- **تصمیم:** واجد شرایط بودن Provider برای یک Service، به‌تنهایی Provider Selection نهایی ایجاد نمی‌کند.
+- **مرز:** Rule انتخاب Provider و نقش Elder/Caregiver/Supervisor/AI در انتخاب همچنان OPEN است.
+- **منبع:** DC-007؛ پذیرفته‌شده تحت D-0124.
+
+## D-0039 — Provider Response باید صریح و قابل Audit باشد
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Business / Referral Response
+- **وضعیت:** Accepted
+- **تصمیم:** هرگاه در Slice آینده Referral واقعاً به Provider ارسال شود، پاسخ Provider و پذیرش/عدم پذیرش باید صریح و قابل ردیابی باشد.
+- **مرز:** State names، SLA، timeout و rejection taxonomy همچنان OPEN هستند.
+- **منبع:** DC-007؛ پذیرفته‌شده تحت D-0124.
+
+## D-0040 — Provider Result ≠ Final Elder Outcome
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Business / Provider / Outcome
+- **وضعیت:** Accepted
+- **تصمیم:** Provider می‌تواند در آینده Service Result/Completion Evidence ثبت کند، اما این داده به‌تنهایی Outcome نهایی سالمند یا Need Resolution را تعیین نمی‌کند.
+- **منبع:** DC-007؛ پذیرفته‌شده تحت D-0124.
+
+## D-0041 — Provider Failure نباید Referral را بی‌صدا ببندد
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Business / Referral Failure
+- **وضعیت:** Accepted
+- **تصمیم:** عدم پاسخ، رد، عدم ظرفیت یا Service Failure از Provider نباید Referral را به‌صورت ضمنی موفق/بسته تلقی کند.
+- **مرز:** Retry، reroute، escalation، notification و closure behavior همچنان OPEN هستند.
+- **منبع:** DC-007؛ پذیرفته‌شده تحت D-0124.
+
+## D-0042 — Provider Ranking تصمیم پیش‌فرض ایجاد نمی‌کند
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Business / Provider Governance
+- **وضعیت:** Accepted
+- **تصمیم:** تا زمان تصویب Rule جداگانه، Ranking یا Score Provider نباید به‌صورت خودکار Provider Selection، Suspension یا Contract Decision ایجاد کند.
+- **منبع:** DC-007؛ پذیرفته‌شده تحت D-0124.
+
+## D-0131 — Sprint 004 فقط Provider Candidate Registry Foundation است
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Delivery Governance / Provider Foundation
+- **وضعیت:** Accepted
+- **تصمیم:** Slice بعدی به یک **Provider Candidate Registry Foundation** پیش‌عملیاتی محدود می‌شود؛ ثبت یک Candidate فقط هویت/Provenance ثبت‌شده را ایجاد می‌کند و هیچ Activation، Eligibility، Service mapping، Referral destination، Capacity، Contract authority یا Data Access ایجاد نمی‌کند.
+- **قاعده:** Candidate Registry عمداً قبل از TS-06 عملیاتی قرار می‌گیرد و نباید به‌عنوان عبور از TS-06 Provider Network Gate تلقی شود.
+- **OPEN باقی می‌ماند:** Provider Types فاز/Pilot، Qualification/Onboarding، Activation Authority، Service-to-Provider mapping، Provider Selection، Referral Acceptance/Rejection، Capacity، Completion Evidence، Provider Data Access، Suspension/Termination، Financial/Settlement و Integration.
+- **منبع:** BC-008 + DC-007 + D-0036…D-0042؛ پذیرفته‌شده تحت D-0124.
