@@ -16,6 +16,11 @@ PROVIDER_QUALIFICATION_EVIDENCE_PERMISSIONS = (
     "provider_qualification_evidence.read",
 )
 
+PROVIDER_QUALIFICATION_REVIEW_PERMISSIONS = (
+    "provider_qualification_review.request",
+    "provider_qualification_review.read",
+)
+
 
 class RegisterProviderCandidate(Contract):
     display_name: Text
@@ -46,5 +51,20 @@ class ProviderQualificationEvidenceView(Contract):
     recorded_at: datetime
     recorded_by_actor_id: str
     recorded_by_actor_type: ActorType
+    reason: str
+    correlation_id: str
+
+
+
+class RequestProviderQualificationReview(Contract):
+    reason: Text
+
+
+class ProviderQualificationReviewRequestView(Contract):
+    id: UUID
+    provider_candidate_id: UUID
+    requested_at: datetime
+    requested_by_actor_id: str
+    requested_by_actor_type: ActorType
     reason: str
     correlation_id: str
