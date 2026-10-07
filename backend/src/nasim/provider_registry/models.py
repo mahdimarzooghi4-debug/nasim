@@ -34,7 +34,6 @@ class ProviderCandidateRecord(Identified, Base):
     )
 
 
-
 class ProviderQualificationEvidenceRecord(Identified, Base):
     __tablename__ = "provider_qualification_evidence_record"
 
