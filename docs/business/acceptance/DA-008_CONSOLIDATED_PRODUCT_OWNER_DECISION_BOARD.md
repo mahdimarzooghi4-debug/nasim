@@ -1,9 +1,9 @@
 # DA-008 — Consolidated Product Owner Decision Board
 
-- **Status:** AWAITING PRODUCT OWNER DECISION
+- **Status:** REFERENCE BOARD — NOT CURRENT DEFAULT CLOSURE PATH
 - **Stage:** Business — Decision Acceptance
 - **Date:** 2026-10-06
-- **Source basis:** DA-001…DA-007 + DC-001…DC-014 + D-0001…D-0005
+- **Source basis:** DA-001…DA-007 + DC-001…DC-014 + D-0001…D-0005 + D-0118
 - **Candidate decision range:** D-0006…D-0117
 - **Candidate count:** 112
 - **Purpose:** ایجاد یک Board واحد برای تصمیم مالک محصول روی همه Candidate Decisionهای Business، بدون Acceptance ضمنی.
@@ -19,8 +19,11 @@
 - D-0003 — فرآیند مادر توسعه محصول
 - D-0004 — AI داخلی نسیم
 - D-0005 — AI از Day-one + Automatic Versioned Dataset Lifecycle
+- D-0118 — Contextual / Just-in-time Decision Closure
 
 هیچ Decision از D-0006 تا D-0117 هنوز Accepted نیست.
+
+طبق D-0118، مالک محصول مجبور به Bulk Acceptance این Board نیست؛ Candidateها فقط وقتی Context واقعی به آنها نیاز دارد بررسی می‌شوند.
 
 ## 2. Consolidated acceptance board
 
@@ -172,6 +175,8 @@ Bulk Acceptance به معنی پذیرفتن همه Recommendationها با هم
 
 ## 6. Allowed Product Owner actions on this board
 
+این Optionها به‌عنوان ابزار مرجع حفظ می‌شوند؛ D-0118 هیچ‌کدام را مسیر اجباری نمی‌کند.
+
 مالک محصول می‌تواند:
 
 ### Option A — Bulk accept all recommendations
@@ -205,11 +210,17 @@ Example:
 
 ## 7. Recommendation
 
-چون تمام 112 Candidate قبلاً در DC-001…DC-014 با Boundaryهای عدم‌اختراع بررسی شده‌اند و در DA-001…DA-007 Recommendation = ACCEPT گرفته‌اند، Recommendation تجمیعی این Board:
+Recommendation تاریخی این Board پیش از D-0118، Bulk Acceptance همه Candidateهای آماده بود.
 
-**ACCEPT D-0006…D-0117 AS CURRENTLY WRITTEN**
+**Current governance path after D-0118: DO NOT TREAT BULK ACCEPTANCE AS THE DEFAULT.**
 
-این Recommendation فقط درباره Candidateهای آماده است و هیچ مقدار Open/Blocking را اختراع یا تصویب نمی‌کند.
+Current path:
+1. یک Technical Slice محدود به‌صورت صریح انتخاب شود.
+2. فقط Candidate Decisionهای لازم برای همان Slice Context Triggered شوند.
+3. همان Candidateها Accept / Modify / Reject / Explicitly Defer شوند.
+4. Decision Register فقط پس از تصمیم صریح Product Owner تغییر کند.
+
+DA-008 همچنان Reference Board کامل D-0006…D-0117 است، نه صف تصمیم‌گیری اجباری.
 
 ## 8. Decision Register mutation rule
 
@@ -223,24 +234,22 @@ Example:
 
 ## 9. Current consolidated status
 
-- Accepted: D-0001…D-0005
+- Accepted: D-0001…D-0005 + D-0118
 - Pending candidates: D-0006…D-0117
 - Pending candidate count: 112
 - Acceptance rounds prepared: DA-001…DA-007
 - Consolidated board: DA-008
-- Business → Technical Gate: **NOT READY**
-- Reason: Product Owner Acceptance + remaining Pilot-specific Business values are still open.
+- Board role: **REFERENCE**
+- Selected Technical Slice: **NONE**
+- Business → Technical Gate: **NOT PASSED**
+- Reason: no bounded Slice has been selected/gated; pending candidates do not by themselves require bulk closure.
 
 ## 10. Next step after Product Owner acceptance
 
-پس از Acceptance این Board:
+Under D-0118 there is no mandatory “after bulk acceptance” sequence.
 
-**BR-001 — Remaining Business Blocker Register & Pilot-specific Decision Closure**
-
-این Artifact فقط Blockerهای واقعی باقی‌مانده را جمع می‌کند و آنها را به:
-- MUST DECIDE BEFORE TECHNICAL
-- EXPLICITLY DEFER FOR PILOT
-- TECHNICAL DECISION
-- LATER DELIVERY/OPERATIONS
-
-طبقه‌بندی خواهد کرد.
+When a selected Technical Slice triggers one or more decisions from this Board:
+- use the relevant DA/DC text as reference;
+- record only explicit Product Owner decisions in `docs/DECISIONS.md`;
+- preserve unrelated candidates as OPEN / not accepted;
+- re-evaluate only the selected Slice Gate.
