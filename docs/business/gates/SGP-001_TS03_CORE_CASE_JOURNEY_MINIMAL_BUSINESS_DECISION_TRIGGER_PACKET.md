@@ -88,9 +88,9 @@ Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
 ### CT-D-0017 — High-level Elder Journey
 Candidate direction: Contact → Case/Profile → Monitoring → Need → Initial Assessment → Referral if needed → Service → Follow-up → Satisfaction → Continued Monitoring.
 
-Reason triggered: TS-03 must define which early interactions belong to this bounded slice.
+Initial trigger reason: TS-03 needed to define which early interactions belong to this bounded slice.
 
-Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
+**Q2 resolution:** D-0120 fixes the TS-03 boundary at `Contact → Case/Profile → Monitoring → Observation / Need capture`. Therefore D-0017 remains **NOT ACCEPTED AS A WHOLE** and is no longer a blocker for the remaining later Journey stages in TS-03.
 
 ### CT-D-0021 — Purpose-limited data use
 Candidate direction: each Data Class is used only for an approved Purpose; Service Delivery, Reporting, AI Runtime and AI Training are separate purposes.
@@ -127,14 +127,12 @@ These are the actual Product Owner choices needed before TS-03 can be gate-check
 
 Decision Record: **D-0119**.
 
-### Q2 — Early journey scope
-Proposed minimal TS-03 sequence:
+### Q2 — Early journey scope — RESOLVED
+**Accepted:** `Contact → Case/Profile → Monitoring → Observation / Need capture`.
 
-`Contact → Case/Profile → Monitoring → Observation / Need capture`
+Referral، Service Delivery، Follow-up، Satisfaction، Reassessment، Need Resolution و Outcome خارج از TS-03 باقی می‌مانند.
 
-Referral, Service, Follow-up and Outcome remain outside this Slice.
-
-Product Owner must confirm or modify this boundary.
+Decision Record: **D-0120**.
 
 ### Q3 — Case operational owner
 Need explicit Business rule for:
@@ -207,7 +205,7 @@ Technical must not assume:
 
 Close in this order:
 1. Q1 — Case entry boundary — **RESOLVED by D-0119**
-2. Q2 — early journey scope
+2. Q2 — early journey scope — **RESOLVED by D-0120**
 3. Q3 — Case operational owner / assignment
 4. Q4 — minimum Case/Profile Data Classes
 5. Q5 — correction/history
@@ -222,9 +220,9 @@ Only one small decision set should be discussed at a time.
 - Selected Technical Slice: **TS-03**
 - TS-03 status: **SELECTED FOR GATE PREPARATION**
 - SGP-001: **ACTIVE**
-- Context-triggered Candidate Decisions still active for TS-03: D-0012, D-0013, D-0014, D-0015, D-0016, D-0017, D-0021, D-0028
-- Released from TS-03 trigger set: D-0006 → OPEN / NOT ACCEPTED
-- Accepted decisions created from this packet: **D-0119**
+- Context-triggered Candidate Decisions still active for TS-03: D-0012, D-0013, D-0014, D-0015, D-0016, D-0021, D-0028
+- Resolved boundary references: D-0006 released by D-0119; D-0017 no longer blocks TS-03 later Journey scope because D-0120 bounds the Slice.
+- Accepted decisions created from this packet: **D-0119, D-0120**
 - Explicitly Deferred from this packet: **0**
 - Unrelated decisions: **OPEN / unchanged**
 - TS-03 Slice Gate: **NOT YET READY**
@@ -234,8 +232,4 @@ Only one small decision set should be discussed at a time.
 
 ## 10. Next Product Owner question
 
-**Q2 — Early journey scope:** confirm or modify the proposed minimal TS-03 sequence:
-
-`Contact → Case/Profile → Monitoring → Observation / Need capture`
-
-Referral, Service, Follow-up and Outcome remain outside TS-03.
+**Q3 — Case operational owner / assignment:** should the سالمندیار be the primary operational Case owner/contact for TS-03? If yes, who assigns the initial caregiver, who may reassign/substitute, and should every reassignment require reason + audit?
