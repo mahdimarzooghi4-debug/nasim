@@ -102,8 +102,8 @@ ERRORS: dict[int | str, dict[str, Any]] = {
     404: {
         "model": ErrorResponse,
         "description": (
-            "CASE_NOT_FOUND / RECORD_NOT_FOUND / REFERRAL_NOT_FOUND / PROVIDER_CANDIDATE_NOT_FOUND / "
-            "PROVIDER_QUALIFICATION_EVIDENCE_NOT_FOUND"
+            "CASE_NOT_FOUND / RECORD_NOT_FOUND / REFERRAL_NOT_FOUND / "
+            "PROVIDER_CANDIDATE_NOT_FOUND / PROVIDER_QUALIFICATION_EVIDENCE_NOT_FOUND"
         ),
     },
     409: {
