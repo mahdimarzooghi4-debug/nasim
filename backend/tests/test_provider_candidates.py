@@ -296,6 +296,41 @@ async def test_direct_insert_without_atomic_effects_fails(admin_engine, provider
     assert await counts(admin_engine) == (0, 0, 0, 0)
 
 
+@pytest.mark.parametrize("effect_kind", ["audit", "outbox"])
+async def test_nullable_shared_effects_remain_bounded_to_provider_candidate(
+    admin_engine, provider_actor, effect_kind
+):
+    identifier = uuid4()
+    now = datetime.now(UTC)
+    effect = (
+        AuditEntry(
+            case_id=None,
+            actor_id=provider_actor.actor_id,
+            actor_type=provider_actor.actor_type.value,
+            action="unrelated.event.v1",
+            resource_type="unrelated_resource",
+            resource_id=identifier,
+            timestamp=now,
+            correlation_id=provider_actor.correlation_id,
+            before_reference=None,
+            after_reference=identifier,
+            reason="must remain Case-linked",
+        )
+        if effect_kind == "audit"
+        else OutboxEvent(
+            case_id=None,
+            event_type="unrelated.event.v1",
+            occurred_at=now,
+            payload={"id": str(identifier)},
+        )
+    )
+    async with make_sessions(admin_engine)() as session:
+        with pytest.raises(DBAPIError):
+            async with session.begin():
+                session.add(effect)
+                await session.flush()
+
+
 async def test_read_list_detail_and_pagination(provider_service, provider_actor):
     first = await provider_service.register(command("One"), provider_actor, "one")
     second = await provider_service.register(command("Two"), provider_actor, "two")
