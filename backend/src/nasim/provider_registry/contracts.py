@@ -55,7 +55,6 @@ class ProviderQualificationEvidenceView(Contract):
     correlation_id: str
 
 
-
 class RequestProviderQualificationReview(Contract):
     reason: Text
 
