@@ -131,9 +131,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.authorization = AuthorizationResolver(make_sessions(engine))
     app.state.referrals = Referrals(make_sessions(engine))
     app.state.provider_candidates = ProviderCandidates(make_sessions(engine))
-    app.state.provider_qualification_evidence = ProviderQualificationEvidence(
-        make_sessions(engine)
-    )
+    app.state.provider_qualification_evidence = ProviderQualificationEvidence(make_sessions(engine))
 
     @app.post(
         "/api/v1/provider-candidates",
