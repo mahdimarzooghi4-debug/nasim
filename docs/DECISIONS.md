@@ -80,3 +80,15 @@
 - **اثر بر Candidateها:** D-0006 به‌علت این تصمیم برای Gate فعلی TS-03 دیگر Blocker نیست و Accepted/Deferred نمی‌شود؛ وضعیت Candidate آن بدون تغییر باقی می‌ماند.
 - **منبع تصمیم:** انتخاب صریح Product Owner در SGP-001، Q1 = Option A.
 
+## D-0120 — مرز Journey اولیه TS-03
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / TS-03 Core Case / Journey Scope
+- **وضعیت:** Accepted
+- **تصمیم:** در TS-03، Journey اولیه به این Scope محدود می‌شود:
+  `Contact → Case/Profile → Monitoring → Observation / Need capture`
+- **خارج از Scope فعلی TS-03:** Referral، Service Delivery، Follow-up، Satisfaction، Reassessment، Need Resolution و Outcome.
+- **قاعده:** خارج‌بودن این مراحل از TS-03 به معنی حذف یا Deferred شدن آنها در محصول نیست؛ فقط Technical Slice اول آنها را طراحی نمی‌کند.
+- **اثر بر Candidateها:** D-0017 برای Gate فعلی TS-03 فقط به‌عنوان Source/Reference باقی می‌ماند و با این تصمیم به‌طور کامل Accepted نمی‌شود؛ بخش بعدی Journey همچنان OPEN است تا Slice مربوطه آن را Trigger کند.
+- **منبع تصمیم:** تأیید صریح Product Owner در SGP-001، Q2.
+
