@@ -123,7 +123,7 @@
 - D-0006…D-0117: هنوز Accepted نشده‌اند.
 - BR-003 P1…P6: **OPEN / PARKED**
 - BX-001…BX-015: Exploration / Technical-entry candidate mapping completed.
-- Selected Technical Slice: **NONE**
+- Selected Technical Slice: **TS-03 — Core Case / Journey Foundation**
 - Global Business → Technical Gate: **NOT PASSED**
 - کار غیرالزام‌آور Documentation/Gate Preparation می‌تواند ادامه یابد.
 
