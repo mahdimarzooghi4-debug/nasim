@@ -17,6 +17,8 @@ EXPECTED = {
     "/health": {"get"},
     "/api/v1/provider-candidates": {"get", "post"},
     "/api/v1/provider-candidates/{candidate_id}": {"get"},
+    "/api/v1/provider-candidates/{candidate_id}/qualification-evidence": {"get", "post"},
+    "/api/v1/provider-qualification-evidence/{evidence_id}": {"get"},
     "/api/v1/cases/{case_id}/referrals": {"get", "post"},
     "/api/v1/referrals/{referral_id}": {"get"},
     "/api/v1/cases": {"post"},
@@ -104,6 +106,17 @@ def test_schema_snapshot():
         "reason",
     }
     assert schemas["RegisterProviderCandidate"]["additionalProperties"] is False
+    assert set(schemas["RecordProviderQualificationEvidence"]["required"]) == {
+        "evidence_label",
+        "evidence_reference",
+        "reason",
+    }
+    assert set(schemas["RecordProviderQualificationEvidence"]["properties"]) == {
+        "evidence_label",
+        "evidence_reference",
+        "reason",
+    }
+    assert schemas["RecordProviderQualificationEvidence"]["additionalProperties"] is False
 
 
 @pytest.mark.parametrize(
@@ -117,7 +130,8 @@ async def test_every_read_fails_closed_without_context(path):
         response = await client.get(
             path.replace("{case_id}", str(uuid4()))
             .replace("{referral_id}", str(uuid4()))
-            .replace("{candidate_id}", str(uuid4())),
+            .replace("{candidate_id}", str(uuid4()))
+            .replace("{evidence_id}", str(uuid4())),
             headers={
                 "X-Actor-Id": "caregiver-a",
                 "X-Capabilities": "case.read.oversight",
