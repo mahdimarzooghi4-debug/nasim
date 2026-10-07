@@ -8,6 +8,7 @@ from uuid import uuid4
 
 EXPECTED_ROUTES = {
     "/health": {"get"},
+    "/api/v1/authorization/self": {"get"},
     "/api/v1/cases": {"post"},
     "/api/v1/cases/{case_id}": {"get"},
     "/api/v1/cases/{case_id}/workspace": {"get"},
@@ -65,6 +66,9 @@ def validate_http(base_url: str) -> None:
     )
     if status != 401 or body.get("error", {}).get("code") != "ACTOR_CONTEXT_REQUIRED":
         raise RuntimeError("Anonymous business mutation did not fail closed")
+    status, _ = request(base_url, "/api/v1/authorization/self")
+    if status != 401:
+        raise RuntimeError("Anonymous authorization inspection did not fail closed")
     for excluded in ("enrollments", "referrals", "providers", "outcomes", "emergencies", "ai"):
         for method in ("GET", "POST"):
             status, _ = request(

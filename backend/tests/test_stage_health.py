@@ -66,4 +66,4 @@ async def test_stage_health_fails_closed_with_unavailable_schema(admin_engine, f
                     text("ALTER TABLE unavailable_revision RENAME TO alembic_version")
                 )
             else:
-                await connection.execute(text("UPDATE alembic_version SET version_num='0001_ts03'"))
+                await connection.execute(text("UPDATE alembic_version SET version_num='0002_ts05'"))

@@ -10,6 +10,8 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from nasim.application.casework import Casework
+from nasim.authorization.contracts import TrustedPrincipal
+from nasim.authorization.service import AuthorizationResolver
 from nasim.domain.contracts import (
     AddContactPoint,
     AssignmentView,
@@ -35,11 +37,17 @@ from nasim.domain.errors import DomainError
 from nasim.identity_context.contracts import ActorContext
 from nasim.infrastructure.config import Settings, load_settings
 from nasim.infrastructure.database import make_engine, make_sessions
+from nasim.infrastructure.schema import SCHEMA_REVISION
 
 
 async def get_actor(request: Request) -> ActorContext:
     # Only trusted in-process identity middleware may populate this context.
     # There is deliberately no header/token parsing or development authentication bypass.
+    principal = getattr(request.state, "trusted_principal", None)
+    if principal is not None:
+        if not isinstance(principal, TrustedPrincipal):
+            raise DomainError("ACTOR_CONTEXT_REQUIRED", 401)
+        return await request.app.state.authorization.resolve(principal)
     actor = getattr(request.state, "actor", None)
     if not isinstance(actor, ActorContext):
         raise DomainError("ACTOR_CONTEXT_REQUIRED", 401)
@@ -85,6 +93,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = FastAPI(title="Nasim TS-03", version="0.1.0", lifespan=lifespan)
     app.state.engine = engine
     app.state.casework = Casework(make_sessions(engine))
+    app.state.authorization = AuthorizationResolver(make_sessions(engine))
+
+    @app.get("/api/v1/authorization/self", response_model=ActorContext, responses=ERRORS)
+    async def authorization_self(actor: Actor) -> ActorContext:
+        return actor
 
     @app.exception_handler(DomainError)
     async def domain_error_handler(request: Request, error: DomainError) -> JSONResponse:
@@ -110,7 +123,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         try:
             async with engine.connect() as connection:
                 revision = await connection.scalar(text("SELECT version_num FROM alembic_version"))
-            if revision != "0001_ts03":
+            if revision != SCHEMA_REVISION:
                 return JSONResponse(status_code=503, content={"status": "not_ready"})
         except (SQLAlchemyError, OSError):
             return JSONResponse(status_code=503, content={"status": "not_ready"})
