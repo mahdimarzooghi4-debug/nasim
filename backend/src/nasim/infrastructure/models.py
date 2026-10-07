@@ -196,7 +196,9 @@ class Observation(Identified, Provenance, Base):
 
 class AuditEntry(Identified, Base):
     __tablename__ = "audit_entry"
-    case_id: Mapped[UUID] = mapped_column(ForeignKey("elder_case.id"), index=True)
+    case_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("elder_case.id"), index=True, nullable=True
+    )
     actor_id: Mapped[str] = mapped_column(String(200))
     actor_type: Mapped[str] = mapped_column(String(20))
     action: Mapped[str] = mapped_column(String(100))
@@ -211,16 +213,30 @@ class AuditEntry(Identified, Base):
         CheckConstraint(
             "actor_type IN ('HUMAN', 'SYSTEM', 'AI', 'AUTOMATION')", name="ck_audit_actor_type"
         ),
+        CheckConstraint(
+            "case_id IS NOT NULL OR "
+            "(action = 'provider.candidate_registered.v1' "
+            "AND resource_type = 'provider_candidate_record')",
+            name="ck_audit_case_or_provider_candidate",
+        ),
         Index("ix_audit_timeline", "case_id", "timestamp", "id"),
     )
 
 
 class OutboxEvent(Identified, Base):
     __tablename__ = "outbox_event"
-    case_id: Mapped[UUID] = mapped_column(ForeignKey("elder_case.id"), index=True)
+    case_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("elder_case.id"), index=True, nullable=True
+    )
     event_type: Mapped[str] = mapped_column(String(100))
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     payload: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    __table_args__ = (
+        CheckConstraint(
+            "case_id IS NOT NULL OR event_type = 'provider.candidate_registered.v1'",
+            name="ck_outbox_case_or_provider_candidate",
+        ),
+    )
 
 
 class IdempotencyRecord(Identified, Base):

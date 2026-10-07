@@ -62,13 +62,15 @@ async def admin_engine() -> AsyncIterator[AsyncEngine]:
     engine = make_engine(Settings(database_url=dsn))
     async with engine.begin() as connection:
         version = await connection.scalar(text("SELECT version_num FROM alembic_version"))
-        assert version == "0003_referral", "Run scripts/setup-dev.sh or migrate test database first"
+        assert version == "0004_provider_candidate", (
+            "Run scripts/setup-dev.sh or migrate test database first"
+        )
         await connection.execute(
             text(
                 "TRUNCATE elder_case, case_profile_revision, contact_point_revision, "
                 "case_assignment, "
                 "case_interaction, case_observation, audit_entry, outbox_event, "
-                "idempotency_record CASCADE"
+                "idempotency_record, provider_candidate_record CASCADE"
             )
         )
     yield engine

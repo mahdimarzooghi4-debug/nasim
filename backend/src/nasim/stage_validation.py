@@ -8,6 +8,8 @@ from uuid import uuid4
 
 EXPECTED_ROUTES = {
     "/health": {"get"},
+    "/api/v1/provider-candidates": {"get", "post"},
+    "/api/v1/provider-candidates/{candidate_id}": {"get"},
     "/api/v1/cases/{case_id}/referrals": {"get", "post"},
     "/api/v1/referrals/{referral_id}": {"get"},
     "/api/v1/authorization/self": {"get"},
@@ -102,7 +104,34 @@ def validate_http(base_url: str) -> None:
         status, _ = request(base_url, f"/api/v1/referrals/{referral_id}/{action}", "POST", {})
         if status != 404:
             raise RuntimeError("Undecided Referral lifecycle route is reachable")
-    print("Stage HTTP smoke passed: readiness, TS-03 routes, anonymous denial and excluded routes")
+
+    candidate_id = uuid4()
+    status, _ = request(
+        base_url,
+        "/api/v1/provider-candidates",
+        "POST",
+        {"display_name": "candidate smoke", "reason": "foundation smoke"},
+    )
+    if status != 401:
+        raise RuntimeError("Anonymous Provider Candidate registration did not fail closed")
+    for path in (
+        "/api/v1/provider-candidates",
+        f"/api/v1/provider-candidates/{candidate_id}",
+    ):
+        status, _ = request(base_url, path)
+        if status != 401:
+            raise RuntimeError("Anonymous Provider Candidate read did not fail closed")
+    for action in ("activate", "approve", "reject", "suspend", "qualify", "capacity", "contract"):
+        status, _ = request(
+            base_url, f"/api/v1/provider-candidates/{candidate_id}/{action}", "POST", {}
+        )
+        if status != 404:
+            raise RuntimeError("Undecided operational Provider route is reachable")
+
+    print(
+        "Stage HTTP smoke passed: readiness, Case/Referral/Provider Candidate routes, "
+        "anonymous denial and excluded routes"
+    )
 
 
 if __name__ == "__main__":

@@ -38,6 +38,8 @@ from nasim.identity_context.contracts import ActorContext
 from nasim.infrastructure.config import Settings, load_settings
 from nasim.infrastructure.database import make_engine, make_sessions
 from nasim.infrastructure.schema import SCHEMA_REVISION
+from nasim.provider_registry.contracts import ProviderCandidateView, RegisterProviderCandidate
+from nasim.provider_registry.service import ProviderCandidates
 from nasim.referral.contracts import CreateReferral, ReferralView
 from nasim.referral.service import Referrals
 
@@ -56,6 +58,10 @@ async def get_actor(request: Request) -> ActorContext:
     return actor
 
 
+def get_provider_candidates(request: Request) -> ProviderCandidates:
+    return request.app.state.provider_candidates
+
+
 def get_referrals(request: Request) -> Referrals:
     return request.app.state.referrals
 
@@ -67,6 +73,7 @@ def get_casework(request: Request) -> Casework:
 Actor = Annotated[ActorContext, Depends(get_actor)]
 Service = Annotated[Casework, Depends(get_casework)]
 ReferralService = Annotated[Referrals, Depends(get_referrals)]
+ProviderCandidateService = Annotated[ProviderCandidates, Depends(get_provider_candidates)]
 Key = Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)]
 Cursor = Annotated[str | None, Query(max_length=500)]
 Limit = Annotated[int, Query(ge=1, le=100)]
@@ -82,7 +89,9 @@ ERRORS: dict[int | str, dict[str, Any]] = {
     },
     404: {
         "model": ErrorResponse,
-        "description": "CASE_NOT_FOUND / RECORD_NOT_FOUND / REFERRAL_NOT_FOUND",
+        "description": (
+            "CASE_NOT_FOUND / RECORD_NOT_FOUND / REFERRAL_NOT_FOUND / PROVIDER_CANDIDATE_NOT_FOUND"
+        ),
     },
     409: {
         "model": ErrorResponse,
@@ -108,6 +117,44 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.casework = Casework(make_sessions(engine))
     app.state.authorization = AuthorizationResolver(make_sessions(engine))
     app.state.referrals = Referrals(make_sessions(engine))
+    app.state.provider_candidates = ProviderCandidates(make_sessions(engine))
+
+    @app.post(
+        "/api/v1/provider-candidates",
+        response_model=ProviderCandidateView,
+        responses=ERRORS,
+        status_code=201,
+    )
+    async def register_provider_candidate(
+        body: RegisterProviderCandidate,
+        actor: Actor,
+        service: ProviderCandidateService,
+        key: Key,
+    ) -> Any:
+        return await service.register(body, actor, key)
+
+    @app.get(
+        "/api/v1/provider-candidates",
+        response_model=Page[ProviderCandidateView],
+        responses=ERRORS,
+    )
+    async def list_provider_candidates(
+        actor: Actor,
+        service: ProviderCandidateService,
+        cursor: Cursor = None,
+        limit: Limit = 50,
+    ) -> Any:
+        return await service.list(actor, cursor, limit)
+
+    @app.get(
+        "/api/v1/provider-candidates/{candidate_id}",
+        response_model=ProviderCandidateView,
+        responses=ERRORS,
+    )
+    async def get_provider_candidate(
+        candidate_id: UUID, actor: Actor, service: ProviderCandidateService
+    ) -> Any:
+        return await service.get(candidate_id, actor)
 
     @app.post(
         "/api/v1/cases/{case_id}/referrals",

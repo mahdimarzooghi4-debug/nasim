@@ -263,9 +263,20 @@ Sprint 002 validation evidence belongs to its own Code Review handoff.
 
 ## Sprint 003 compatibility update
 
-Current schema is 0003_referral, following the original TS-03 and TS-05 migrations.
+Current historical Sprint 003 schema was 0003_referral, following the original TS-03 and TS-05 migrations.
 Exact smoke contract now includes the three Referral create/list/detail operations;
 anonymous Referral requests remain 401 and lifecycle mutations remain absent (404).
 Existing TS-03/TS-05 routes and exclusions are preserved. Original review/validation
 records above remain historical evidence for their exact SHAs, not a new Stage gate.
 The change does not provision Hosted Stage or alter D-0130.
+
+
+## Sprint 004 compatibility update
+
+Current repository schema is `0004_provider_candidate`. The Stage-like smoke contract now
+includes Provider Candidate register/list/detail routes, verifies anonymous denial, and verifies
+that operational Provider mutation routes remain absent. Shared audit/outbox `case_id` is nullable
+only so non-Case bounded contexts can emit technical effects; existing Case/Referral events retain
+their Case linkage. The runtime role receives bounded SELECT/INSERT access to
+`provider_candidate_record` and no destructive privilege. This remains repository-side
+validation only; Hosted Stage is still unavailable under D-0130.
