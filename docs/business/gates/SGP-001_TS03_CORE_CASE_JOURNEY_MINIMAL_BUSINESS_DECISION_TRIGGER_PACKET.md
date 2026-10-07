@@ -158,13 +158,16 @@ Field-level schema remains Technical; access and Training Eligibility remain sep
 
 Decision Record: **D-0122**.
 
-### Q5 — Correction / history
-Need explicit rule for whether Case/Profile/Observation corrections:
+### Q5 — Correction / history — STILL CONTEXT TRIGGERED
+Proposed rule remains pending explicit Product Owner confirmation:
 - preserve prior value/history
-- record actor/time/reason
+- record Actor + Time + Reason
 - distinguish correction from silent overwrite
+- preserve provenance/evidence linkage where applicable
 
 Exact technical event/version mechanism remains Technical.
+
+**Status:** OPEN WITHIN TS-03 GATE PREPARATION — NOT ACCEPTED / NOT DEFERRED.
 
 ### Q6 — Access boundary for TS-03 data
 Need only the minimum access direction for actors actually participating in TS-03.
@@ -210,7 +213,7 @@ Close in this order:
 2. Q2 — early journey scope — **RESOLVED by D-0120**
 3. Q3 — Case operational owner / assignment — **RESOLVED by D-0121**
 4. Q4 — minimum Case/Profile Data Classes — **RESOLVED by D-0122**
-5. Q5 — correction/history
+5. Q5 — correction/history — **STILL OPEN / CONTEXT TRIGGERED**
 6. Q6 — minimum access boundary
 7. review Context-Triggered Candidate Decisions for explicit acceptance/modification
 8. create SG-001 for TS-03
@@ -234,13 +237,15 @@ Only one small decision set should be discussed at a time.
 
 ## 10. Next Product Owner question
 
-**Q5 — Correction / History**
+Q5 remains unresolved because no explicit acceptance/modification was given.
 
-Proposal for TS-03:
-- correction never silently overwrites prior value;
-- prior value/history is preserved;
-- every correction records **Actor + Time + Reason**;
-- if the corrected item has provenance/evidence, the link to that provenance/evidence is preserved;
-- exact technical mechanism (event log, version table, temporal model, etc.) remains a Technical Decision.
+**Q6 — Minimum Access Boundary for TS-03**
 
-**Confirm or modify this correction/history rule.**
+Proposed minimal rule:
+- Caregiver assigned to the Case may access only the TS-03 Case/Profile data needed for Contact, Monitoring and Observation/Need capture.
+- Authorized supervisory/operations function may access what is needed for assignment/reassignment and operational oversight.
+- Elder self-access is not defined in this Slice unless explicitly added.
+- Family/Representative, Provider, Employer and AI access remain outside TS-03.
+- No actor receives broader access merely because data exists in the Case.
+
+**Confirm or modify this minimum access boundary.**
