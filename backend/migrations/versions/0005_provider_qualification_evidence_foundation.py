@@ -1,6 +1,6 @@
 """Provider Qualification Evidence foundation
 
-Revision ID: 0005_provider_qualification_evidence
+Revision ID: 0005_provider_qe
 Revises: 0004_provider_candidate
 """
 
@@ -9,7 +9,7 @@ from collections.abc import Sequence
 import sqlalchemy as sa
 from alembic import op
 
-revision: str = "0005_provider_qualification_evidence"
+revision: str = "0005_provider_qe"
 down_revision: str | Sequence[str] | None = "0004_provider_candidate"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
@@ -164,7 +164,7 @@ def upgrade() -> None:
               )
               VALUES (
                 :id, :code, :code, 1, transaction_timestamp(), 'schema-migration',
-                'SYSTEM', '0005_provider_qualification_evidence',
+                'SYSTEM', '0005_provider_qe',
                 'Technical Provider Qualification Evidence vocabulary only; no role mapping'
               )
             """),
@@ -179,7 +179,7 @@ def upgrade() -> None:
               VALUES (
                 :audit_id, 'schema-migration', 'SYSTEM', transaction_timestamp(),
                 'Technical Provider Qualification Evidence vocabulary only; no role mapping',
-                '0005_provider_qualification_evidence', 'permission_definition', :id,
+                '0005_provider_qe', 'permission_definition', :id,
                 'REGISTERED', NULL, :id
               )
             """),
