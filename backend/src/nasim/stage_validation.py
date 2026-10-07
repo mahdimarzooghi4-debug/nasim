@@ -10,6 +10,8 @@ EXPECTED_ROUTES = {
     "/health": {"get"},
     "/api/v1/provider-candidates": {"get", "post"},
     "/api/v1/provider-candidates/{candidate_id}": {"get"},
+    "/api/v1/provider-candidates/{candidate_id}/qualification-evidence": {"get", "post"},
+    "/api/v1/provider-qualification-evidence/{evidence_id}": {"get"},
     "/api/v1/cases/{case_id}/referrals": {"get", "post"},
     "/api/v1/referrals/{referral_id}": {"get"},
     "/api/v1/authorization/self": {"get"},
@@ -121,16 +123,46 @@ def validate_http(base_url: str) -> None:
         status, _ = request(base_url, path)
         if status != 401:
             raise RuntimeError("Anonymous Provider Candidate read did not fail closed")
+    evidence_id = uuid4()
+    status, _ = request(
+        base_url,
+        f"/api/v1/provider-candidates/{candidate_id}/qualification-evidence",
+        "POST",
+        {
+            "evidence_label": "qualification evidence smoke",
+            "evidence_reference": "opaque-smoke-reference",
+            "reason": "foundation smoke",
+        },
+    )
+    if status != 401:
+        raise RuntimeError("Anonymous qualification evidence recording did not fail closed")
+    for path in (
+        f"/api/v1/provider-candidates/{candidate_id}/qualification-evidence",
+        f"/api/v1/provider-qualification-evidence/{evidence_id}",
+    ):
+        status, _ = request(base_url, path)
+        if status != 401:
+            raise RuntimeError("Anonymous qualification evidence read did not fail closed")
+
     for action in ("activate", "approve", "reject", "suspend", "qualify", "capacity", "contract"):
         status, _ = request(
             base_url, f"/api/v1/provider-candidates/{candidate_id}/{action}", "POST", {}
         )
         if status != 404:
             raise RuntimeError("Undecided operational Provider route is reachable")
+    for action in ("review", "verify", "approve", "reject", "activate", "expire", "replace"):
+        status, _ = request(
+            base_url,
+            f"/api/v1/provider-qualification-evidence/{evidence_id}/{action}",
+            "POST",
+            {},
+        )
+        if status != 404:
+            raise RuntimeError("Undecided qualification decision route is reachable")
 
     print(
-        "Stage HTTP smoke passed: readiness, Case/Referral/Provider Candidate routes, "
-        "anonymous denial and excluded routes"
+        "Stage HTTP smoke passed: readiness, Case/Referral/Provider Candidate/"
+        "Qualification Evidence routes, anonymous denial and excluded routes"
     )
 
 

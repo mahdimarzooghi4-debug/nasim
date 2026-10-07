@@ -11,8 +11,20 @@ from nasim.domain.contracts import Page
 from nasim.domain.errors import DomainError
 from nasim.identity_context.contracts import ActorContext, ActorType, require_capability
 from nasim.infrastructure.provider_candidate_effects import ProviderCandidateEffects, digest
-from nasim.provider_registry.contracts import ProviderCandidateView, RegisterProviderCandidate
-from nasim.provider_registry.models import ProviderCandidateRecord
+from nasim.infrastructure.provider_qualification_evidence_effects import (
+    ProviderQualificationEvidenceEffects,
+    evidence_digest,
+)
+from nasim.provider_registry.contracts import (
+    ProviderCandidateView,
+    ProviderQualificationEvidenceView,
+    RecordProviderQualificationEvidence,
+    RegisterProviderCandidate,
+)
+from nasim.provider_registry.models import (
+    ProviderCandidateRecord,
+    ProviderQualificationEvidenceRecord,
+)
 
 
 class ProviderCandidates:
@@ -103,3 +115,116 @@ class ProviderCandidates:
             if row is None:
                 raise DomainError("PROVIDER_CANDIDATE_NOT_FOUND", 404)
             return ProviderCandidateView.model_validate(row)
+
+
+class ProviderQualificationEvidence:
+    def __init__(
+        self,
+        sessions: async_sessionmaker[AsyncSession],
+        effects: ProviderQualificationEvidenceEffects | None = None,
+    ) -> None:
+        self.sessions = sessions
+        self.effects = effects or ProviderQualificationEvidenceEffects()
+
+    async def record(
+        self,
+        candidate_id: UUID,
+        command: RecordProviderQualificationEvidence,
+        actor: ActorContext,
+        key: str,
+    ) -> dict[str, Any]:
+        require_capability(actor, "provider_qualification_evidence.record")
+        if actor.actor_type == ActorType.AI:
+            raise DomainError("CAPABILITY_REQUIRED", 403)
+        if not key.strip() or len(key) > 200:
+            raise DomainError("INVALID_IDEMPOTENCY_KEY", 422)
+
+        scope = self.effects.scope(actor, candidate_id, key)
+        payload_hash = evidence_digest(
+            {
+                "candidate_id": str(candidate_id),
+                **command.model_dump(mode="json"),
+            }
+        )
+        async with self.sessions() as session, session.begin():
+            await self.effects.lock(session, scope)
+            prior = await self.effects.prior(session, scope, payload_hash)
+            if prior is not None:
+                return prior
+
+            candidate = await session.get(ProviderCandidateRecord, candidate_id)
+            if candidate is None:
+                raise DomainError("PROVIDER_CANDIDATE_NOT_FOUND", 404)
+
+            now = (await session.execute(select(func.statement_timestamp()))).scalar_one()
+            row = ProviderQualificationEvidenceRecord(
+                id=uuid4(),
+                provider_candidate_id=candidate_id,
+                evidence_label=command.evidence_label,
+                evidence_reference=command.evidence_reference,
+                recorded_at=now,
+                recorded_by_actor_id=actor.actor_id,
+                recorded_by_actor_type=actor.actor_type.value,
+                reason=command.reason,
+                correlation_id=actor.correlation_id,
+            )
+            session.add(row)
+            await session.flush()
+            record = ProviderQualificationEvidenceView.model_validate(row)
+            await self.effects.append(session, record, actor, scope, payload_hash)
+            return record.model_dump(mode="json")
+
+    @staticmethod
+    def _require_read(actor: ActorContext) -> None:
+        require_capability(actor, "provider_qualification_evidence.read")
+
+    async def list(
+        self,
+        candidate_id: UUID,
+        actor: ActorContext,
+        cursor: str | None = None,
+        limit: int = 50,
+    ) -> Page[ProviderQualificationEvidenceView]:
+        self._require_read(actor)
+        if not 1 <= limit <= 100:
+            raise DomainError("INVALID_PAGE_LIMIT", 422)
+        async with self.sessions() as session:
+            if await session.get(ProviderCandidateRecord, candidate_id) is None:
+                raise DomainError("PROVIDER_CANDIDATE_NOT_FOUND", 404)
+            query = select(ProviderQualificationEvidenceRecord).where(
+                ProviderQualificationEvidenceRecord.provider_candidate_id == candidate_id
+            )
+            if cursor:
+                stamp, identifier = decode_cursor(cursor)
+                query = query.where(
+                    tuple_(
+                        ProviderQualificationEvidenceRecord.recorded_at,
+                        ProviderQualificationEvidenceRecord.id,
+                    )
+                    > tuple_(literal(stamp), literal(identifier))
+                )
+            rows = (
+                await session.scalars(
+                    query.order_by(
+                        ProviderQualificationEvidenceRecord.recorded_at,
+                        ProviderQualificationEvidenceRecord.id,
+                    ).limit(limit + 1)
+                )
+            ).all()
+            selected = rows[:limit]
+            return Page[ProviderQualificationEvidenceView](
+                items=[ProviderQualificationEvidenceView.model_validate(row) for row in selected],
+                next_cursor=encode_cursor(selected[-1].recorded_at, selected[-1].id)
+                if len(rows) > limit
+                else None,
+            )
+
+    async def get(
+        self, evidence_id: UUID, actor: ActorContext
+    ) -> ProviderQualificationEvidenceView:
+        self._require_read(actor)
+        async with self.sessions() as session:
+            row = await session.get(ProviderQualificationEvidenceRecord, evidence_id)
+            if row is None:
+                raise DomainError("PROVIDER_QUALIFICATION_EVIDENCE_NOT_FOUND", 404)
+            return ProviderQualificationEvidenceView.model_validate(row)
