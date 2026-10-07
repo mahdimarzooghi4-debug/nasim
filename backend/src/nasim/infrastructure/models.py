@@ -213,6 +213,12 @@ class AuditEntry(Identified, Base):
         CheckConstraint(
             "actor_type IN ('HUMAN', 'SYSTEM', 'AI', 'AUTOMATION')", name="ck_audit_actor_type"
         ),
+        CheckConstraint(
+            "case_id IS NOT NULL OR "
+            "(action = 'provider.candidate_registered.v1' "
+            "AND resource_type = 'provider_candidate_record')",
+            name="ck_audit_case_or_provider_candidate",
+        ),
         Index("ix_audit_timeline", "case_id", "timestamp", "id"),
     )
 
@@ -225,6 +231,12 @@ class OutboxEvent(Identified, Base):
     event_type: Mapped[str] = mapped_column(String(100))
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     payload: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    __table_args__ = (
+        CheckConstraint(
+            "case_id IS NOT NULL OR event_type = 'provider.candidate_registered.v1'",
+            name="ck_outbox_case_or_provider_candidate",
+        ),
+    )
 
 
 class IdempotencyRecord(Identified, Base):
