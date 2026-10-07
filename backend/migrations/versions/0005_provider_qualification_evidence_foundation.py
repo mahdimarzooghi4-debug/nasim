@@ -239,12 +239,8 @@ def downgrade() -> None:
     op.drop_table("provider_qualification_evidence_record")
     op.execute("DROP FUNCTION nasim_provider_qualification_evidence_effects_guard()")
 
-    op.drop_constraint(
-        "ck_audit_case_or_provider_candidate", "audit_entry", type_="check"
-    )
-    op.drop_constraint(
-        "ck_outbox_case_or_provider_candidate", "outbox_event", type_="check"
-    )
+    op.drop_constraint("ck_audit_case_or_provider_candidate", "audit_entry", type_="check")
+    op.drop_constraint("ck_outbox_case_or_provider_candidate", "outbox_event", type_="check")
     op.create_check_constraint(
         "ck_audit_case_or_provider_candidate",
         "audit_entry",
