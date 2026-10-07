@@ -169,10 +169,15 @@ Exact technical event/version mechanism remains Technical.
 
 **Status:** OPEN WITHIN TS-03 GATE PREPARATION — NOT ACCEPTED / NOT DEFERRED.
 
-### Q6 — Access boundary for TS-03 data
-Need only the minimum access direction for actors actually participating in TS-03.
+### Q6 — Access boundary for TS-03 data — RESOLVED
+**Accepted minimum boundary:**
+- assigned caregiver may access only TS-03 data needed for Contact, Monitoring and Observation/Need capture;
+- authorized supervisory/operations function may access only what is needed for assignment/reassignment and operational oversight;
+- Elder self-access is not defined in this Slice;
+- Family/Representative, Provider, Employer and AI access remain outside TS-03;
+- data existence never grants access by itself.
 
-Provider, Employer, Family/Representative and AI access can remain out of Slice unless Product Owner includes them.
+Decision Record: **D-0123**.
 
 ## 6. Decisions allowed to remain OPEN
 
@@ -214,8 +219,8 @@ Close in this order:
 3. Q3 — Case operational owner / assignment — **RESOLVED by D-0121**
 4. Q4 — minimum Case/Profile Data Classes — **RESOLVED by D-0122**
 5. Q5 — correction/history — **STILL OPEN / CONTEXT TRIGGERED**
-6. Q6 — minimum access boundary
-7. review Context-Triggered Candidate Decisions for explicit acceptance/modification
+6. Q6 — minimum access boundary — **RESOLVED by D-0123**
+7. Q5 remains unresolved; then review Context-Triggered Candidate Decisions for explicit acceptance/modification
 8. create SG-001 for TS-03
 
 Only one small decision set should be discussed at a time.
@@ -227,7 +232,7 @@ Only one small decision set should be discussed at a time.
 - SGP-001: **ACTIVE**
 - Context-triggered Candidate Decisions still active for TS-03: D-0012, D-0013, D-0014, D-0015, D-0021, D-0028
 - Resolved boundary references: D-0006 released by D-0119; D-0017 bounded by D-0120; D-0016 no longer blocks TS-03 case ownership because D-0121 establishes the slice-specific owner/assignment rule.
-- Accepted decisions created from this packet: **D-0119, D-0120, D-0121, D-0122**
+- Accepted decisions created from this packet: **D-0119, D-0120, D-0121, D-0122, D-0123**
 - Explicitly Deferred from this packet: **0**
 - Unrelated decisions: **OPEN / unchanged**
 - TS-03 Slice Gate: **NOT YET READY**
@@ -237,15 +242,15 @@ Only one small decision set should be discussed at a time.
 
 ## 10. Next Product Owner question
 
-Q5 remains unresolved because no explicit acceptance/modification was given.
+Q6 is resolved by D-0123.
 
-**Q6 — Minimum Access Boundary for TS-03**
+**Q5 — Correction / History remains the only unresolved TS-03 scope choice before candidate review.**
 
-Proposed minimal rule:
-- Caregiver assigned to the Case may access only the TS-03 Case/Profile data needed for Contact, Monitoring and Observation/Need capture.
-- Authorized supervisory/operations function may access what is needed for assignment/reassignment and operational oversight.
-- Elder self-access is not defined in this Slice unless explicitly added.
-- Family/Representative, Provider, Employer and AI access remain outside TS-03.
-- No actor receives broader access merely because data exists in the Case.
+Proposed rule:
+- correction never silently overwrites prior value;
+- prior value/history is preserved;
+- every correction records **Actor + Time + Reason**;
+- provenance/evidence linkage is preserved where applicable;
+- exact technical mechanism remains Technical.
 
-**Confirm or modify this minimum access boundary.**
+**Confirm or modify this correction/history rule.**
