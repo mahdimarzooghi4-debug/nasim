@@ -46,7 +46,7 @@ PostgreSQL. The serving command itself never runs migrations. The explicit image
 Python migration module; migration failures exit nonzero.
 
 Readiness remains `/health`: HTTP 200 and `{"status":"ok"}` require database connectivity
-and current revision `0003_referral` (TS-05 extends the original `0001_ts03` baseline). A missing/unavailable/wrong-revision database returns 503.
+and current revision `0006_provider_qreview` (the historical Stage Foundation started from `0001_ts03`). A missing/unavailable/wrong-revision database returns 503.
 The image includes an HTTP readiness healthcheck. All anonymous business operations still
 fail closed; no identity adapter, self-asserted identity headers or authentication bypass
 was added. The hosted identity integration boundary remains TS-05.
@@ -280,3 +280,16 @@ only so non-Case bounded contexts can emit technical effects; existing Case/Refe
 their Case linkage. The runtime role receives bounded SELECT/INSERT access to
 `provider_candidate_record` and no destructive privilege. This remains repository-side
 validation only; Hosted Stage is still unavailable under D-0130.
+
+
+## Sprint 005–006 compatibility update
+
+The current repository schema head is `0006_provider_qreview`.
+
+Stage-like smoke now includes Provider Qualification Evidence and Provider Qualification
+Review Request record/list/detail surfaces. Anonymous access remains fail-closed and
+qualification decision/approval/activation routes remain absent. Runtime database access
+is limited to bounded SELECT/INSERT for the new immutable provider-registry tables.
+
+This is repository-side validation only. It does not create a Hosted Stage and does not
+change D-0130, Stage Admission, QA, Release or Production status.
