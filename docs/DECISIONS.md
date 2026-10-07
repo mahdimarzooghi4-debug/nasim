@@ -247,3 +247,15 @@
 - **مرز:** هیچ Referral/Provider/Outcome/AI/Enrollment/Emergency behavior وارد TS-03 نمی‌شود.
 - **منبع:** T-001 + TG-001؛ پذیرفته‌شده تحت D-0124.
 
+## D-0129 — پذیرش Sprint 001 و ورود TS-03 به Code
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Delivery Governance / TS-03
+- **وضعیت:** Accepted
+- **تصمیم:** Product Backlog PB-001 و Sprint Plan ثبت‌شده در `SPRINT-001_TS03_CORE_CASE_JOURNEY_FOUNDATION.md` پذیرفته شدند و TS-03 مجاز است وارد مرحله **Code** شود.
+- **Code scope:** فقط BL-001…BL-012 در محدوده TS-03.
+- **مرز:** هیچ Enrollment/Referral/Provider/Outcome/AI/Emergency/Named-RBAC behavior نباید در Code این Sprint اضافه شود.
+- **Quality:** Code Review، Stage، QA و Release همچنان Gateهای مستقل بعدی هستند.
+- **Codex handoff:** طبق قاعده پروژه، اجرای Code باید در Codex انجام شود؛ این Chat در مرز Code متوقف می‌شود.
+- **منبع:** T-001 + TG-001 + PB-001 + SPRINT-001؛ پذیرفته‌شده تحت D-0124.
+
