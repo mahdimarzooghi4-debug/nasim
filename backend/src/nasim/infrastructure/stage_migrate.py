@@ -52,7 +52,30 @@ async def grant_runtime_access(migration_url: str, app_role: str) -> None:
             )
             if audit_update:
                 raise RuntimeError("Runtime role must not update audit history")
-            for table in (*tables, "alembic_version"):
+            authorization_tables = (
+                "role_definition",
+                "permission_definition",
+                "role_permission_grant",
+                "actor_role_assignment",
+                "authorization_audit",
+            )
+            for table in authorization_tables:
+                if await connection.scalar(
+                    text(
+                        "SELECT has_table_privilege(:role, :table, 'INSERT,UPDATE,DELETE,TRUNCATE')"
+                    ),
+                    {"role": app_role, "table": table},
+                ):
+                    raise RuntimeError("Serving runtime must not manage authorization history")
+            for table in (
+                *tables,
+                "alembic_version",
+                "role_definition",
+                "permission_definition",
+                "role_permission_grant",
+                "actor_role_assignment",
+                "authorization_audit",
+            ):
                 await connection.execute(text(f"GRANT SELECT ON {table} TO {quoted_role}"))
             for table in tables:
                 await connection.execute(text(f"GRANT INSERT ON {table} TO {quoted_role}"))

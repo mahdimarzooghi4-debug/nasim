@@ -3,7 +3,7 @@ on:
   pull_request:
     paths: ['backend/**', 'compose*.yaml', '.dockerignore', '.github/workflows/backend-ci.yml', 'docs/stage/**']
   push:
-    branches: [main, stage-foundation]
+    branches: [main, stage-foundation, sprint-002-ts05-identity-authorization-foundation]
     paths: ['backend/**', 'compose*.yaml', '.dockerignore', '.github/workflows/backend-ci.yml', 'docs/stage/**']
   workflow_dispatch:
 permissions:

@@ -46,7 +46,7 @@ PostgreSQL. The serving command itself never runs migrations. The explicit image
 Python migration module; migration failures exit nonzero.
 
 Readiness remains `/health`: HTTP 200 and `{"status":"ok"}` require database connectivity
-and revision `0001_ts03`. A missing/unavailable/wrong-revision database returns 503.
+and current revision `0002_ts05` (TS-05 extends the original `0001_ts03` baseline). A missing/unavailable/wrong-revision database returns 503.
 The image includes an HTTP readiness healthcheck. All anonymous business operations still
 fail closed; no identity adapter, self-asserted identity headers or authentication bypass
 was added. The hosted identity integration boundary remains TS-05.
@@ -248,3 +248,14 @@ data without an explicit recovery plan, verified backup and authorization.
 
 Stop at **Stage Review**. D-0130 remains unchanged until a real Stage environment and its
 entry evidence exist; this document does not revise the delivery process or grant release approval.
+
+
+## TS-05 compatibility update
+
+Sprint 002 adds the authenticated-only `GET /api/v1/authorization/self` inspection
+contract and five authorization tables in `0002_ts05`. Current smoke verifies this
+explicit API surface and anonymous self inspection remains 401. All original TS-03
+routes and exclusions remain checked. Serving has SELECT-only authorization table
+access; migration fails closed if its runtime role has authorization write privileges.
+Original STAGE-001 validation evidence above describes its reviewed historical SHA;
+Sprint 002 validation evidence belongs to its own Code Review handoff.

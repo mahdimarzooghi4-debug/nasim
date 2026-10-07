@@ -29,7 +29,7 @@ curl --fail --silent http://127.0.0.1:8000/health
 ```
 
 Expected response: `{"status":"ok"}`. Health verifies database connectivity and migration
-revision `0001_ts03`; it returns 503 if unavailable/unmigrated. Processes must be restarted
+revision `0002_ts05`; it returns 503 if unavailable/unmigrated. Processes must be restarted
 in future cloud tasks; an installed dependency or retained database volume is not a live
 service. Stop only the server you started (Ctrl-C). `docker compose stop postgres` stops
 the repository's database without removing its volume.
@@ -203,3 +203,12 @@ composition and GitHub Actions pipeline are documented in
 [STAGE-001](../docs/stage/STAGE-001_ENVIRONMENT_FOUNDATION.md). This repository-side
 foundation is distinct from Hosted Stage; D-0130's Stage-unavailable decision remains in
 force until actual provisioning and admission. It adds no identity or TS-03 business feature.
+
+
+## TS-05 Identity / Authorization foundation
+
+See [TS-05 developer contract](../docs/technical/TS05_DEVELOPER_GUIDE.md).
+The current migration head is `0002_ts05`. The registry seeds vocabulary only;
+no actor-role assignments or role-permission grants are seeded. The serving DB
+role has read-only access to authorization tables. External authentication and
+public management commands remain outside scope.

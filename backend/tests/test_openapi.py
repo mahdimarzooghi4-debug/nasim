@@ -13,6 +13,7 @@ def app_without_db():
 
 
 EXPECTED = {
+    "/api/v1/authorization/self": {"get"},
     "/health": {"get"},
     "/api/v1/cases": {"post"},
     "/api/v1/cases/{case_id}": {"get"},
