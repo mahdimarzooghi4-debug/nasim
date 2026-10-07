@@ -70,13 +70,10 @@ class ProviderQualificationEvidenceRecord(Identified, Base):
     )
 
 
-
 class ProviderQualificationReviewRequestRecord(Identified, Base):
     __tablename__ = "provider_qualification_review_request_record"
 
-    provider_candidate_id: Mapped[UUID] = mapped_column(
-        ForeignKey("provider_candidate_record.id")
-    )
+    provider_candidate_id: Mapped[UUID] = mapped_column(ForeignKey("provider_candidate_record.id"))
     requested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     requested_by_actor_id: Mapped[str] = mapped_column(String(200))
     requested_by_actor_type: Mapped[str] = mapped_column(String(20))
