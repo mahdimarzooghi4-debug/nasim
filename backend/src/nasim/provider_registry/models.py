@@ -68,3 +68,36 @@ class ProviderQualificationEvidenceRecord(Identified, Base):
             "id",
         ),
     )
+
+
+
+class ProviderQualificationReviewRequestRecord(Identified, Base):
+    __tablename__ = "provider_qualification_review_request_record"
+
+    provider_candidate_id: Mapped[UUID] = mapped_column(
+        ForeignKey("provider_candidate_record.id"), index=True
+    )
+    requested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    requested_by_actor_id: Mapped[str] = mapped_column(String(200))
+    requested_by_actor_type: Mapped[str] = mapped_column(String(20))
+    reason: Mapped[str] = mapped_column(Text)
+    correlation_id: Mapped[str] = mapped_column(String(200))
+
+    __table_args__ = (
+        CheckConstraint(
+            "requested_by_actor_type IN ('HUMAN','SYSTEM','AI','AUTOMATION')",
+            name="ck_provider_qualification_review_actor_type",
+        ),
+        CheckConstraint(
+            "reason ~ '[^[:space:]]' "
+            "AND length(trim(requested_by_actor_id)) > 0 "
+            "AND length(trim(correlation_id)) > 0",
+            name="ck_provider_qualification_review_provenance",
+        ),
+        Index(
+            "ix_provider_qualification_review_requested",
+            "provider_candidate_id",
+            "requested_at",
+            "id",
+        ),
+    )
