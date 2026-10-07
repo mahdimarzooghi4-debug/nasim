@@ -115,7 +115,8 @@ async def test_every_read_fails_closed_without_context(path):
         transport=httpx.ASGITransport(app=app), base_url="http://test"
     ) as client:
         response = await client.get(
-            path.replace("{case_id}", str(uuid4())).replace("{referral_id}", str(uuid4()))
+            path.replace("{case_id}", str(uuid4()))
+            .replace("{referral_id}", str(uuid4()))
             .replace("{candidate_id}", str(uuid4())),
             headers={
                 "X-Actor-Id": "caregiver-a",
