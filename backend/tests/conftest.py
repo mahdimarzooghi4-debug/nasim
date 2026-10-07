@@ -62,7 +62,7 @@ async def admin_engine() -> AsyncIterator[AsyncEngine]:
     engine = make_engine(Settings(database_url=dsn))
     async with engine.begin() as connection:
         version = await connection.scalar(text("SELECT version_num FROM alembic_version"))
-        assert version == "0005_provider_qualification_evidence", (
+        assert version == "0005_provider_qe", (
             "Run scripts/setup-dev.sh or migrate test database first"
         )
         await connection.execute(
