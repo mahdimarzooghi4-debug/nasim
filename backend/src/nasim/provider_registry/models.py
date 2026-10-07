@@ -75,7 +75,7 @@ class ProviderQualificationReviewRequestRecord(Identified, Base):
     __tablename__ = "provider_qualification_review_request_record"
 
     provider_candidate_id: Mapped[UUID] = mapped_column(
-        ForeignKey("provider_candidate_record.id"), index=True
+        ForeignKey("provider_candidate_record.id")
     )
     requested_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     requested_by_actor_id: Mapped[str] = mapped_column(String(200))
