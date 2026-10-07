@@ -157,7 +157,9 @@ async def test_missing_capability_and_actor_type_alone_deny(provider_service, pr
         assert error.value.code == "CAPABILITY_REQUIRED"
 
 
-async def test_ai_denied_even_with_explicit_capability(provider_service, provider_actor, admin_engine):
+async def test_ai_denied_even_with_explicit_capability(
+    provider_service, provider_actor, admin_engine
+):
     ai = provider_actor.model_copy(update={"actor_type": ActorType.AI})
     with pytest.raises(DomainError) as error:
         await provider_service.register(command(), ai, "ai")
