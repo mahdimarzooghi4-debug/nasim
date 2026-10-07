@@ -210,11 +210,7 @@ def downgrade() -> None:
     op.drop_table("provider_candidate_record")
     op.execute("DROP FUNCTION nasim_provider_candidate_effects_guard()")
 
-    op.drop_constraint(
-        "ck_outbox_case_or_provider_candidate", "outbox_event", type_="check"
-    )
-    op.drop_constraint(
-        "ck_audit_case_or_provider_candidate", "audit_entry", type_="check"
-    )
+    op.drop_constraint("ck_outbox_case_or_provider_candidate", "outbox_event", type_="check")
+    op.drop_constraint("ck_audit_case_or_provider_candidate", "audit_entry", type_="check")
     op.alter_column("outbox_event", "case_id", existing_type=sa.Uuid(), nullable=False)
     op.alter_column("audit_entry", "case_id", existing_type=sa.Uuid(), nullable=False)
