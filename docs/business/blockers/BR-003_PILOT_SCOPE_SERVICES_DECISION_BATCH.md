@@ -3,7 +3,7 @@
 - **Status:** OPEN — PARKED UNTIL CONTEXT REQUIRES DECISION
 - **Stage:** Business — Decision Closure
 - **Date:** 2026-10-06
-- **Source basis:** BR-002 P1…P6 + DC-001 + DC-002
+- **Source basis:** BR-002 P1…P6 + DC-001 + DC-002 + D-0118
 - **Scope:** P1…P6 only
 - **Purpose:** بستن نخستین Batch از Blockerهای واقعی پایلوت، بدون اختراع Geography، Count، Duration، Eligibility یا Service Activation.
 
@@ -38,7 +38,7 @@ Concept هیچ Province/City/Neighborhood مشخصی تعیین نمی‌کند.
 تا زمان تعیین این موارد، Geography باید **UNRESOLVED** بماند و Technical نباید Location Scope فرض کند.
 
 ### Status
-**BLOCKING**
+**OPEN — CONTEXTUAL BLOCKER WHEN TRIGGERED**
 
 ---
 
@@ -58,7 +58,7 @@ Concept هیچ عددی برای تعداد سالمندان، سالمندیا�
 هیچ عددی نباید از Benchmark عمومی یا حدس اجرایی وارد Business Baseline شود.
 
 ### Status
-**BLOCKING**
+**OPEN — CONTEXTUAL BLOCKER WHEN TRIGGERED**
 
 ---
 
@@ -78,7 +78,7 @@ Concept Pilot را مرحله پیش از توسعه شبکه می‌داند، 
 اگر Duration هنوز نباید بسته شود، باید صریحاً **DEFER** شود و Gate آینده/Owner مشخص باشد؛ Unknown قابل قبول نیست.
 
 ### Status
-**BLOCKING**
+**OPEN — CONTEXTUAL BLOCKER WHEN TRIGGERED**
 
 ---
 
@@ -103,7 +103,7 @@ Concept Pilot را مرحله پیش از توسعه شبکه می‌داند، 
 - **Pilot Enrollment Eligibility**
 
 ### Status
-**BLOCKING**
+**OPEN — CONTEXTUAL BLOCKER WHEN TRIGGERED**
 
 ---
 
@@ -131,7 +131,7 @@ Also:
 Technical نباید از Workflow یا Statusها Exit Rule استنتاج کند.
 
 ### Status
-**BLOCKING**
+**OPEN — CONTEXTUAL BLOCKER WHEN TRIGGERED**
 
 ---
 
@@ -199,7 +199,7 @@ Choose one:
 - another explicit policy
 
 ### Status
-**BLOCKING**
+**OPEN — CONTEXTUAL BLOCKER WHEN TRIGGERED**
 
 ---
 
