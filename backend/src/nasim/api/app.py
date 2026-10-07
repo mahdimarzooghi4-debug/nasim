@@ -38,6 +38,8 @@ from nasim.identity_context.contracts import ActorContext
 from nasim.infrastructure.config import Settings, load_settings
 from nasim.infrastructure.database import make_engine, make_sessions
 from nasim.infrastructure.schema import SCHEMA_REVISION
+from nasim.referral.contracts import CreateReferral, ReferralView
+from nasim.referral.service import Referrals
 
 
 async def get_actor(request: Request) -> ActorContext:
@@ -54,23 +56,34 @@ async def get_actor(request: Request) -> ActorContext:
     return actor
 
 
+def get_referrals(request: Request) -> Referrals:
+    return request.app.state.referrals
+
+
 def get_casework(request: Request) -> Casework:
     return request.app.state.casework
 
 
 Actor = Annotated[ActorContext, Depends(get_actor)]
 Service = Annotated[Casework, Depends(get_casework)]
+ReferralService = Annotated[Referrals, Depends(get_referrals)]
 Key = Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)]
 Cursor = Annotated[str | None, Query(max_length=500)]
 Limit = Annotated[int, Query(ge=1, le=100)]
 ERRORS: dict[int | str, dict[str, Any]] = {
-    422: {"model": ErrorResponse, "description": "VALIDATION_ERROR / INVALID_CURSOR"},
+    422: {
+        "model": ErrorResponse,
+        "description": "VALIDATION_ERROR / INVALID_CURSOR / NEED_CAPTURE_REQUIRED",
+    },
     401: {"model": ErrorResponse, "description": "ACTOR_CONTEXT_REQUIRED"},
     403: {
         "model": ErrorResponse,
         "description": "CAPABILITY_REQUIRED / ASSIGNED_CAREGIVER_REQUIRED",
     },
-    404: {"model": ErrorResponse, "description": "CASE_NOT_FOUND / RECORD_NOT_FOUND"},
+    404: {
+        "model": ErrorResponse,
+        "description": "CASE_NOT_FOUND / RECORD_NOT_FOUND / REFERRAL_NOT_FOUND",
+    },
     409: {
         "model": ErrorResponse,
         "description": (
@@ -94,6 +107,34 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.engine = engine
     app.state.casework = Casework(make_sessions(engine))
     app.state.authorization = AuthorizationResolver(make_sessions(engine))
+    app.state.referrals = Referrals(make_sessions(engine))
+
+    @app.post(
+        "/api/v1/cases/{case_id}/referrals",
+        response_model=ReferralView,
+        responses=ERRORS,
+        status_code=201,
+    )
+    async def record_referral(
+        case_id: UUID, body: CreateReferral, actor: Actor, service: ReferralService, key: Key
+    ) -> Any:
+        return await service.create(case_id, body, actor, key)
+
+    @app.get(
+        "/api/v1/cases/{case_id}/referrals", response_model=Page[ReferralView], responses=ERRORS
+    )
+    async def list_referrals(
+        case_id: UUID,
+        actor: Actor,
+        service: ReferralService,
+        cursor: Cursor = None,
+        limit: Limit = 50,
+    ) -> Any:
+        return await service.list(case_id, actor, cursor, limit)
+
+    @app.get("/api/v1/referrals/{referral_id}", response_model=ReferralView, responses=ERRORS)
+    async def get_referral(referral_id: UUID, actor: Actor, service: ReferralService) -> Any:
+        return await service.get(referral_id, actor)
 
     @app.get("/api/v1/authorization/self", response_model=ActorContext, responses=ERRORS)
     async def authorization_self(actor: Actor) -> ActorContext:

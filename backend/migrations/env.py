@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from nasim.authorization import models as authorization_models  # noqa: F401
 from nasim.infrastructure.config import load_settings
 from nasim.infrastructure.models import Base
+from nasim.referral import models as referral_models  # noqa: F401
 
 target_metadata = Base.metadata
 

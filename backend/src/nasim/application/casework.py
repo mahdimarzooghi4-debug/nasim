@@ -580,7 +580,9 @@ class Casework:
                     next_cursor=next_cursor,
                 )
             if kind == "timeline":
-                statement = select(AuditEntry).where(AuditEntry.case_id == case_id)
+                statement = select(AuditEntry).where(
+                    AuditEntry.case_id == case_id, AuditEntry.action.in_(EVENTS.values())
+                )
                 if cursor:
                     stamp, identifier = decode_cursor(cursor)
                     statement = statement.where(

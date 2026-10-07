@@ -46,7 +46,7 @@ PostgreSQL. The serving command itself never runs migrations. The explicit image
 Python migration module; migration failures exit nonzero.
 
 Readiness remains `/health`: HTTP 200 and `{"status":"ok"}` require database connectivity
-and current revision `0002_ts05` (TS-05 extends the original `0001_ts03` baseline). A missing/unavailable/wrong-revision database returns 503.
+and current revision `0003_referral` (TS-05 extends the original `0001_ts03` baseline). A missing/unavailable/wrong-revision database returns 503.
 The image includes an HTTP readiness healthcheck. All anonymous business operations still
 fail closed; no identity adapter, self-asserted identity headers or authentication bypass
 was added. The hosted identity integration boundary remains TS-05.
@@ -259,3 +259,13 @@ routes and exclusions remain checked. Serving has SELECT-only authorization tabl
 access; migration fails closed if its runtime role has authorization write privileges.
 Original STAGE-001 validation evidence above describes its reviewed historical SHA;
 Sprint 002 validation evidence belongs to its own Code Review handoff.
+
+
+## Sprint 003 compatibility update
+
+Current schema is 0003_referral, following the original TS-03 and TS-05 migrations.
+Exact smoke contract now includes the three Referral create/list/detail operations;
+anonymous Referral requests remain 401 and lifecycle mutations remain absent (404).
+Existing TS-03/TS-05 routes and exclusions are preserved. Original review/validation
+records above remain historical evidence for their exact SHAs, not a new Stage gate.
+The change does not provision Hosted Stage or alter D-0130.

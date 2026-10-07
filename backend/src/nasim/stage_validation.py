@@ -8,6 +8,8 @@ from uuid import uuid4
 
 EXPECTED_ROUTES = {
     "/health": {"get"},
+    "/api/v1/cases/{case_id}/referrals": {"get", "post"},
+    "/api/v1/referrals/{referral_id}": {"get"},
     "/api/v1/authorization/self": {"get"},
     "/api/v1/cases": {"post"},
     "/api/v1/cases/{case_id}": {"get"},
@@ -69,7 +71,7 @@ def validate_http(base_url: str) -> None:
     status, _ = request(base_url, "/api/v1/authorization/self")
     if status != 401:
         raise RuntimeError("Anonymous authorization inspection did not fail closed")
-    for excluded in ("enrollments", "referrals", "providers", "outcomes", "emergencies", "ai"):
+    for excluded in ("enrollments", "providers", "outcomes", "emergencies", "ai"):
         for method in ("GET", "POST"):
             status, _ = request(
                 base_url, f"/api/v1/{excluded}", method, {} if method == "POST" else None
@@ -79,6 +81,27 @@ def validate_http(base_url: str) -> None:
     status, body = request(base_url, f"/api/v1/cases/{uuid4()}")
     if status != 401:
         raise RuntimeError("Anonymous business read did not fail closed")
+    case_id, referral_id = uuid4(), uuid4()
+    status, _ = request(
+        base_url,
+        f"/api/v1/cases/{case_id}/referrals",
+        "POST",
+        {
+            "source_need_observation_id": str(uuid4()),
+            "expected_current_assignment_id": str(uuid4()),
+            "reason": "record-only smoke",
+        },
+    )
+    if status != 401:
+        raise RuntimeError("Anonymous Referral recording did not fail closed")
+    for path in (f"/api/v1/cases/{case_id}/referrals", f"/api/v1/referrals/{referral_id}"):
+        status, _ = request(base_url, path)
+        if status != 401:
+            raise RuntimeError("Anonymous Referral read did not fail closed")
+    for action in ("accept", "reject", "dispatch", "complete", "cancel", "escalate", "corrections"):
+        status, _ = request(base_url, f"/api/v1/referrals/{referral_id}/{action}", "POST", {})
+        if status != 404:
+            raise RuntimeError("Undecided Referral lifecycle route is reachable")
     print("Stage HTTP smoke passed: readiness, TS-03 routes, anonymous denial and excluded routes")
 
 

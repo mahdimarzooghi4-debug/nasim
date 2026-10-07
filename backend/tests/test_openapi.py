@@ -15,6 +15,8 @@ def app_without_db():
 EXPECTED = {
     "/api/v1/authorization/self": {"get"},
     "/health": {"get"},
+    "/api/v1/cases/{case_id}/referrals": {"get", "post"},
+    "/api/v1/referrals/{referral_id}": {"get"},
     "/api/v1/cases": {"post"},
     "/api/v1/cases/{case_id}": {"get"},
     "/api/v1/cases/{case_id}/workspace": {"get"},
@@ -102,7 +104,7 @@ async def test_every_read_fails_closed_without_context(path):
         transport=httpx.ASGITransport(app=app), base_url="http://test"
     ) as client:
         response = await client.get(
-            path.replace("{case_id}", str(uuid4())),
+            path.replace("{case_id}", str(uuid4())).replace("{referral_id}", str(uuid4())),
             headers={
                 "X-Actor-Id": "caregiver-a",
                 "X-Capabilities": "case.read.oversight",
