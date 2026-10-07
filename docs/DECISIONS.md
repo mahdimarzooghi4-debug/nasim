@@ -104,3 +104,21 @@
 - **قاعده:** `Case Ownership ≠ Authorization` و `Role Title ≠ Permission`.
 - **منبع تصمیم:** تأیید صریح Product Owner در SGP-001، Q3.
 
+## D-0122 — حداقل Data Classهای Case/Profile در TS-03
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / TS-03 Case/Profile Data Boundary
+- **وضعیت:** Accepted
+- **تصمیم:** حداقل Data Classهای موردنیاز TS-03 به این شش گروه محدود می‌شوند:
+  1. Elder identity/reference
+  2. Contact information
+  3. Case administrative context
+  4. Interaction / Monitoring record
+  5. Observation / Need capture
+  6. Caregiver assignment / history
+- **خارج از Scope فعلی TS-03:** Medical dataset، Provider data، Outcome data و AI-training fields.
+- **مرز:** این تصمیم فقط Data Classهای Business را مشخص می‌کند؛ Field-level schema، validation، storage model، identifiers و technical relationships هنوز Technical Decision هستند.
+- **داده و AI:** خارج‌بودن AI-training fields از TS-03 به معنی تصمیم درباره Training Eligibility این Data Classها نیست؛ Training Eligibility همچنان OPEN است.
+- **دسترسی:** این تصمیم هیچ Access Permission ایجاد نمی‌کند؛ Access Boundary جداگانه در Q6 بسته می‌شود.
+- **منبع تصمیم:** تأیید صریح Product Owner در SGP-001، Q4.
+
