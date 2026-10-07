@@ -136,3 +136,91 @@
 - **اثر:** Access برای Actorهای خارج از Scope رد یا Deferred نشده است؛ فقط در TS-03 تعریف نمی‌شود و در Context مربوطه OPEN می‌ماند.
 - **منبع تصمیم:** تأیید صریح Product Owner در SGP-001، Q6.
 
+## D-0124 — اختیار تسریع تصمیم‌گیری تا مرز Code
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / Delivery Governance
+- **وضعیت:** Accepted
+- **تصمیم:** برای تسریع ادامه کار، مالک محصول با گزینه‌های پیشنهادی دستیار در تصمیم‌های باقی‌مانده تا رسیدن به مرز **Code** موافق است و لازم نیست برای هر انتخاب کم‌ریسک و مستند، تأیید جداگانه تکرار شود.
+- **شرط:** این اختیار فقط زمانی معتبر است که تصمیم از اسناد پروژه، Decisionهای Accepted و Scope جاری قابل استنتاج/طراحی باشد و Fact، Policy، عدد، اختیار حقوقی، داده بیرونی، Credential یا تعهد نهادیِ نامعلوم اختراع نشود.
+- **Gate:** هیچ Gate حذف نمی‌شود؛ Business → Technical → Backlog → Sprint همچنان باید به ترتیب ثبت شوند.
+- **توقف اجباری:** اگر تصمیم به داده بیرونی/حقوقی/نهادی واقعی نیاز داشته باشد یا چند گزینه اثر تجاری/حقوقی materially متفاوت داشته باشند و Evidence کافی وجود نداشته باشد، موضوع OPEN می‌ماند.
+- **Code boundary:** طبق توافق قبلی، قبل از ورود به Code باید صریحاً به مالک محصول اعلام شود که ادامه در Codex انجام شود.
+- **منبع تصمیم:** پیام صریح مالک محصول: «من با همه تصمیمات تو موافقم زودتر کار تموم کن».
+
+## D-0125 — Correction / History در TS-03
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / TS-03 Record Integrity
+- **وضعیت:** Accepted
+- **تصمیم:** هیچ Correction در Case/Profile/Interaction/Observation نباید مقدار قبلی را به‌صورت Silent Overwrite حذف کند.
+- **History:** مقدار/نسخه قبلی باید قابل ردیابی باقی بماند.
+- **Correction metadata:** هر Correction باید حداقل Actor + Time + Reason را ثبت کند.
+- **Provenance:** هر Provenance/Evidence link مرتبط باید در زنجیره اصلاح حفظ شود.
+- **مرز فنی:** روش دقیق پیاده‌سازی مانند append-only revision، temporal model یا history table یک Technical Decision است.
+- **منبع تصمیم:** پیشنهاد ثبت‌شده در SGP-001 Q5، پذیرفته‌شده تحت D-0124.
+
+## D-0126 — Deferral محدودِ Named Role Mapping برای Assignment
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / TS-03 → TS-05 Boundary
+- **وضعیت:** Accepted
+- **تصمیم:** نگاشت دقیق «نقش بالادستی/عملیاتی مجاز» برای Assignment/Reassignment به یک Role/Permission نام‌گذاری‌شده، از TS-03 خارج و به **TS-05 — Identity / Role / Authorization Foundation** منتقل می‌شود.
+- **Owner:** Product Owner.
+- **Future Gate:** TS-05 Slice Gate.
+- **Constraint for TS-03:** Technical فقط می‌تواند یک capability/authorization predicate انتزاعی برای Assignment/Reassignment طراحی کند و حق ندارد عنوان شغلی مشخصی را به‌عنوان Permission نهایی Hard-code کند.
+- **اثر:** TS-03 می‌تواند با Business authority class تعریف‌شده در D-0121 جلو برود، بدون اینکه RBAC نهایی اختراع شود.
+
+## D-0012 — Caregiver Base Responsibility Boundary
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / Roles & Authority
+- **وضعیت:** Accepted
+- **تصمیم:** دامنه پایه سالمندیار شامل ارتباط، پایش، ثبت، هماهنگی، Referral و Follow-up است.
+- **مرز:** از این مسئولیت‌ها اختیار تخصصی پزشکی/درمانی، اختیار مالی، Provider activation یا Eligibility نهایی استنتاج نمی‌شود.
+- **منبع:** DC-003؛ Source-supported boundary؛ پذیرفته‌شده تحت D-0124.
+
+## D-0013 — Role Title Does Not Create Permission
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / Roles & Authority
+- **وضعیت:** Accepted
+- **تصمیم:** عنوان شغلی یا جایگاه در مسیر رشد، به‌تنهایی Permission یا Approval Right ایجاد نمی‌کند.
+- **قاعده:** Authority هر سطح باید در Authority Matrix مستقل تصویب شود.
+- **منبع:** DC-003؛ governance-safe boundary؛ پذیرفته‌شده تحت D-0124.
+
+## D-0014 — System Is Not Independent Business Authority
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / System Authority
+- **وضعیت:** Accepted
+- **تصمیم:** سامانه قواعد مصوب را اجرا و ثبت می‌کند و به‌صرف خودکار بودن Workflow، صاحب مستقل Business Decision Right نمی‌شود.
+- **منبع:** DC-003؛ پذیرفته‌شده تحت D-0124.
+
+## D-0015 — Human / System / AI / Automation Traceability
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / Audit & AI Governance
+- **وضعیت:** Accepted
+- **تصمیم:** Actionهای مهم نسیم باید از نظر منشأ Human / System / AI / Automation قابل تفکیک و Audit باشند.
+- **قاعده:** AI suggestion، System execution و Human decision نباید به‌صورت یک Actor مبهم ثبت شوند.
+- **منبع:** DC-003؛ همسو با D-0004/D-0005؛ پذیرفته‌شده تحت D-0124.
+
+## D-0021 — Purpose-Limited Data Use
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / Data Governance
+- **وضعیت:** Accepted
+- **تصمیم:** هر Data Class فقط برای Purpose مصوب استفاده می‌شود.
+- **قاعده:** Service Delivery، Reporting، AI Runtime و AI Training Purposeهای مستقل‌اند و مجوز یکی، مجوز دیگری نیست.
+- **منبع:** DC-005؛ پذیرفته‌شده تحت D-0124.
+
+## D-0028 — Provenance Must Be Preserved
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Product / Data Governance / Audit
+- **وضعیت:** Accepted
+- **تصمیم:** منشأ داده باید میان Elder، Family، Caregiver، Provider، System، AI و Human-reviewed AI قابل تفکیک و در Audit/Dataset lineage حفظ شود.
+- **مرز:** این تصمیم به‌خودی‌خود Access یا Training Eligibility ایجاد نمی‌کند.
+- **منبع:** DC-005؛ پذیرفته‌شده تحت D-0124.
+
