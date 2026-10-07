@@ -117,7 +117,6 @@ class ProviderCandidates:
             return ProviderCandidateView.model_validate(row)
 
 
-
 class ProviderQualificationEvidence:
     def __init__(
         self,
