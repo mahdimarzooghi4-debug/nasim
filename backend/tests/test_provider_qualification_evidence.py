@@ -125,13 +125,16 @@ async def test_record_qualification_evidence_foundation_only(
     candidate_id,
     admin_engine,
 ):
-    before_candidate = None
     async with admin_engine.connect() as conn:
         before_candidate = (
             await conn.execute(
-                select(ProviderCandidateRecord).where(ProviderCandidateRecord.id == candidate_id)
+                select(
+                    ProviderCandidateRecord.id,
+                    ProviderCandidateRecord.display_name,
+                    ProviderCandidateRecord.registered_at,
+                ).where(ProviderCandidateRecord.id == candidate_id)
             )
-        ).scalar_one()
+        ).one()
 
     result = await qualification_service.record(
         candidate_id, command(), qualification_actor, "record-1"
@@ -162,9 +165,13 @@ async def test_record_qualification_evidence_foundation_only(
         )
         after_candidate = (
             await conn.execute(
-                select(ProviderCandidateRecord).where(ProviderCandidateRecord.id == candidate_id)
+                select(
+                    ProviderCandidateRecord.id,
+                    ProviderCandidateRecord.display_name,
+                    ProviderCandidateRecord.registered_at,
+                ).where(ProviderCandidateRecord.id == candidate_id)
             )
-        ).scalar_one()
+        ).one()
 
     assert payload["provider_qualification_evidence_id"] == result["id"]
     assert payload["provider_candidate_id"] == str(candidate_id)
@@ -172,9 +179,7 @@ async def test_record_qualification_evidence_foundation_only(
     assert "evidence_reference" not in payload
     assert audit_case is None
     assert outbox_case is None
-    assert before_candidate.id == after_candidate.id
-    assert before_candidate.display_name == after_candidate.display_name
-    assert before_candidate.registered_at == after_candidate.registered_at
+    assert before_candidate == after_candidate
 
 
 @pytest.mark.parametrize(
