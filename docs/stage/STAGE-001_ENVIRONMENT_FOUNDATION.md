@@ -167,12 +167,11 @@ Workflow credentials are explicitly public **CI-only sentinel values** used to i
 its disposable local databases. They are not Hosted Stage secrets and are never promoted.
 The workflow does not publish an image, provision infrastructure, deploy or approve a gate.
 PRs do not receive hosted credentials. CI cancellation isolates each run's Stage project by
-run ID/attempt. This cloud machine currently rejects the CONNECT request to `api.github.com` with proxy
-403 before GitHub can respond. The existing injected GitHub binding was preserved; no
-duplicate token was requested. The required API hostname was added to the environment
-configuration draft for review/activation. This does not prove the network policy is
-already applied or a hosted run succeeded. GitHub-hosted workflow results must be checked for the pushed SHA during
-Stage Review; local execution evidence does not claim a hosted Actions run passed.
+run ID/attempt. GitHub-hosted workflow results must be checked for the exact pushed SHA
+during Stage Review; local execution evidence alone does not claim an Actions run passed.
+API inspection initially encountered a managed-proxy CONNECT 403. Access subsequently
+became available using the existing injected GitHub binding; no duplicate token was
+requested. The first pushed commit triggered the workflow and its run was inspected.
 
 ## Validation evidence from this change
 
