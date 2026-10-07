@@ -39,6 +39,7 @@ async def grant_runtime_access(migration_url: str, app_role: str) -> None:
                 "outbox_event",
                 "idempotency_record",
                 "referral_record",
+                "provider_candidate_record",
             )
             for table in tables:
                 unsafe = await connection.scalar(
