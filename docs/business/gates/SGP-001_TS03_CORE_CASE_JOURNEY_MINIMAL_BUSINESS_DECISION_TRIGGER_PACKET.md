@@ -143,18 +143,20 @@ Decision Record: **D-0120**.
 
 Decision Record: **D-0121**.
 
-### Q4 — Minimum Case/Profile information
-Before Data Model design, Business must identify only the minimum Data Classes needed by this Slice.
-
-Source-supported categories may include:
-- elder identity/reference
-- contact information
+### Q4 — Minimum Case/Profile information — RESOLVED
+**Accepted minimum Data Classes:**
+- Elder identity/reference
+- Contact information
 - Case administrative context
-- interaction/monitoring record
-- observation / Need capture
-- caregiver assignment/history
+- Interaction / Monitoring record
+- Observation / Need capture
+- Caregiver assignment / history
 
-Exact fields are not defined in this packet.
+**Outside current TS-03:** Medical dataset، Provider data، Outcome data و AI-training fields.
+
+Field-level schema remains Technical; access and Training Eligibility remain separate decisions.
+
+Decision Record: **D-0122**.
 
 ### Q5 — Correction / history
 Need explicit rule for whether Case/Profile/Observation corrections:
@@ -207,7 +209,7 @@ Close in this order:
 1. Q1 — Case entry boundary — **RESOLVED by D-0119**
 2. Q2 — early journey scope — **RESOLVED by D-0120**
 3. Q3 — Case operational owner / assignment — **RESOLVED by D-0121**
-4. Q4 — minimum Case/Profile Data Classes
+4. Q4 — minimum Case/Profile Data Classes — **RESOLVED by D-0122**
 5. Q5 — correction/history
 6. Q6 — minimum access boundary
 7. review Context-Triggered Candidate Decisions for explicit acceptance/modification
@@ -222,7 +224,7 @@ Only one small decision set should be discussed at a time.
 - SGP-001: **ACTIVE**
 - Context-triggered Candidate Decisions still active for TS-03: D-0012, D-0013, D-0014, D-0015, D-0021, D-0028
 - Resolved boundary references: D-0006 released by D-0119; D-0017 bounded by D-0120; D-0016 no longer blocks TS-03 case ownership because D-0121 establishes the slice-specific owner/assignment rule.
-- Accepted decisions created from this packet: **D-0119, D-0120, D-0121**
+- Accepted decisions created from this packet: **D-0119, D-0120, D-0121, D-0122**
 - Explicitly Deferred from this packet: **0**
 - Unrelated decisions: **OPEN / unchanged**
 - TS-03 Slice Gate: **NOT YET READY**
@@ -232,16 +234,13 @@ Only one small decision set should be discussed at a time.
 
 ## 10. Next Product Owner question
 
-**Q4 — Minimum Case/Profile Data Classes**
+**Q5 — Correction / History**
 
-Proposed minimum for TS-03:
-- Elder identity/reference
-- contact information
-- Case administrative context
-- interaction/monitoring record
-- Observation / Need capture
-- caregiver assignment/history
+Proposal for TS-03:
+- correction never silently overwrites prior value;
+- prior value/history is preserved;
+- every correction records **Actor + Time + Reason**;
+- if the corrected item has provenance/evidence, the link to that provenance/evidence is preserved;
+- exact technical mechanism (event log, version table, temporal model, etc.) remains a Technical Decision.
 
-No detailed fields, medical dataset, Provider data, Outcome data or AI-training fields are included yet.
-
-**Confirm this minimum set or modify it.**
+**Confirm or modify this correction/history rule.**
