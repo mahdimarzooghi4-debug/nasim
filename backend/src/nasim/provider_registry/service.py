@@ -11,7 +11,7 @@ from nasim.domain.contracts import Page
 from nasim.domain.errors import DomainError
 from nasim.identity_context.contracts import ActorContext, ActorType, require_capability
 from nasim.infrastructure.provider_candidate_effects import ProviderCandidateEffects, digest
-from nasim.provider_registry.contracts import RegisterProviderCandidate, ProviderCandidateView
+from nasim.provider_registry.contracts import ProviderCandidateView, RegisterProviderCandidate
 from nasim.provider_registry.models import ProviderCandidateRecord
 
 
