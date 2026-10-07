@@ -81,9 +81,9 @@ Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
 ### CT-D-0016 — Single Point of Contact
 Candidate direction: elder should have a close, traceable contact point and caregiver is the primary coordination interface; substitution/change of Case Owner remains separate.
 
-Reason triggered: TS-03 includes Case responsibility/handoff.
+Initial trigger reason: TS-03 includes Case responsibility/handoff.
 
-Status: **CONTEXT TRIGGERED — NOT ACCEPTED**
+**Q3 resolution:** D-0121 establishes the caregiver as Primary Operational Case Owner / Contact for TS-03 and requires authorized assignment/reassignment with reason + audit. D-0016 remains **NOT ACCEPTED AS A WHOLE**; its broader journey meaning remains reference material.
 
 ### CT-D-0017 — High-level Elder Journey
 Candidate direction: Contact → Case/Profile → Monitoring → Need → Initial Assessment → Referral if needed → Service → Follow-up → Satisfaction → Continued Monitoring.
@@ -134,14 +134,14 @@ Referral، Service Delivery، Follow-up، Satisfaction، Reassessment، Need Res
 
 Decision Record: **D-0120**.
 
-### Q3 — Case operational owner
-Need explicit Business rule for:
-- whether caregiver is the primary operational Case owner/contact
-- who assigns the initial caregiver
-- who can reassign/substitute
-- whether reassignment requires reason/audit
+### Q3 — Case operational owner — RESOLVED
+**Accepted:**
+- سالمندیار is the Primary Operational Case Owner / Contact.
+- initial assignment and reassignment/substitution are performed by an authorized supervisory/operations function.
+- every reassignment/substitution requires reason + actor + time + audit trail.
+- exact mapping of the authorized function to a named Role/Permission remains OPEN for Identity/Authorization.
 
-No permission model is inferred from job title.
+Decision Record: **D-0121**.
 
 ### Q4 — Minimum Case/Profile information
 Before Data Model design, Business must identify only the minimum Data Classes needed by this Slice.
@@ -206,7 +206,7 @@ Technical must not assume:
 Close in this order:
 1. Q1 — Case entry boundary — **RESOLVED by D-0119**
 2. Q2 — early journey scope — **RESOLVED by D-0120**
-3. Q3 — Case operational owner / assignment
+3. Q3 — Case operational owner / assignment — **RESOLVED by D-0121**
 4. Q4 — minimum Case/Profile Data Classes
 5. Q5 — correction/history
 6. Q6 — minimum access boundary
@@ -220,9 +220,9 @@ Only one small decision set should be discussed at a time.
 - Selected Technical Slice: **TS-03**
 - TS-03 status: **SELECTED FOR GATE PREPARATION**
 - SGP-001: **ACTIVE**
-- Context-triggered Candidate Decisions still active for TS-03: D-0012, D-0013, D-0014, D-0015, D-0016, D-0021, D-0028
-- Resolved boundary references: D-0006 released by D-0119; D-0017 no longer blocks TS-03 later Journey scope because D-0120 bounds the Slice.
-- Accepted decisions created from this packet: **D-0119, D-0120**
+- Context-triggered Candidate Decisions still active for TS-03: D-0012, D-0013, D-0014, D-0015, D-0021, D-0028
+- Resolved boundary references: D-0006 released by D-0119; D-0017 bounded by D-0120; D-0016 no longer blocks TS-03 case ownership because D-0121 establishes the slice-specific owner/assignment rule.
+- Accepted decisions created from this packet: **D-0119, D-0120, D-0121**
 - Explicitly Deferred from this packet: **0**
 - Unrelated decisions: **OPEN / unchanged**
 - TS-03 Slice Gate: **NOT YET READY**
@@ -232,4 +232,16 @@ Only one small decision set should be discussed at a time.
 
 ## 10. Next Product Owner question
 
-**Q3 — Case operational owner / assignment:** should the سالمندیار be the primary operational Case owner/contact for TS-03? If yes, who assigns the initial caregiver, who may reassign/substitute, and should every reassignment require reason + audit?
+**Q4 — Minimum Case/Profile Data Classes**
+
+Proposed minimum for TS-03:
+- Elder identity/reference
+- contact information
+- Case administrative context
+- interaction/monitoring record
+- Observation / Need capture
+- caregiver assignment/history
+
+No detailed fields, medical dataset, Provider data, Outcome data or AI-training fields are included yet.
+
+**Confirm this minimum set or modify it.**
