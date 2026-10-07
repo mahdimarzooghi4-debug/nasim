@@ -64,12 +64,6 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(
-        "ix_provider_qualification_review_request_record_provider_candidate_id",
-        "provider_qualification_review_request_record",
-        ["provider_candidate_id"],
-        unique=False,
-    )
-    op.create_index(
         "ix_provider_qualification_review_requested",
         "provider_qualification_review_request_record",
         ["provider_candidate_id", "requested_at", "id"],
@@ -228,10 +222,6 @@ def downgrade() -> None:
 
     op.drop_index(
         "ix_provider_qualification_review_requested",
-        table_name="provider_qualification_review_request_record",
-    )
-    op.drop_index(
-        "ix_provider_qualification_review_request_record_provider_candidate_id",
         table_name="provider_qualification_review_request_record",
     )
     op.drop_table("provider_qualification_review_request_record")
