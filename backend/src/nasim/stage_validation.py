@@ -162,7 +162,17 @@ def validate_http(base_url: str) -> None:
         status, _ = request(base_url, path)
         if status != 401:
             raise RuntimeError("Anonymous qualification review request read did not fail closed")
-    for action in ("assign", "review", "decide", "qualify", "approve", "reject", "activate", "close", "reopen"):
+    for action in (
+        "assign",
+        "review",
+        "decide",
+        "qualify",
+        "approve",
+        "reject",
+        "activate",
+        "close",
+        "reopen",
+    ):
         status, _ = request(
             base_url,
             f"/api/v1/provider-qualification-review-requests/{review_request_id}/{action}",
