@@ -237,7 +237,6 @@ class ProviderQualificationEvidence:
             return ProviderQualificationEvidenceView.model_validate(row)
 
 
-
 class ProviderQualificationReviewRequests:
     def __init__(
         self,
@@ -332,8 +331,7 @@ class ProviderQualificationReviewRequests:
             selected = rows[:limit]
             return Page[ProviderQualificationReviewRequestView](
                 items=[
-                    ProviderQualificationReviewRequestView.model_validate(row)
-                    for row in selected
+                    ProviderQualificationReviewRequestView.model_validate(row) for row in selected
                 ],
                 next_cursor=encode_cursor(selected[-1].requested_at, selected[-1].id)
                 if len(rows) > limit
