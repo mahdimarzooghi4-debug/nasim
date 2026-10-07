@@ -109,19 +109,12 @@ async def evidence_counts(admin_engine) -> tuple[int, int, int, int]:
             await conn.scalar(
                 select(func.count())
                 .select_from(OutboxEvent)
-                .where(
-                    OutboxEvent.event_type
-                    == "provider.qualification_evidence_recorded.v1"
-                )
+                .where(OutboxEvent.event_type == "provider.qualification_evidence_recorded.v1")
             ),
             await conn.scalar(
                 select(func.count())
                 .select_from(IdempotencyRecord)
-                .where(
-                    IdempotencyRecord.operation.like(
-                        "provider.qualification_evidence.record.%"
-                    )
-                )
+                .where(IdempotencyRecord.operation.like("provider.qualification_evidence.record.%"))
             ),
         )
 
@@ -136,9 +129,7 @@ async def test_record_qualification_evidence_foundation_only(
     async with admin_engine.connect() as conn:
         before_candidate = (
             await conn.execute(
-                select(ProviderCandidateRecord).where(
-                    ProviderCandidateRecord.id == candidate_id
-                )
+                select(ProviderCandidateRecord).where(ProviderCandidateRecord.id == candidate_id)
             )
         ).scalar_one()
 
@@ -156,8 +147,7 @@ async def test_record_qualification_evidence_foundation_only(
     async with admin_engine.connect() as conn:
         payload = await conn.scalar(
             select(OutboxEvent.payload).where(
-                OutboxEvent.event_type
-                == "provider.qualification_evidence_recorded.v1"
+                OutboxEvent.event_type == "provider.qualification_evidence_recorded.v1"
             )
         )
         audit_case = await conn.scalar(
@@ -167,15 +157,12 @@ async def test_record_qualification_evidence_foundation_only(
         )
         outbox_case = await conn.scalar(
             select(OutboxEvent.case_id).where(
-                OutboxEvent.event_type
-                == "provider.qualification_evidence_recorded.v1"
+                OutboxEvent.event_type == "provider.qualification_evidence_recorded.v1"
             )
         )
         after_candidate = (
             await conn.execute(
-                select(ProviderCandidateRecord).where(
-                    ProviderCandidateRecord.id == candidate_id
-                )
+                select(ProviderCandidateRecord).where(ProviderCandidateRecord.id == candidate_id)
             )
         ).scalar_one()
 
@@ -348,9 +335,7 @@ async def test_idempotent_retry_and_payload_conflict(
         candidate_id, command(), qualification_actor, "same-key"
     )
     assert (
-        await qualification_service.record(
-            candidate_id, command(), qualification_actor, "same-key"
-        )
+        await qualification_service.record(candidate_id, command(), qualification_actor, "same-key")
         == first
     )
 
@@ -398,12 +383,8 @@ async def test_record_race_is_serialized(
     admin_engine,
 ):
     results = await asyncio.gather(
-        qualification_service.record(
-            candidate_id, command(), qualification_actor, "race"
-        ),
-        qualification_service.record(
-            candidate_id, command(), qualification_actor, "race"
-        ),
+        qualification_service.record(candidate_id, command(), qualification_actor, "race"),
+        qualification_service.record(candidate_id, command(), qualification_actor, "race"),
     )
     assert results[0] == results[1]
     assert await evidence_counts(admin_engine) == (1, 1, 1, 1)
@@ -457,15 +438,11 @@ async def test_atomic_rollback_after_effects_flush(
 
     monkeypatch.setattr(qualification_service.effects, "append", fail_after_flush)
     with pytest.raises(RuntimeError):
-        await qualification_service.record(
-            candidate_id, command(), qualification_actor, "rollback"
-        )
+        await qualification_service.record(candidate_id, command(), qualification_actor, "rollback")
     assert await evidence_counts(admin_engine) == (0, 0, 0, 0)
 
     monkeypatch.setattr(qualification_service.effects, "append", original)
-    await qualification_service.record(
-        candidate_id, command(), qualification_actor, "rollback"
-    )
+    await qualification_service.record(candidate_id, command(), qualification_actor, "rollback")
     assert await evidence_counts(admin_engine) == (1, 1, 1, 1)
 
 
@@ -545,11 +522,7 @@ async def test_read_list_detail_and_pagination(
     ).evidence_label == "One"
 
     no_read = qualification_actor.model_copy(
-        update={
-            "capabilities": frozenset(
-                {"provider_qualification_evidence.record"}
-            )
-        }
+        update={"capabilities": frozenset({"provider_qualification_evidence.record"})}
     )
     with pytest.raises(DomainError) as error:
         await qualification_service.list(candidate_id, no_read)
@@ -557,9 +530,7 @@ async def test_read_list_detail_and_pagination(
 
 
 async def test_http_anonymous_denial_and_no_qualification_decision_routes():
-    app = create_app(
-        Settings(database_url=PostgresDsn("postgresql://unused@127.0.0.1:1/unused"))
-    )
+    app = create_app(Settings(database_url=PostgresDsn("postgresql://unused@127.0.0.1:1/unused")))
     candidate_id = uuid4()
     evidence_id = uuid4()
     try:
@@ -582,9 +553,7 @@ async def test_http_anonymous_denial_and_no_qualification_decision_routes():
                 )
             ).status_code == 401
             assert (
-                await client.get(
-                    f"/api/v1/provider-qualification-evidence/{evidence_id}"
-                )
+                await client.get(f"/api/v1/provider-qualification-evidence/{evidence_id}")
             ).status_code == 401
 
             for action in (
@@ -623,9 +592,7 @@ async def test_http_record_with_trusted_context(
         "http-candidate",
     )
     candidate_id = UUID(candidate["id"])
-    app = create_app(
-        Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"]))
-    )
+    app = create_app(Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"])))
     app.dependency_overrides[get_actor] = lambda: qualification_actor
     try:
         async with httpx.AsyncClient(
@@ -649,9 +616,7 @@ async def test_http_record_with_trusted_context(
             assert listed.status_code == 200
             assert listed.json()["items"][0]["id"] == evidence_id
 
-            detail = await client.get(
-                f"/api/v1/provider-qualification-evidence/{evidence_id}"
-            )
+            detail = await client.get(f"/api/v1/provider-qualification-evidence/{evidence_id}")
             assert detail.status_code == 200
             assert detail.json()["provider_candidate_id"] == str(candidate_id)
     finally:
