@@ -119,7 +119,7 @@
 ## Current state
 
 - Stage: **Business — Technical Entry Preparation**
-- Accepted: D-0001…D-0005 + D-0118 + D-0119 + D-0120
+- Accepted: D-0001…D-0005 + D-0118 + D-0119 + D-0120 + D-0121
 - D-0006…D-0117: هنوز Accepted نشده‌اند.
 - BR-003 P1…P6: **OPEN / PARKED**
 - BX-001…BX-015: Exploration / Technical-entry candidate mapping completed.
@@ -127,7 +127,8 @@
 - Global Business → Technical Gate: **NOT PASSED**
 - TS-03 Q1 Case Entry Boundary: **RESOLVED — starts after Enrollment (D-0119)**
 - TS-03 Q2 Early Journey Scope: **RESOLVED — Contact → Case/Profile → Monitoring → Observation / Need capture (D-0120)**
-- Next TS-03 question: **Q3 — Case Operational Owner / Assignment**
+- TS-03 Q3 Case Operational Owner / Assignment: **RESOLVED — caregiver primary owner/contact; authorized supervisory/operations assignment; reassignment reason + audit (D-0121)**
+- Next TS-03 question: **Q4 — Minimum Case/Profile Data Classes**
 - کار غیرالزام‌آور Documentation/Gate Preparation می‌تواند ادامه یابد.
 
 ## Current next path
