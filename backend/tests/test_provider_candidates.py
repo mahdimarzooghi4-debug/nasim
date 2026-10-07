@@ -138,9 +138,7 @@ def test_registration_text_is_nonblank(field, value):
         RegisterProviderCandidate(**body)
 
 
-async def test_duplicate_display_names_are_allowed(
-    provider_service, provider_actor, admin_engine
-):
+async def test_duplicate_display_names_are_allowed(provider_service, provider_actor, admin_engine):
     first = await provider_service.register(command("Same Name"), provider_actor, "one")
     second = await provider_service.register(command("Same Name"), provider_actor, "two")
     assert first["id"] != second["id"]
