@@ -1,16 +1,16 @@
 # BR-002 — Pilot-specific Decision Input Sheet
 
-- **Status:** AWAITING PRODUCT OWNER INPUT
+- **Status:** REFERENCE / OPEN INPUT SHEET
 - **Stage:** Business — Decision Closure
 - **Date:** 2026-10-06
 - **Source basis:** BR-001 + OPEN_QUESTIONS.md + DC-001…DC-015 + DA-001…DA-008
-- **Purpose:** جمع‌آوری فقط مقادیر و انتخاب‌های واقعی Phase/Pilot که از Concept و اسناد موجود قابل استنتاج نیستند و برای Technical Entry باید توسط مالک محصول تعیین یا صریحاً Deferred شوند.
+- **Purpose:** نگهداری مقادیر و انتخاب‌های واقعی Phase/Pilot که از Concept قابل استنتاج نیستند؛ هر فیلد فقط وقتی Context/Slice مرتبط آن را نیاز داشته باشد برای تصمیم فعال می‌شود.
 
-> این سند هیچ Candidate Decision از D-0006…D-0117 را Accepted نمی‌کند و جای DA-008 را نمی‌گیرد. پاسخ‌های این Sheet فقط پس از تأیید صریح مالک محصول به Decision Register یا Deferral Register تبدیل می‌شوند.
+> این سند هیچ Candidate Decision از D-0006…D-0117 را Accepted نمی‌کند و جای DA-008 را نمی‌گیرد. طبق D-0118، تکمیل کل Sheet پیش‌شرط همه Technical work نیست؛ پاسخ فقط وقتی لازم است که Context/Slice مربوطه آن فیلد را Trigger کند و فقط پس از تأیید صریح مالک محصول به Decision/Deferral Record تبدیل می‌شود.
 
 ## 1. How to answer
 
-برای هر مورد یکی از این پاسخ‌ها لازم است:
+وقتی یک مورد Context Triggered شد، یکی از پاسخ‌های زیر لازم است. موارد نامرتبط می‌توانند OPEN باقی بمانند:
 
 - **VALUE:** مقدار/انتخاب نهایی
 - **POLICY:** قاعده نهایی
@@ -541,10 +541,13 @@ Recommended closure sequence:
 
 ## 26. Gate status
 
-تا وقتی پاسخ‌های Blocking این Sheet به Decisionهای Accepted یا Deferralهای صریح تبدیل نشده‌اند:
+وجود فیلدهای بدون پاسخ در این Sheet به‌تنهایی همه Technical work را Block نمی‌کند.
 
-**Business → Technical: NOT READY**
+طبق D-0118:
+- فقط فیلدهای لازم برای Technical Slice انتخاب‌شده Context Triggered می‌شوند.
+- همان فیلدها باید قبل از Gate آن Slice Accepted یا صریحاً Deferred شوند.
+- سایر P-itemها OPEN می‌مانند.
 
-و:
+**Global Business → Technical: NOT PASSED**
 
-**BR-002: WAITING FOR PRODUCT OWNER INPUT**
+**BR-002: REFERENCE / OPEN INPUT SHEET**
