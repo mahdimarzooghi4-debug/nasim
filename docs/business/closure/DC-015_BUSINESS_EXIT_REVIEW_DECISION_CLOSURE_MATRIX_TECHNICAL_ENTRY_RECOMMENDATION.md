@@ -3,7 +3,7 @@
 - **Status:** DRAFT EXIT REVIEW
 - **Stage:** Business — Decision Closure
 - **Date:** 2026-10-06
-- **Source basis:** D-0001…D-0005 + BC-001…BC-025 + DC-001…DC-014
+- **Source basis:** D-0001…D-0005 + D-0118 + BC-001…BC-025 + DC-001…DC-014 + BX-014 + BX-015
 - **Purpose:** جمع‌بندی Business، تفکیک «پوشش مستند» از «تصمیم پذیرفته‌شده»، شناسایی Blockerهای واقعی و ارائه Recommendation برای ورود یا عدم ورود به Technical.
 
 > این سند Decision Register نیست و هیچ Candidate Decision را Accepted نمی‌کند. Decision Register همچنان مرجع رسمی Acceptance است.
@@ -20,7 +20,7 @@
 
 **NOT CLOSED**
 
-Decision Register در زمان این Review فقط D-0001 تا D-0005 را به‌عنوان **Accepted** دارد.
+Decision Register در وضعیت به‌روزشده D-0001 تا D-0005 و D-0118 را به‌عنوان **Accepted** دارد.
 
 ### Technical Entry Gate recommendation
 
@@ -57,7 +57,7 @@ Decision Register در زمان این Review فقط D-0001 تا D-0005 را ب�
 
 ### Summary
 
-- Accepted decisions: **D-0001…D-0005**
+- Accepted decisions: **D-0001…D-0005 + D-0118**
 - Prepared candidate decisions: **D-0006…D-0117**
 - Candidate count: **112**
 - Automatic acceptance from this matrix: **0**
@@ -290,7 +290,7 @@ No Technical design should violate these invariants unless a later Accepted Deci
 
 | Required artifact | Current assessment |
 |---|---|
-| Decision Register | EXISTS — only D-0001…D-0005 Accepted |
+| Decision Register | EXISTS — D-0001…D-0005 + D-0118 Accepted |
 | Business Contract set | EXISTS — BC-001…BC-025, currently Draft |
 | Decision Closure Packets | EXISTS — DC-001…DC-014 |
 | Phase/Pilot baseline | PARTIAL — decision candidates prepared |
@@ -311,41 +311,35 @@ No Technical design should violate these invariants unless a later Accepted Deci
 
 ## 8. Technical Entry recommendation
 
-### Recommendation: DO NOT ENTER FORMAL TECHNICAL YET
+### Recommendation: GLOBAL TECHNICAL ENTRY REMAINS NOT READY
 
-The repository is now in a strong position for a **Decision Acceptance Round**, not for architecture freeze.
+D-0118 supersedes the old operational assumption that the next step must be a bulk acceptance round.
 
-Starting formal Technical now would still force invention of:
-- Pilot scope
-- active services
-- authority
-- access/legal boundaries
-- AI governance owners
-- Training Eligibility
-- Provider rules
-- financial scope
-- mandatory integrations
-- outage behavior
+The repository is now ready for **bounded Technical-entry preparation**:
 
-That would violate D-0003 and BC-025.
+`Select Technical Slice → Resolve only slice blockers → Slice Gate → Technical for that Slice`
+
+Starting Technical for an unselected or ungated scope would still force Business guessing and remains prohibited.
+
+Candidate D-0006…D-0117 remain available as references when a selected Slice actually triggers them.
 
 ## 9. Recommended next action — Product Owner Decision Acceptance Round
 
-The next Business action should not be another broad exploratory Contract.
+The current default next action is **not** bulk review of D-0006…D-0117.
 
-It should be a structured review of Candidate Decisions D-0006…D-0117 in batches, with each candidate marked:
+Current path under D-0118:
 
-- **ACCEPT**
-- **ACCEPT WITH MODIFICATION**
-- **REJECT**
-- **DEFER FOR CURRENT PILOT**
-- **MERGE WITH ANOTHER DECISION**
+1. Select one bounded Technical Slice explicitly.
+2. Use BX-015 to identify the smallest required Business decision set.
+3. Move only that set to CONTEXT TRIGGERED.
+4. Record accepted decisions or explicit deferrals.
+5. Run a Slice Gate.
 
-Accepted decisions must then be written into `docs/DECISIONS.md`.
+DA-001…DA-008 remain useful reference packets if their decisions are triggered by the selected Slice.
 
-## 10. Recommended acceptance batches
+## 10. Historical acceptance batches — reference only
 
-To minimize decision fatigue, review in these batches:
+The following batches remain available as reference groupings, but D-0118 means Product Owner is not required to process them in bulk or in this order:
 
 1. **Pilot Scope + Service Boundary** — D-0006…D-0010
 2. **Roles + Journey + Safety** — D-0011…D-0020
@@ -364,9 +358,9 @@ After each batch:
 
 Business → Technical may be recommended **READY** or **READY WITH EXPLICIT DEFERRALS** only when:
 
-1. Class-A blockers for the Technical Scope are Accepted or explicitly Deferred.
-2. Deferred items have owner, scope and future gate.
-3. Active Pilot scope and service boundary are explicit.
+1. Class-A blockers actually required by the selected Technical Scope/Slice are Accepted or explicitly Deferred; unrelated decisions may remain OPEN.
+2. Any Deferred item used to pass that Slice has owner, scope and future gate.
+3. Pilot scope/service boundary is explicit only to the extent required by the selected Slice.
 4. Authority and access boundaries are sufficient for Identity/Workflow design.
 5. AI Day-one use cases, forbidden actions, data boundary and governance ownership are explicit.
 6. Training Eligibility boundary is explicit enough to design automated Dataset Lifecycle.
@@ -378,13 +372,24 @@ Business → Technical may be recommended **READY** or **READY WITH EXPLICIT DEF
 ## 12. Current gate record
 
 - **Gate:** Business → Technical
-- **Date:** 2026-10-06
-- **Current outcome:** **NOT READY**
-- **Reason:** Decision candidates exist, but Business acceptance and minimum Pilot-specific choices remain unresolved.
-- **Allowed next activity:** Business Decision Acceptance / Deferral closure.
-- **Not allowed yet:** Formal Technical architecture freeze, implementation-ready backlog, or code based on unresolved Business assumptions.
+- **Date:** 2026-10-07
+- **Current global outcome:** **NOT PASSED**
+- **Accepted baseline:** D-0001…D-0005 + D-0118
+- **Selected Technical Slice:** NONE
+- **Reason:** no bounded Slice has been explicitly selected and no Slice Gate Record has passed.
+- **Allowed next activity:** documentation consistency cleanup, explicit bounded Slice selection, then contextual closure of only that Slice's blockers.
+- **Not allowed yet:** global architecture freeze, implementation-ready backlog, or code based on unresolved Business assumptions.
 
 ## 13. Next artifact
+
+No forced Decision Acceptance artifact is required under D-0118.
+
+Current reference path:
+- BX-015 — Technical Entry Slice Candidate Map
+- BX-016 — Gate Preparation / Documentation Consistency Cleanup
+- then explicit Product Owner Slice selection before any Business decision set is triggered.
+
+
 
 **DA-001 — Product Owner Decision Acceptance Round: Pilot Scope + Service Boundary**
 
