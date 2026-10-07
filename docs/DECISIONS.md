@@ -224,3 +224,13 @@
 - **مرز:** این تصمیم به‌خودی‌خود Access یا Training Eligibility ایجاد نمی‌کند.
 - **منبع:** DC-005؛ پذیرفته‌شده تحت D-0124.
 
+## D-0127 — ورود TS-03 به مرحله Technical
+
+- **تاریخ:** 2026-10-07
+- **حوزه:** Delivery Governance / TS-03
+- **وضعیت:** Accepted
+- **تصمیم:** بر اساس SG-001، Slice **TS-03 — Core Case / Journey Foundation** با نتیجه **READY FOR THIS SLICE WITH EXPLICIT DEFERRAL** وارد مرحله **Technical** می‌شود.
+- **Deferral:** Named supervisory Role/Permission mapping مطابق D-0126 به TS-05 منتقل شده است.
+- **مرز:** این تصمیم فقط TS-03 را وارد Technical می‌کند؛ Global Business → Technical Gate برای Sliceهای دیگر Pass نشده است.
+- **قاعده:** هیچ Code تا تکمیل Technical، Product Backlog و Sprint برای TS-03 آغاز نمی‌شود.
+
