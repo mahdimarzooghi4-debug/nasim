@@ -7,6 +7,8 @@
 
 > این سند Decision Register نیست و هیچ تصمیمی را Accepted نمی‌کند. هدف، تبدیل جهت مصوب AI داخلی نسیم به مرزهای قابل تصمیم برای فاز اول است، بدون انتخاب مدل، الگوریتم، Runtime یا معماری Training.
 
+> **Current decision reconciliation (2026-10-08; unmerged Draft PR #10):** D-0031…D-0035 safety/Human Review/model-governance principles are **ACCEPTED**. The first **information-only** elder/caregiver use case D-0135; official source classes/import/publish/classification responsibilities D-0136…D-0141; four-part safe source failure D-0142; and bounded, conditional human follow-up/organizational direction D-0143…D-0146 are accepted **only within their stated Business limits**. **D-0147 explicitly DEFERS only final model/version selection** pending an evidence-based benchmark; it does **not** delay mandatory real Day-one AI or governed automatic Dataset production under D-0004/D-0005. Actual published documents, legal/identity grants, support appointments, Training Eligibility, model evaluation/deployment evidence remain **OPEN**. The original D-0029/D-0030 and D-0031…D-0035 candidate sections below are historical proposal text, not fresh unapproved demands or the binding register. For operative status, use `docs/DECISIONS.md`, [DC-017](DC-017_AI_DAY_ONE_BOUNDED_USE_CASE_DECISION_PACKET.md), [DC-018](DC-018_AI_DAY_ONE_INTEGRATED_PRE_TECHNICAL_READINESS.md), and [DC-019](DC-019_AI_SOURCE_USE_AND_TRAINING_ELIGIBILITY_EVIDENCE_MATRIX.md). Hosted Stage remains UNAVAILABLE under D-0130.
+
 ## 1. Existing accepted direction
 
 طبق D-0004 و D-0005:
@@ -135,7 +137,9 @@ AI نباید خود را Human Actor نشان دهد.
 
 چرخه اول طبق D-0005 خودکار است؛ Promotion در چرخه دوم مستقل و Governance-controlled باقی می‌ماند.
 
-## 11. AI governance decisions still blocking
+## 11. Historical decision-question inventory (current statuses reconciled below)
+
+> The original questions below are retained as a historical inventory. Do **not** interpret every line as wholly OPEN: D-0142 now settles the bounded informational-source safe-response policy, and D-0143…D-0146 partly settle elder follow-up and conditional support functions. Actual human contacts, lawful access and incident/urgency handling are still OPEN.
 
 1. Human Owner هر Use Case
 2. AI Governance owner/body
@@ -152,7 +156,7 @@ AI نباید خود را Human Actor نشان دهد.
 13. exact fail-safe behavior
 14. retention of AI interactions
 
-## 12. Technical decisions intentionally deferred
+## 12. Historical technical non-selections — current status differentiated
 
 این Packet انتخاب نمی‌کند:
 - Model family/type
@@ -166,12 +170,14 @@ AI نباید خود را Human Actor نشان دهد.
 - training orchestration
 - evaluation implementation
 
-این موارد بعد از Business Gate در Technical تصمیم می‌شوند.
+این موارد در این سند انتخاب نشده‌اند. **فقط انتخاب نهایی مدل/نسخه** تحت D-0147 به گیت ارزیابی/Technical Selection آینده صریحاً **DEFERRED** شده است؛ الگوریتم، Runtime، استقرار، ظرفیت و سایر انتخاب‌های فنی صرفاً **NOT SELECTED / OPEN** هستند، نه اینکه همه رسماً Deferred شده باشند. Day-one AI و ساخت خودکار Dataset نسخه‌دارِ داده مجاز طبق D-0004/D-0005 پابرجا هستند و هیچ مدل فرضی/Placeholder آن را محقق نمی‌کند.
 
 ## 13. Gate effect
 
-پذیرش D-0029 تا D-0035 بخش عمده مرز AI Day-one را روشن می‌کند، اما Technical Entry Gate تا تعیین Human Owners، Training Eligibility، Evaluation Policy و Promotion/Rollback Authority همچنان **NOT READY** می‌ماند.
+**CURRENT GATE: NOT READY FOR AI TECHNICAL ENTRY.** D-0029/D-0030 شامل فهرست قابلیت‌های نامزد هستند، **نه Use Caseهای پذیرفته‌شده همگانی**. فقط D-0135 و حدود قبول‌شده D-0031…D-0035، D-0136…D-0146 برقرارند؛ مدل نهایی طبق D-0147 به‌طور محدود Deferred است. نبود مدارک واقعی نشر محتوا، مجوز و Purpose داده، Owner/Channel انسانی، Training Eligibility، Evaluation و Promotion Authority مانع گیت AI است. CI موفق، اسناد آمادگی، یا انتخاب نام مدل هیچ‌کدام مجوز Technical/Code/Stage نیست.
 
-## 14. Next closure packet
+## 14. Successor packages and independence
 
-**DC-007 — Provider Model, Onboarding, Referral Acceptance & Service Evidence Decision Packet**
+Historical follow-on **DC-007 — Provider Model/Onboarding/Referral** is independent of AI and does not close its authority or data-use questions.
+
+The current AI Business trail is [DC-017](DC-017_AI_DAY_ONE_BOUNDED_USE_CASE_DECISION_PACKET.md) → [DC-018](DC-018_AI_DAY_ONE_INTEGRATED_PRE_TECHNICAL_READINESS.md) → [DC-019](DC-019_AI_SOURCE_USE_AND_TRAINING_ELIGIBILITY_EVIDENCE_MATRIX.md). These are preparation/evidence documents, **not** an approved Technical Contract, Dataset Policy, user access grant or runnable AI. Avoid another repetitive decision micro-question; request actual documents, legal/purpose evidence and authorization only when the affected gate needs them.
