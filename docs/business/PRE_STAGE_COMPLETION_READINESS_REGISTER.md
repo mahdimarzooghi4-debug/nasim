@@ -6,7 +6,7 @@
 - **Process:** Business → Technical → Scrum/Product Backlog → Sprint → Code → Code Review → Stage → QA/Testing → Release Approval → Production → Monitoring → Improvement
 - **Baseline:** `main` `f4bb75f1416e6b2dd83af4a9f835b8f1076316b4`, exact-main CI [run #95](https://github.com/mahdimarzooghi4-debug/nasim/actions/runs/37803350724) SUCCESS (migration, test, quality, disposable container smoke)
 - **Stage boundary:** D-0130 — Hosted Stage is currently **UNAVAILABLE**; Stage has **not** been deleted and may not be declared passed based on CI, container smoke, or this register.
-- **Related draft:** [Provider Qualification Business Packet DC-016](../business/closure/DC-016_PROVIDER_QUALIFICATION_DECISION_AUTHORITY_PACKET.md) exists only on the separate branch `business/provider-qualification-decision-packet` at preparation time; it is **not** in `main` and does not constitute an Accepted Decision.
+- **Related draft:** [Provider Qualification Business Packet DC-016](https://github.com/mahdimarzooghi4-debug/nasim/blob/business/provider-qualification-decision-packet/docs/business/closure/DC-016_PROVIDER_QUALIFICATION_DECISION_AUTHORITY_PACKET.md) exists only on the separate branch `business/provider-qualification-decision-packet` at preparation time; it is **not** in `main` and does not constitute an Accepted Decision.
 
 > This register coordinates pre-Stage development. It does not accept any OPEN Business Decision, create implicit authority, define qualification/credential rules, authorize implementation of blocked work, create an SG/T/PB/Sprint, or replace an exact-head Code Review/CI gate. `OPEN ≠ DEFERRED ≠ ACCEPTED`. Planned work is **not** completed work.
 
