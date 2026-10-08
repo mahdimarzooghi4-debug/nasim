@@ -99,6 +99,41 @@ async def test_each_read_requires_current_caregiver(service, manager, caregiver,
     await service.read(kind, case_id, manager)
 
 
+@pytest.mark.parametrize("kind", ["interactions", "observations", "timeline"])
+@pytest.mark.parametrize("limit", [-1, 0, 101])
+async def test_ts03_paginated_reads_reject_invalid_service_limits(
+    service, admin_engine, manager, kind, limit
+):
+    """Service-level callers get the same 422 bound as REST and other bounded contexts."""
+    _, case_id, _ = await seed(service, manager)
+    before = await effects(admin_engine)
+    with pytest.raises(DomainError) as error:
+        await service.read(kind, case_id, manager, limit=limit)
+    assert error.value.code == "INVALID_PAGE_LIMIT"
+    assert error.value.status == 422
+    assert await effects(admin_engine) == before
+
+
+@pytest.mark.parametrize("kind", ["interactions", "observations", "timeline"])
+@pytest.mark.parametrize("limit", [1, 100])
+async def test_ts03_paginated_reads_accept_service_limit_boundaries(service, manager, kind, limit):
+    _, case_id, _ = await seed(service, manager)
+    page = await service.read(kind, case_id, manager, limit=limit)
+    assert len(page.items) <= limit
+    assert page.next_cursor is None
+
+
+async def test_ts03_paginated_reads_deny_unauthorized_actor_before_limit_validation(
+    service, manager, caregiver
+):
+    _, case_id, _ = await seed(service, manager)
+    outsider = caregiver.model_copy(update={"capabilities": frozenset()})
+    with pytest.raises(DomainError) as error:
+        await service.read("timeline", case_id, outsider, limit=0)
+    assert error.value.code == "CAPABILITY_REQUIRED"
+    assert error.value.status == 403
+
+
 @pytest.mark.parametrize("actor_id", ["family", "provider", "employer", "elder"])
 async def test_external_actor_has_no_default_grants(service, manager, actor_id):
     _, case_id, _ = await seed(service, manager)
