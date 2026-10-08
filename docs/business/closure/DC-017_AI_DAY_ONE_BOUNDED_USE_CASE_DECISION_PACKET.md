@@ -112,7 +112,7 @@ Caregiver-side AI human follow-up, more senior/urgent escalation, actual source 
 
 The Product Owner **conditionally accepted** **مدیر عملیات نسیم (Nasim Operations Manager)** as the Business authority intended to **define and approve the future Nasim response/support officer function** named in D-0144, **only insofar as the Operations Manager possesses valid organizational authorization to do so**.
 
-**The organizational authorization has NOT been established.** This decision neither certifies that an appointing authority exists nor identifies its issuer, instrument, delegation boundary, accountable human occupant or effective period. The exact formal authority source and proof are still OPEN. Until confirmed, the designation must not be converted into an established approval right.
+**The organizational authorization has NOT been established.** D-0146 later identifies the CEO as the **intended issuer**, only conditional on a real authority source. This does not certify an empowered/appointed CEO, the legal/organizational instrument, actual delegation, valid scope, accountable human occupant or effective period. Formal authority evidence and grant remain **OPEN**; without them D-0145 cannot become an established approval right.
 
 **Separation:** selecting an intended Business approval owner ≠ ratifying legal/organizational competence ≠ adopting a role contract ≠ appointing support staff ≠ granting technical permissions ≠ operating the elder fallback service. The support function, any interim fallback when no caregiver is available, channels and SLAs remain OPEN. No role, backend permission, deployment or AI case access arises from this document.
 
