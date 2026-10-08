@@ -81,6 +81,16 @@ def canonical_hash(payload: dict[str, Any]) -> str:
     ).hexdigest()
 
 
+def _result_actor_type(operation: str, result: dict[str, Any]) -> str | None:
+    """Read immutable actor provenance from a stored TS-03 idempotency response."""
+    if operation == "create":
+        case = result.get("case")
+        return case.get("created_by_actor_type") if isinstance(case, dict) else None
+    field = "assigned_by_actor_type" if operation == "reassign" else "recorded_by_actor_type"
+    value = result.get(field)
+    return value if isinstance(value, str) else None
+
+
 class Casework:
     def __init__(self, sessions: async_sessionmaker[AsyncSession]) -> None:
         self.sessions = sessions
@@ -136,7 +146,12 @@ class Casework:
                     require_assigned(actor, capability, assignment.caregiver_actor_id)
             prior = await session.scalar(select(IdempotencyRecord).filter_by(**scope))
             if prior:
-                if prior.payload_hash != payload_hash:
+                if prior.payload_hash != payload_hash or (
+                    _result_actor_type(operation, prior.response) != actor.actor_type.value
+                ):
+                    # TS-05 treats (actor_id, actor_type) as distinct trusted principals.
+                    # Scope rows predate an actor_type column: use immutable result
+                    # provenance to deny cross-type replay without invalidating old keys.
                     raise DomainError("IDEMPOTENCY_KEY_REUSED_WITH_DIFFERENT_PAYLOAD", 409)
                 # Recheck current authorization before returning any cached sensitive data.
                 return prior.response
