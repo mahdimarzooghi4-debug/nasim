@@ -1,6 +1,6 @@
 # AI-BOOT-003 — بسته تحویل برای بازبینی مستقل ۸۴ نمونه اولیه AI نسیم
 
-- **وضعیت:** `READY FOR QUALIFIED HUMAN REVIEW / HUMAN REVIEW NOT STARTED / NOT AN APPROVED DATASET`
+- **وضعیت پس از D-0152:** `CONTENT PACKAGE APPROVED BY MANAGER AS ATTESTED BY PRODUCT OWNER / READY FOR INDEPENDENT PER-RECORD EVIDENCE REVIEW / PER-RECORD REVIEW NOT EVIDENCED / NOT AN APPROVED DATASET`
 - **تاریخ:** ۲۰۲۶-۱۰-۰۸
 - **PR:** [#10 (Draft)](https://github.com/mahdimarzooghi4-debug/nasim/pull/10)؛ هیچ ادعایی درباره مجوز Training یا آماده‌بودن مدل وجود ندارد.
 - **پایه:** `D-0135…D-0147` و اسناد [AI-BOOT-001](AI-BOOT-001_NASIM_FOUNDATIONAL_KNOWLEDGE_DRAFT_FA.md)، [AI-BOOT-002](AI-BOOT-002_BEHAVIOR_SEED_REVIEW_GUIDE_FA.md) و [DC-019](../../business/closure/DC-019_AI_SOURCE_USE_AND_TRAINING_ELIGIBILITY_EVIDENCE_MATRIX.md).
