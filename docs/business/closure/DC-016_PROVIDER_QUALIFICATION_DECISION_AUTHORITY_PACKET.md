@@ -1,15 +1,15 @@
 # DC-016 — Provider Qualification Decision & Authority — Business Decision Packet
 
 - **Project:** نسیم — نظام سالمند‌یاری محله‌محور
-- **Status:** DRAFT DECISION PACKET — BUSINESS DECISIONS OPEN
+- **Status:** DRAFT DECISION PACKET — D-0134 ACCEPTED (bounded three-function split); remaining qualification decisions OPEN
 - **Stage:** Business / contextual decision closure only
 - **Prepared:** 2026-10-08
 - **Owner for decisions:** Product Owner (decision authority mapping is **not** implied)
 - **Purpose:** روشن‌کردن کوچک‌ترین مجموعه تصمیم‌های کسب‌وکاری لازم پیش از طراحی Qualification Decision، بدون تعیین خودکار Rule، Role، Threshold، Credential، State یا Activation Policy.
-- **Source basis:** `docs/DECISIONS.md` (D-0036…D-0042, D-0118, D-0124, D-0130…D-0133); `docs/business/contracts/BC-008_PROVIDER_NETWORK_PARTNER_GOVERNANCE.md`; `docs/business/closure/DC-003_ROLES_AUTHORITY_HUMAN_DECISION_RIGHTS_PACKET.md`; `docs/business/closure/DC-007_PROVIDER_MODEL_ONBOARDING_REFERRAL_ACCEPTANCE_SERVICE_EVIDENCE_PACKET.md`; `docs/business/blockers/BR-004_CONTEXTUAL_OPEN_DECISION_REGISTER.md`; Sprint 004–006 foundations.
+- **Source basis:** `docs/DECISIONS.md` (D-0036…D-0042, D-0118, D-0124, D-0130…D-0134); `docs/business/contracts/BC-008_PROVIDER_NETWORK_PARTNER_GOVERNANCE.md`; `docs/business/closure/DC-003_ROLES_AUTHORITY_HUMAN_DECISION_RIGHTS_PACKET.md`; `docs/business/closure/DC-007_PROVIDER_MODEL_ONBOARDING_REFERRAL_ACCEPTANCE_SERVICE_EVIDENCE_PACKET.md`; `docs/business/blockers/BR-004_CONTEXTUAL_OPEN_DECISION_REGISTER.md`; Sprint 004–006 foundations.
 - **Naming note:** `DC-008` already belongs to the Quality/KPI/Pilot/Scale packet. This packet uses the next free closure identifier `DC-016`; no existing packet is overwritten or renumbered.
 
-> **Decision status contract:** This is a question/decision packet, not an Accepted Decision, Decision Register update, Authority Matrix, Technical contract, implementation authorization, or approval to activate any Provider. Each item below remains **OPEN**, unless separately resolved by an explicit Product Owner decision and recorded in the official decision register. `OPEN ≠ DEFERRED ≠ ACCEPTED`.
+> **Decision status contract:** This remains a draft decision packet, not a Technical contract or implementation authorization. Only the bounded three-function human responsibility separation has been Accepted as D-0134 on this branch's Decision Register; the other Business decisions remain **OPEN**. This introduces no actual organizational or technical authority, qualification criteria, permission, or Provider Activation. `OPEN ≠ DEFERRED ≠ ACCEPTED`.
 
 ## 1. Confirmed baseline — not a new decision
 
@@ -28,19 +28,31 @@ Existing product boundaries remain:
 
 No Qualification Decision implementation, Provider Approval, Activation, Selection, Service mapping, Capacity, Provider Case/Elder access, Ranking, Finance/Settlement, or external Provider integration is authorized or delivered by this packet.
 
-## 2. Business decision set — all OPEN
+## 1.1 Accepted Product Owner direction — D-0134 (bounded)
+
+The Product Owner approved the recommended three-function human-responsibility structure:
+
+1. **سالمندیار** — introduces Providers, performs field evaluation, records evidence and offers a recommendation; may not be final qualification decision maker for their own proposal merely by virtue of caregiver role.
+2. **بازبین واجد صلاحیت تخصصی** — performs accountable specialist review of relevant evidence against approved criteria; the actual qualification/appointment standards for this human remain undefined.
+3. **مسئول دارای اختیار مصوب شبکه Provider نسیم** — accountable for the final Qualification Decision **only after** an explicit authority assignment is approved; this is a proposed organizational function, not an already instantiated role or permission grant.
+
+The functional responsibilities are separate; the field proposer must not be final decision maker for the same proposed Provider. Actual authorized human identities, precise reviewer competence, person-level segregation / extra checker, permission matrix, conflicts, delegation, assignment, evidence criteria and state workflow are **still OPEN**. Do not infer a mandatory separate maker-checker requirement beyond this approved responsibility boundary.
+
+**D-0134 does not approve Provider Qualification, organizational Approval, Activation, Service Eligibility, Provider Selection or Provider Case/Elder access.**
+
+## 2. Business decision set — remaining OPEN (QD-02 partially resolved)
 
 | Ref | OPEN decision | Product Owner must determine | Non-decision / forbidden shortcut |
 |---|---|---|---|
 | QD-01 | **Decision purpose and scope** | What exactly does a Qualification Decision attest? Candidate-wide vs per Provider Type / Service / Geography / other scope? Is it distinct from organizational Approval and independent operational Activation, and what consequences (if any) follow each? | Do not infer qualified, approved, eligible, selected, or active from any existing Candidate/Evidence/Request. |
-| QD-02 | **Reviewer and approver identity/authority** | Which accountable human actor may review, which may issue an authoritative qualification decision, whether a second approver is required, permitted scope, delegation, conflict of interest, separation of duties / maker-checker, reassignment, and audit requirements? | A Role title, system permission string, ActorType or submitted request is not authority. Maker-checker is not yet decided. |
+| QD-02 | **Reviewer and approver identity/authority — PARTIALLY RESOLVED by D-0134** | Three functional responsibilities Accepted: caregiver field proposer → specialist reviewer → authorized network final qualification decision owner. Still OPEN: named/organizational assignments, human competence checks, actual authority and technical permissions, person-level checker/separation beyond the field-proposer prohibition, permitted scope, delegation, conflict of interest, reassignment and audit contract. | Functional titles confer no permission. Actual authority, specialist qualifications and any further maker-checker/approval rule remain OPEN. |
 | QD-03 | **Qualification criteria and mandatory credentials** | Which criteria, documents/credentials, licensing/legal verification and sources of truth apply to which qualification scope, who owns policy definitions and versions, and what exceptions (if any) are legitimate? | No mandatory document list, credential verification shortcut, default criterion, scoring formula, threshold, or automatic pass. |
 | QD-04 | **Evidence sufficiency, validity and review cadence** | What constitutes adequate, verified, current, trustworthy evidence? How are missing, disputed, expired, revoked, superseded or stale evidence treated? Who determines expiry/refresh, if any, and when is review/re-review required? | An attached evidence reference alone proves neither validity nor sufficiency. No invented validity duration, SLA, renewal cadence, or default `valid=true`. |
 | QD-05 | **Evidence pinning and historical decision lineage** | Does a decision bind to a precisely identified immutable Evidence set/bundle and policy/criterion version? At what point is that basis frozen: request, review opening, or decision? How is replacement/additional evidence handled? | Evidence uploaded later may inform a **new** decision/review but must not mutate an earlier decision, its time-specific evidence basis, actor, rationale, or audit trail. No bundle policy is accepted yet. |
 | QD-06 | **Decision vocabulary and lifecycle** | Which exact outcomes and transitions are legal? Define open/review, insufficient evidence, rejection, correction/rework, appeal/re-review, withdrawal, expiry/supersession, and who can initiate/approve each. Distinguish a negative qualification result from an incomplete review. | No guessed enums, numeric scores, approval by request submission, background transition, or implicit retry-to-pass. |
 | QD-07 | **Qualification dimensions and dependency boundaries** | Do Provider Type, Service-to-Provider mapping, Geography, Capacity, Contract state or other dimensions belong inside qualification, later Approval, or Activation/Referral Eligibility? How are changes in any dimension handled? | No service mapping, geographic entitlement, operational capacity or permission from qualification alone. Referral destination/Provider Selection is a separate decision domain. |
 
-**All QD-01…QD-07 are OPEN.** Their labels are packet references, not new official D-numbers or implementation state constants.
+**Only the three-function boundary within QD-02 is ACCEPTED (D-0134).** The remaining QD-02 details, QD-01 and QD-03…QD-07 are **OPEN**. Packet labels are not official D-numbers or implementation state constants.
 
 ## 3. Explicit separation of business concepts
 
@@ -49,7 +61,7 @@ No Qualification Decision implementation, Provider Approval, Activation, Selecti
 | Provider Candidate Registry Entry | Foundation implemented | Descriptive candidate identity/provenance, **not** an operational entitlement. |
 | Qualification Evidence Reference | Foundation implemented | Historical evidence record/reference, **not** validation, sufficiency, criterion satisfaction, or approval. |
 | Qualification Review Request | Foundation implemented | A request for review, **not** reviewer assignment, decision, qualification, or activation. |
-| Qualification Review / Decision | **Not implemented; business semantics OPEN** | Human accountability, scope, criteria, evidence, decision effects and lifecycle must be explicitly determined first. |
+| Qualification Review / Decision | **Not implemented; business semantics OPEN** | Only D-0134's human responsibility split is accepted; real authority assignments, qualification scope/criteria, evidence, decision effects and lifecycle must still be explicitly determined. |
 | Separate Approval | **Business purpose / authority OPEN** | May not be conflated with qualification or derived from a reviewer title. |
 | Operational Activation | **Independent OPEN contract** | Not a side effect of Qualification Decision, Approval, or Registry entry. |
 | Provider Eligibility and Selection | **Independent OPEN contracts** | Eligibility is not selection; no automated ranking/routing or access arises from this packet. |
@@ -81,7 +93,7 @@ Even after Qualification Decision is defined and implemented, Activation is **no
 
 ## 6. Product Owner decision agenda (sequenced, no presumed answers)
 
-A. **Authority first:** distinguish Review, Qualification Decision, Approval and Activation; identify authorized humans and whether separation of duties is necessary (QD-01/02).
+A. **Authority first:** D-0134 establishes three human accountability functions. Still distinguish Review, Qualification Decision, Approval and Activation operationally; identify actual authorized humans and decide precise separation, checker, delegation, conflicts and permission mapping (QD-01 and remaining QD-02).
 
 B. **Qualification basis:** agree which criteria/evidence policies exist and by what scope and version, and how sufficiency, validity and provenance are established (QD-03/04).
 
@@ -93,11 +105,11 @@ For each answered item, record **decision wording, evidence/source, accountable 
 
 ## 7. Gate and implementation effect
 
-**Current disposition: BUSINESS DECISION PACKET PREPARED; Qualification Decision Business Gate NOT PASSED.**
+**Current disposition: D-0134 ACCEPTED for functional responsibility split only; Qualification Decision Business Gate NOT PASSED.**
 
 - Allowed now: Product Owner review, clarification, evidence gathering, alternatives/risk comparison, explicit decision recording.
 - Not authorized by this artifact: SG-007, T-007, Backlog, Sprint planning, Qualification Decision code, new role grants, fake reviewer authority, Provider activation, production/real-world Provider interactions.
 - A future Qualification Decision technical slice may start **only after** the smallest relevant QD decision set is expressly accepted (or any permissible deferral is documented with owner, scope, future gate and safe constraint), with its own normal Business → Technical → Backlog → Sprint → Code sequence.
 - **D-0130 remains in force:** Hosted Stage is UNAVAILABLE, not omitted from the process. CI container smoke is not Hosted Stage Admission or Stage-based QA; no Release Approval or Production is asserted.
 
-**Next action:** Product Owner to resolve only the context-triggered QD questions necessary for a bounded future slice. **Stop at this Business packet.**
+**Next action:** Resolve QD-01, remaining QD-02 and only the context-triggered QD-03…QD-07 needed for a bounded future slice. **Stop at Business; no SG-007/T-007/Backlog/Sprint/Code.**
