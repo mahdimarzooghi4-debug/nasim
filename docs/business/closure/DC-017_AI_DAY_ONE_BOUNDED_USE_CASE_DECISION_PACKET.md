@@ -179,6 +179,12 @@ The term **internal AI** has an accepted product meaning; its exact technical de
 5. Only after the minimal required Business closure: `Slice Gate → Technical → Product Backlog → Sprint → Code → Code Review → exact-HEAD CI`.
 6. Independently continue Provider DC-016; unresolved formal institutional authority does not give AI any additional authority.
 
+## 6.1 Consolidated no-micro-question readiness package — DC-018
+
+The documentation-only integrated preparation and blocker matrix now lives in [DC-018 — AI Day-one Integrated Pre-Technical Readiness](DC-018_AI_DAY_ONE_INTEGRATED_PRE_TECHNICAL_READINESS.md). It consolidates D-0135…D-0146 into implementation-neutral content evidence, publication/classification, human continuity, Runtime safety and automatic Dataset governance packages. It specifies **candidate** tests and grouped B1–B5 source/authority/legal/eligibility blockers, **not** new Accepted Business decisions or entry into Technical/Code.
+
+Per the Product Owner's request, carry forward all independently justified preparation in larger work packages; do not ask repetitive micro-questions. Keep actual documents, proven organizational authority, legitimate access, training eligibility and model deployment decisions OPEN until real evidence is supplied. DC-018 does not bypass any process gate.
+
 ## 7. Stage boundary and exit
 
 **Result now: PARTIAL BUSINESS DECISIONS ACCEPTED (D-0031…D-0035, D-0135); AI TECHNICAL ENTRY NOT AUTHORIZED.**
