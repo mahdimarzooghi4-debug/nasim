@@ -370,3 +370,20 @@
 - **OPEN باقی می‌ماند:** reviewer identity/authority، approver authority، assignment، review SLA/cadence، qualification criteria، decision vocabulary/state machine، evidence sufficiency، evidence pinning policy، approval/activation authority، activation scope/effective date، Provider Type، Service mapping، geography eligibility، Capacity، Provider Selection، Referral response، Provider Data Access و Suspension/Termination.
 - **ممنوع:** Technical یا Code نباید از وجود Review Request نتیجه Reviewed/Qualified/Approved/Active بسازد.
 - **منبع:** BC-008 + DC-007 + BX-007 + D-0037 + D-0132؛ source-supported need for review with unresolved reviewer/approver details؛ پذیرفته‌شده تحت D-0124.
+
+
+## D-0134 — تفکیک سه‌مرحله‌ای مسئولیت Qualification Provider
+
+- **تاریخ:** 2026-10-08
+- **حوزه:** Business / Provider Qualification / Human Accountability
+- **وضعیت:** Accepted — only the three-function human-responsibility boundary described here
+- **تصمیم:** در مسیر آینده Qualification Provider سه کارکرد پاسخ‌گوی انسانی از هم جدا می‌شوند:
+  1. **سالمندیار (معرفی‌کننده / ارزیاب میدانی):** معرفی Provider، ثبت شواهد و ارزیابی میدانی و پیشنهاد برای بررسی؛ حق اعلام نتیجه نهایی Qualification را صرفاً به دلیل سالمندیار بودن ندارد.
+  2. **بازبین واجد صلاحیت تخصصی:** بررسی شواهد، مدارک و معیارهای مصوب در حوزه تخصص مربوط و ثبت نظر قابل حسابرسی؛ شایستگی و انتصاب واقعی بازبین باید جداگانه تعریف و احراز شود.
+  3. **مسئول دارای اختیار مصوب شبکه Provider نسیم:** صاحب تصمیم نهایی Qualification در دامنه مجوز مصوب و بر اساس شواهد و بررسی تخصصی؛ این عنوان توصیف کارکرد آینده است، نه اعلام وجود سمت سازمانی یا اعطای Permission به فرد مشخص.
+- **تفکیک:** پیشنهاددهنده / ارزیاب میدانی نباید همان تصمیم‌گیر نهایی پرونده‌ای باشد که پیشنهاد می‌کند. مسئولیت بررسی تخصصی و مسئولیت تصمیم نهایی مستقل و قابل انتساب‌اند. حدود دقیق تفکیک اشخاص، assignment، جانشینی، تعارض منافع و maker-checker/approval matrix فراتر از همین تفکیک حداقلی هنوز OPEN هستند.
+- **مرز حقوقی/فنی:** این تصمیم هیچ ActorRoleAssignment، RolePermissionGrant، شایستگی تخصصی پیش‌فرض، reviewer identity، approver identity، فهرست مدرک، معیار اعتبار، threshold، State Machine، حق دسترسی به پرونده سالمند یا امکان اجرای Qualification Decision ایجاد نمی‌کند. `Role Title ≠ Permission` و `ActorType ≠ Authority`.
+- **Activation:** نتیجه Qualification حتی در صورت تصمیم انسانی معتبر، به‌تنهایی Approval سازمانی یا Operational Activation یا Provider Selection / Service Eligibility نیست. Activation authority، prerequisites، scope، effective date، suspension/deactivation/revocation جداگانه OPEN باقی می‌مانند.
+- **تاریخچه:** هر تصمیم بعدی باید قابل ردیابی و غیرقابل بازنویسی بی‌صدا باشد؛ قواعد دقیق Evidence Pinning و Lifecycle هنوز OPEN هستند.
+- **گیت:** تنها تقسیم مسئولیت در Business پذیرفته شده است؛ QD-01 و جزئیات QD-02 و QD-03…QD-07 از `DC-016` بسته نشده‌اند. SG-007، Technical، Backlog، Sprint و Code هنوز مجاز نیستند. D-0130 برقرار است.
+- **منبع پذیرش:** تأیید صریح مالک محصول در گفت‌وگو نسبت به ساختار پیشنهادی سالمندیار → بازبین صلاحیت تخصصی → مسئول مجاز شبکه.
