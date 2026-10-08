@@ -68,6 +68,56 @@ async def test_atomic_creation_idempotency(service, admin_engine, manager, careg
         assert "elder_reference" not in payload
 
 
+
+@pytest.mark.parametrize("operation", ["create", "reassign", "contact_add", "profile_correct"])
+async def test_case_idempotent_replay_cross_actor_type_is_rejected(
+    service, admin_engine, manager, caregiver, operation
+):
+    """Same actor_id across trusted actor types cannot receive cached TS-03 effects."""
+    if operation == "create":
+        actor = manager
+        case_id = None
+        command = create_command()
+    else:
+        original, case_id, assignment_id = await seed(service, manager)
+        if operation == "reassign":
+            actor = manager
+            command = ReassignCaregiver(
+                expected_current_assignment_id=assignment_id,
+                caregiver_actor_id="new-caregiver",
+                reason="actor type provenance test",
+            )
+        elif operation == "contact_add":
+            actor = caregiver
+            command = AddContactPoint(
+                expected_current_assignment_id=assignment_id,
+                contact_kind="phone",
+                contact_value="synthetic-test-contact",
+            )
+        else:
+            actor = manager
+            command = CorrectCaseProfile(
+                expected_current_assignment_id=assignment_id,
+                expected_current_revision_id=UUID(original["profile"]["id"]),
+                elder_reference="synthetic-corrected",
+                correction_reason="actor type provenance test",
+            )
+
+    key = "actor-type-replay"
+    original_result = await service.mutate(operation, command, actor, key, case_id)
+    before = await effects(admin_engine)
+    # Same business request, key, actor ID and permissions; only trusted actor type differs.
+    cross_type = actor.model_copy(update={"actor_type": ActorType.AUTOMATION})
+    with pytest.raises(DomainError) as error:
+        await service.mutate(operation, command, cross_type, key, case_id)
+    assert error.value.code == "IDEMPOTENCY_KEY_REUSED_WITH_DIFFERENT_PAYLOAD"
+    assert error.value.status == 409
+    assert await effects(admin_engine) == before
+    # The original human principal retains ordinary idempotent replay.
+    assert await service.mutate(operation, command, actor, key, case_id) == original_result
+    assert await effects(admin_engine) == before
+
+
 async def test_key_payload_conflict(service, admin_engine, manager):
     await seed(service, manager)
     with pytest.raises(DomainError, match="IDEMPOTENCY_KEY_REUSED_WITH_DIFFERENT_PAYLOAD"):
