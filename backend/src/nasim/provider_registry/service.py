@@ -23,6 +23,7 @@ from nasim.provider_registry.contracts import (
     ProviderCandidateView,
     ProviderQualificationEvidenceView,
     ProviderQualificationReviewRequestView,
+    ProviderQualificationReviewWorkspaceView,
     RecordProviderQualificationEvidence,
     RegisterProviderCandidate,
     RequestProviderQualificationReview,
@@ -347,3 +348,102 @@ class ProviderQualificationReviewRequests:
             if row is None:
                 raise DomainError("PROVIDER_QUALIFICATION_REVIEW_REQUEST_NOT_FOUND", 404)
             return ProviderQualificationReviewRequestView.model_validate(row)
+
+
+class ProviderQualificationReviewWorkspace:
+    """Pre-decision inspection of three existing, independently governed record types.
+
+    This is not a qualification snapshot, evidence sufficiency decision, reviewer
+    assignment, or Provider activation. It creates no audit/outbox effects.
+    """
+
+    def __init__(self, sessions: async_sessionmaker[AsyncSession]) -> None:
+        self.sessions = sessions
+
+    async def read(
+        self,
+        candidate_id: UUID,
+        actor: ActorContext,
+        evidence_cursor: str | None = None,
+        request_cursor: str | None = None,
+        limit: int = 50,
+    ) -> ProviderQualificationReviewWorkspaceView:
+        # Enforce the intersection of pre-existing read capabilities. No new
+        # grant, composite permission, implied role or AI access is introduced.
+        require_capability(actor, "provider_candidate.read")
+        require_capability(actor, "provider_qualification_evidence.read")
+        require_capability(actor, "provider_qualification_review.read")
+        if not 1 <= limit <= 100:
+            raise DomainError("INVALID_PAGE_LIMIT", 422)
+
+        async with self.sessions() as session, session.begin():
+            candidate = await session.get(ProviderCandidateRecord, candidate_id)
+            if candidate is None:
+                raise DomainError("PROVIDER_CANDIDATE_NOT_FOUND", 404)
+
+            evidence_query = select(ProviderQualificationEvidenceRecord).where(
+                ProviderQualificationEvidenceRecord.provider_candidate_id == candidate_id
+            )
+            if evidence_cursor:
+                stamp, identifier = decode_cursor(evidence_cursor)
+                evidence_query = evidence_query.where(
+                    tuple_(
+                        ProviderQualificationEvidenceRecord.recorded_at,
+                        ProviderQualificationEvidenceRecord.id,
+                    )
+                    > tuple_(literal(stamp), literal(identifier))
+                )
+            evidence_rows = (
+                await session.scalars(
+                    evidence_query.order_by(
+                        ProviderQualificationEvidenceRecord.recorded_at,
+                        ProviderQualificationEvidenceRecord.id,
+                    ).limit(limit + 1)
+                )
+            ).all()
+            selected_evidence = evidence_rows[:limit]
+            evidence_page = Page[ProviderQualificationEvidenceView](
+                items=[
+                    ProviderQualificationEvidenceView.model_validate(row)
+                    for row in selected_evidence
+                ],
+                next_cursor=encode_cursor(selected_evidence[-1].recorded_at, selected_evidence[-1].id)
+                if len(evidence_rows) > limit
+                else None,
+            )
+
+            requests_query = select(ProviderQualificationReviewRequestRecord).where(
+                ProviderQualificationReviewRequestRecord.provider_candidate_id == candidate_id
+            )
+            if request_cursor:
+                stamp, identifier = decode_cursor(request_cursor)
+                requests_query = requests_query.where(
+                    tuple_(
+                        ProviderQualificationReviewRequestRecord.requested_at,
+                        ProviderQualificationReviewRequestRecord.id,
+                    )
+                    > tuple_(literal(stamp), literal(identifier))
+                )
+            request_rows = (
+                await session.scalars(
+                    requests_query.order_by(
+                        ProviderQualificationReviewRequestRecord.requested_at,
+                        ProviderQualificationReviewRequestRecord.id,
+                    ).limit(limit + 1)
+                )
+            ).all()
+            selected_requests = request_rows[:limit]
+            requests_page = Page[ProviderQualificationReviewRequestView](
+                items=[
+                    ProviderQualificationReviewRequestView.model_validate(row)
+                    for row in selected_requests
+                ],
+                next_cursor=encode_cursor(selected_requests[-1].requested_at, selected_requests[-1].id)
+                if len(request_rows) > limit
+                else None,
+            )
+            return ProviderQualificationReviewWorkspaceView(
+                candidate=ProviderCandidateView.model_validate(candidate),
+                evidence=evidence_page,
+                review_requests=requests_page,
+            )
