@@ -185,6 +185,17 @@ The documentation-only integrated preparation and blocker matrix now lives in [D
 
 Per the Product Owner's request, carry forward all independently justified preparation in larger work packages; do not ask repetitive micro-questions. Keep actual documents, proven organizational authority, legitimate access, training eligibility and model deployment decisions OPEN until real evidence is supplied. DC-018 does not bypass any process gate.
 
+## 6.2 Initial caregiver and AI training drafts — **not published sources**
+
+The Product Owner asked for **new initial training material** for the caregiver and the AI assistant, without waiting for more serial micro-questions. Two Persian pedagogical drafts have therefore been authored and linked in [Training Pack Index](../../training/README.md):
+
+- [TR-001 — Caregiver Foundation Orientation](../../training/drafts/TR-001_CAREGIVER_FOUNDATION_ORIENTATION_FA.md): role and responsibility limits, elder-centered communication, observation/record correction, assignment/referral boundaries, confidentiality, incident-awareness and illustrative exercises.
+- [TR-002 — Safe Use of Nasim AI](../../training/drafts/TR-002_NASIM_AI_SAFE_USE_GUIDE_FA.md): D-0135 information-only scope for elder and caregiver, D-0140 audience separation, D-0142 four-part fail-safe, D-0143…D-0146 conditional human routes, privacy/Data Purpose, separation of automatic eligible-only Dataset creation from Training/Production Promotion, example interactions and an elder quick-reference draft.
+
+**Source category:** authored *candidate* new Nasim content under D-0137. **These are NOT actually reviewed, approved, classified by an authorized actor, published, or authorized for AI Runtime**. They do **not** settle Issue [#11 — official content evidence](https://github.com/mahdimarzooghi4-debug/nasim/issues/11), and do not create any **Training Eligibility** in [#12](https://github.com/mahdimarzooghi4-debug/nasim/issues/12). Official training completion/readiness, curriculum ownership, instructor credentials, time, pass score, medical/emergency protocol, actual role grants and legal review remain OPEN under BC-015 and other affected domains.
+
+This documentation change does not pass a Business Slice Gate or Technical/Code gate; published-content authenticity and permission must still be established from real review records.
+
 ## 7. Stage boundary and exit
 
 **Current Gate outcome: PARTIAL BUSINESS CLOSURE (D-0031…D-0035, D-0135…D-0146 ACCEPTED within stated boundaries; D-0147 model choice DEFERRED; B1–B4 and remaining B5 inputs OPEN). AI TECHNICAL ENTRY NOT AUTHORIZED.**
