@@ -7,6 +7,8 @@
 
 > این سند Decision Register نیست و هیچ تصمیمی را Accepted نمی‌کند. هدف، تبدیل جهت مصوب AI داخلی نسیم به مرزهای قابل تصمیم برای فاز اول است، بدون انتخاب مدل، الگوریتم، Runtime یا معماری Training.
 
+> **Subsequent Decision Register reconciliation (2026-10-08):** Candidate decisions **D-0031…D-0035** are now individually **ACCEPTED** as bounded safety/Human Review/model governance principles in `docs/DECISIONS.md` on Draft PR #10. A **narrow, information-only first use case for both elders and caregivers** is selected separately as **D-0135**. This does **not** accept every candidate ability under D-0029/D-0030, nor does it establish published service content, real user authorization, Human Owner, Training Eligibility, precise fail-safe or AI model/technical configuration. The original candidate sections below preserve their historical proposal text; binding decisions live in the Decision Register. Hosted Stage remains UNAVAILABLE under D-0130.
+
 ## 1. Existing accepted direction
 
 طبق D-0004 و D-0005:
