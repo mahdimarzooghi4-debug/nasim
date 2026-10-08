@@ -1,6 +1,6 @@
 # DC-017 — Internal AI Day-one Bounded Use Case & Data Governance Decision Packet
 
-- **Status:** DRAFT / PARTIAL BUSINESS CLOSURE — D-0135 USE CASE, D-0136 PUBLISHER AND D-0137 SOURCE CLASSES ACCEPTED; actual documents/access/learning policies OPEN
+- **Status:** DRAFT / PARTIAL BUSINESS CLOSURE — D-0135 USE CASE, D-0136 PUBLISHER, D-0137 SOURCE CLASSES AND D-0138 EXTERNAL DOCUMENT LOCATION/FUTURE IMPORT ACCEPTED; actual source evidence/access/learning policies OPEN
 - **Project:** نسیم — نظام سالمند‌یاری محله‌محور
 - **Stage:** Business / context-triggered decision preparation
 - **Prepared:** 2026-10-08
@@ -47,12 +47,22 @@ The Product Owner accepted exactly **two potential source categories** for the D
 
 **Minimum remaining source facts to obtain:** provide the location/list of existing official source documents, clarify their issuing authorities and proof of validity, and identify how approved newly created content is actually published and versioned within Nasim. If these sources do not yet exist, retain the missing-source blocker rather than fabricating publications or service policies. This does not give training rights to documents, AI conversations, or personal/operational data.
 
+## 2.3 Existing official documents currently outside Nasim — D-0138
+
+The Product Owner confirmed that **the current holding location of existing official source documents is outside Nasim** and those materials are **intended to be imported into Nasim later**. This is a Business fact and future intention, not a completed import, verified document list, selected storage service, publication record or an approved intake mechanism.
+
+**Current content-source disposition:** existing documents are **not yet in Nasim**. No assumption is made about their precise external location, issuing authority, completeness, validity, current publication status, or ingestion date. No new Nasim-native content repository/import pipeline was authorized by D-0138.
+
+**Must stay separate:** `external document → controlled intake / provenance and authenticity checks → appropriate subject-matter validity verification where required → approval/publication by Operations Manager under D-0136 → permitted audience-specific official source`. This sequence is a *candidate business analysis*, **not** an approved exact state machine, implementation workflow or set of authorized actors. Import alone never confers authority to serve the text as official AI guidance or use it for Training.
+
+**Remaining decisions:** who is accountable for obtaining/importing the external documents, their issuing organizations/sources of truth, acceptance/review evidence, version/change and withdrawal semantics, the audience authorization matrix and handling when content is stale, unavailable or conflicting.
+
 ## 3. Smallest context-triggered Product Owner decisions
 
 | Ref | OPEN decision | Minimum decision evidence | Why it blocks implementation |
 |---|---|---|---|
 | AI-D1 | **PARTIALLY RESOLVED** — first informational use case for **elder and caregiver** (D-0135) | Selection and read-only boundaries accepted; additional use cases, actual publication sources and operational support remain OPEN | D-0004/D-0005 mandate both audiences; D-0135 selects only the first bounded use case, not the full eventual scope |
-| AI-D2 | Authoritative **content** source — **PARTIALLY RESOLVED (D-0136/D-0137)** | Publisher: **مدیر عملیات نسیم** (ACCEPTED). Source categories: **existing official documents** and **new content approved/published in Nasim** (ACCEPTED). Still OPEN: actual documents/systems and versions, publication/authority evidence, named/authorized account, audience permissions, subject-matter validation as relevant, and missing/stale/withdrawn handling. | A source category is not evidence of real, current official content, not a Role/Permission grant and not AI Training Eligibility. |
+| AI-D2 | Authoritative **content** source — **PARTIALLY RESOLVED (D-0136/D-0137/D-0138)** | Publisher: **مدیر عملیات نسیم** (ACCEPTED); source categories: **existing official documents** and **new Nasim-published content** (ACCEPTED); **existing documents currently outside Nasim, to be imported later** (ACCEPTED). Still OPEN: actual source files and external storage location, issuing authority, import owner/process, validity/versions, real approval/publication evidence, technical publisher grants, audience permissions, specialist verification and stale/withdrawn response. | An external source location or imported file does not prove official publication/current validity, confer Runtime permission or authorize AI Training. |
 | AI-D3 | Accountable Human Owner / review boundary | Who owns each use case, how users reach a human, which AI outputs (if any) require explicit review; escalation when unsuitable/incomplete | A job title or ActorType cannot grant authority; AI Output ≠ Official Record |
 | AI-D4 | Runtime data-access + legal purpose | Allowed and prohibited data classes for each audience, identity/consent/legal basis, minimal context, audit and retention basis | Operational access ≠ AI Runtime Access ≠ Training Eligibility |
 | AI-D5 | Fail-safe / disclosure / incident ownership | Exact safe responses when source unavailable/contradictory, model absent, privacy authorization denied, or user requests consequential action | No plausible fabricated answer, implicit clinical guidance or business action |
@@ -60,7 +70,7 @@ The Product Owner accepted exactly **two potential source categories** for the D
 | AI-D7 | Training, evaluation and release governance | Training/validation/evaluation dataset isolation, evaluation evidence, approver authority, rollback, versions and production promotion process (no thresholds invented) | Model readiness and governed release cannot be assumed from technical completion |
 | AI-D8 | Operational quality and user safety | Applicable linguistic/accessibility requirements for elderly users, user-facing transparency, human handoff, specific prohibited advice and risk ownership | Needs real user-specific and human/organizational decisions, not guessed UI or clinical policies |
 
-**AI-D1 first-use-case selection is ACCEPTED only to the extent of D-0135, and AI-D2 publisher/source categories are ACCEPTED only to the extent of D-0136/D-0137.** Actual content/versions and remaining AI-D1…AI-D8 requirements remain OPEN. D-0031…D-0035 accept safeguards without filling in owners, policies or criteria. AI-D labels are packet references, not implementation states.
+**AI-D1 first-use-case selection is ACCEPTED only to the extent of D-0135, and AI-D2 publisher/source-category/current external location plus future import intent are ACCEPTED only to the extent of D-0136/D-0137/D-0138.** Actual content/versions and remaining AI-D1…AI-D8 requirements remain OPEN. D-0031…D-0035 accept safeguards without filling in owners, policies or criteria. AI-D labels are packet references, not implementation states.
 
 ## 4. Separation between data-to-dataset and model lifecycle
 
@@ -89,7 +99,7 @@ The term **internal AI** has an accepted product meaning; its exact technical de
 
 ## 6. Suggested parallel work, each still gated
 
-1. The first informational AI-D1 use case for **both** audiences is already selected under D-0135. **Next verify remaining AI-D2 evidence:** the actual location/list of existing official documents and their validity/version, plus how new Nasim content is approved, published and updated; identify the appointed publisher account and safe behavior for missing/stale content. Do not treat draft Business packets as published services.
+1. The first informational AI-D1 use case for **both** audiences is already selected under D-0135. **Next resolve the minimal import-ownership decision:** who is responsible for bringing externally held existing documents into Nasim, separately from the Operations Manager's already accepted authority to approve/publish official content? Then gather the real source/issuer list and approved publication versions; keep stale/missing-source behavior OPEN. Do not treat draft Business packets as published services.
 2. Close AI-D3…AI-D5 for the selected use case before authorizing any user-facing AI contract or data access.
 3. Independently determine AI-D6 (training-eligible data classes, purpose/consent, curation and versioning). Until then, do **not** implement a permissive Dataset Builder or pretend a no-data shell satisfies Day-one learning.
 4. Design Training/Evaluation/Model Governance only after AI-D6 and relevant AI-D7 decisions, without picking metrics/thresholds by guess.
@@ -102,4 +112,4 @@ The term **internal AI** has an accepted product meaning; its exact technical de
 
 No code, model choice, dataset approval, runtime, role grant, SG/T/Backlog/Sprint, Stage Admission, Stage-based QA, Release or Production is authorized by this packet. D-0130 remains: Hosted Stage is **UNAVAILABLE**. CI's disposable container smoke is not Hosted Stage.
 
-**Next concrete Product Owner/external evidence input:** identify the names/links or storage location of the **existing official documents** proposed for AI use and their issuing authority/validity (AI-D2). New Nasim-published content is an approved future source category, but no such document is presumed to exist. Then determine version/publication evidence, audience access, runtime legal purpose and human owner (AI-D3/AI-D4), and independent Training Eligibility for D-0005 (AI-D6). Until then, no SG/Technical/Code or inferred dataset authorization.
+**Next concrete Product Owner decision:** name the Business function accountable for **collecting/importing externally held official documents into Nasim**. D-0138 confirms only that external documents are currently outside Nasim and will be imported later. Exact original source/issuer, approval and current validity must subsequently be evidenced; AI-D3/AI-D4 runtime authority and AI-D6 Training Eligibility remain independent blockers. Until then, no SG/Technical/Code or inferred Dataset authorization.
