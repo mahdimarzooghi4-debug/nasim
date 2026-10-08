@@ -1,3 +1,5 @@
+import base64
+import json
 from datetime import UTC, datetime
 from uuid import uuid4
 
@@ -171,6 +173,29 @@ def test_cursor_round_trip():
 def test_malformed_cursor(cursor):
     with pytest.raises(DomainError, match="INVALID_CURSOR"):
         decode_cursor(cursor)
+
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        ["2026-10-08T12:00:00+00:00", 123],
+        ["2026-10-08T12:00:00+00:00", None],
+        ["2026-10-08T12:00:00+00:00", {"id": "malformed"}],
+        ["2026-10-08T12:00:00+00:00", ["uuid"]],
+        [123, "123e4567-e89b-12d3-a456-426614174000"],
+        [None, "123e4567-e89b-12d3-a456-426614174000"],
+        [{}, "123e4567-e89b-12d3-a456-426614174000"],
+        ["2026-10-08T12:00:00", "123e4567-e89b-12d3-a456-426614174000"],
+    ],
+)
+def test_cursor_rejects_wrong_json_element_types(payload):
+    """Untrusted cursors fail as contract errors, never as UUID/parser exceptions."""
+    token = base64.urlsafe_b64encode(json.dumps(payload).encode()).decode()
+    with pytest.raises(DomainError) as error:
+        decode_cursor(token)
+    assert error.value.code == "INVALID_CURSOR"
+    assert error.value.status == 422
 
 
 def test_settings_load_environment(monkeypatch):
