@@ -121,6 +121,14 @@ This genuinely advances **authoring**, but **does not close B1**: the files are 
 
 No training certificate, clinical/emergency protocol, user-facing AI activation or Product/Technical Gate is authorized by authoring these drafts.
 
+## 4.4 Preliminary AI-model content authoring — separate from workforce training
+
+The Product Owner explicitly asked to prepare **initial content for the Nasim AI itself**, not merely how caregivers should use AI. A new, documentation-only [AI-BOOT-001 foundational knowledge draft](../../ai/initial-content/AI-BOOT-001_NASIM_FOUNDATIONAL_KNOWLEDGE_DRAFT_FA.md) and [AI-BOOT-002 behavioral seed review guide](../../ai/initial-content/AI-BOOT-002_BEHAVIOR_SEED_REVIEW_GUIDE_FA.md) have been authored, accompanied by [52 Persian fully synthetic candidate Q/A records](../../ai/initial-content/nasim_synthetic_behavior_candidates_v0_1.jsonl).
+
+**Meaningful progress:** actual authored content and machine-readable candidate samples exist; the content describes the **accepted internal product limits** and safe-response behaviors of D-0135…D-0147. It contains **no real elder record, provider free text, operational AI conversation, official service-price commitment or imported document**. Some fixtures are explicitly fictional, not Nasim service facts. The JSONL structure is an **authoring format**, not a Technical training contract or a production dataset.
+
+**Gates unchanged:** the business facts summarized in AI-BOOT-001 have **not** been approved/published as an official D-0135 answer source (Issue #11, B1). The synthetic samples are not human-reviewed, **not approved for Training or Evaluation**, and do **not** satisfy operational Training Eligibility nor the automatic versioned Dataset Builder commitment under D-0005 (Issue #12, B4). Model selection remains narrowly Deferred by D-0147. No training/evaluation run, architecture change, SG/Technical/Sprint/Code, Stage or Production activity is implied.
+
 ## 5. Fast execution sequence without serial micro-questions
 
 **Wave 1 — CURRENTLY ADMISSIBLE (Business documentation only):** preserve D-0135…D-0147 and map them to A–F; prepare the inventory and eligibility evidence worksheets above; consolidate open dependencies into B1–B5; draft traceable negative-path scenarios; coordinate with PR #8's pre-Stage plan and PR #9's independent Provider decisions **without merging their separate branches by implication**.
