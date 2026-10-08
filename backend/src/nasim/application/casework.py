@@ -453,6 +453,8 @@ class Casework:
             raise DomainError("CAPABILITY_REQUIRED", 403)
         if not (actor.capabilities & {"case.read.assigned", "case.read.oversight"}):
             raise DomainError("CAPABILITY_REQUIRED", 403)
+        if kind in {"interactions", "observations", "timeline"} and not 1 <= limit <= 100:
+            raise DomainError("INVALID_PAGE_LIMIT", 422)
         async with self.sessions() as session, session.begin():
             case = await self._lock_case(session, case_id)
             assignment = await self._assignment(session, case_id)
