@@ -99,7 +99,6 @@ async def test_each_read_requires_current_caregiver(service, manager, caregiver,
     await service.read(kind, case_id, manager)
 
 
-
 @pytest.mark.parametrize("kind", ["interactions", "observations", "timeline"])
 @pytest.mark.parametrize("limit", [-1, 0, 101])
 async def test_ts03_paginated_reads_reject_invalid_service_limits(
