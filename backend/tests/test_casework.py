@@ -68,7 +68,6 @@ async def test_atomic_creation_idempotency(service, admin_engine, manager, careg
         assert "elder_reference" not in payload
 
 
-
 @pytest.mark.parametrize("operation", ["create", "reassign", "contact_add", "profile_correct"])
 async def test_case_idempotent_replay_cross_actor_type_is_rejected(
     service, admin_engine, manager, caregiver, operation
