@@ -1,7 +1,7 @@
 # AI-BOOT-001 — دانش پایه پیشنهادی برای آماده‌سازی هوش مصنوعی نسیم
 
 **نسخه:** Author Draft 0.1 — ۲۰۲۶-۱۰-۰۸  
-**وضعیت:** `DRAFT / NOT SUBJECT-MATTER APPROVED / NOT PUBLISHED / NOT TRAINING-ELIGIBLE / NOT ACTIVE AI SOURCE`  
+**وضعیت پس از D-0151:** `MANAGER CONTENT APPROVAL ATTESTED BY PRODUCT OWNER / DRAFT / NOT INDEPENDENT SUBJECT-MATTER VERIFIED / NOT PUBLISHED / NOT TRAINING-ELIGIBLE / NOT ACTIVE AI SOURCE`  
 **کاربرد:** متن اولیه تدوین‌شده برای مرور و تبدیل *احتمالی* به محتوای معتبر؛ نه منبع رسمی دستیار، نه وزن‌های مدل، نه Dataset نسخه‌دار، نه مجوز Training یا Evaluation و نه قرارداد Runtime.  
 **مرجع تصمیم‌ها:** `docs/DECISIONS.md` روی PR #10، به‌ویژه D-0004/D-0005، D-0012…D-0015، D-0021/D-0028، D-0120…D-0125، D-0135…D-0147.  
 **مرجع قراردادها:** BC-002، BC-004، BC-005، BC-006، BC-007، BC-014، BC-015، BC-017 و DC-017…DC-019.
