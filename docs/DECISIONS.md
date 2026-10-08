@@ -370,3 +370,62 @@
 - **OPEN باقی می‌ماند:** reviewer identity/authority، approver authority، assignment، review SLA/cadence، qualification criteria، decision vocabulary/state machine، evidence sufficiency، evidence pinning policy، approval/activation authority، activation scope/effective date، Provider Type، Service mapping، geography eligibility، Capacity، Provider Selection، Referral response، Provider Data Access و Suspension/Termination.
 - **ممنوع:** Technical یا Code نباید از وجود Review Request نتیجه Reviewed/Qualified/Approved/Active بسازد.
 - **منبع:** BC-008 + DC-007 + BX-007 + D-0037 + D-0132؛ source-supported need for review with unresolved reviewer/approver details؛ پذیرفته‌شده تحت D-0124.
+
+
+## D-0031 — منع تصمیم مستقل و الزام‌آور AI در امور حساس
+
+- **تاریخ:** 2026-10-08
+- **حوزه:** Business / Internal AI / Decision Authority
+- **وضعیت:** Accepted — bounded safety guardrail
+- **تصمیم:** تا پذیرش تصمیم جداگانه و معتبر درباره هر Use Case، AI نسیم صرفاً دستیار است و حق ندارد به‌تنهایی تشخیص پزشکی رسمی ثبت کند، درمان تجویز کند، Eligibility یا Referral را نهایی کند، Provider را الزام‌آور انتخاب کند، هزینه/پرداخت را تصویب کند، پرونده رسمی یا Case/Need status را تغییر دهد، وضعیت Emergency/Incident را نهایی کند، یا Risk Acceptance/Scale Gate را تصویب کند.
+- **مرز:** این منع، نه فهرست قطعی Use Caseهای عملیاتی است و نه اجازه ضمنی دسترسی به داده؛ هر تغییر نیازمند Decision صریح و گیت مستقل است.
+- **منبع:** DC-006 Candidate D-0031 + BC-004 + BC-006 + D-0004/D-0014؛ انتخاب محافظه‌کارانه تحت D-0124.
+
+## D-0032 — بازبینی انسانی برای خروجی اثرگذار AI
+
+- **تاریخ:** 2026-10-08
+- **حوزه:** Business / AI / Human Review
+- **وضعیت:** Accepted — principle, not detailed authority matrix
+- **تصمیم:** خروجی AI که قرار است بر Official Record، مسیر خدمت، Referral، Need/Outcome، Incident یا اقدام مالی اثر رسمی بگذارد، باید پیش از اثر رسمی از مسیر بازبینی انسانی با امکان Accept / Reject / Edit عبور کند؛ AI Output خودبه‌خود Official Record نیست.
+- **مرز:** Reviewer مشخص، اختیار او، mapping مجوز، workflow دقیق، تریگرها و شواهد پذیرش برای هر Use Case همچنان OPEN است؛ هیچ Role Title یا ActorType اختیاری ایجاد نمی‌کند.
+- **منبع:** DC-006 Candidate D-0032 + BC-006 + D-0004/D-0015؛ پذیرفته‌شده تحت D-0124.
+
+## D-0033 — جداسازی موفقیت Training/Evaluation از ارتقای مدل
+
+- **تاریخ:** 2026-10-08
+- **حوزه:** Business / AI / Model Governance
+- **وضعیت:** Accepted — governance boundary
+- **تصمیم:** Training success و Evaluation pass اجازه جایگزینی نسخه فعال AI Production را ایجاد نمی‌کنند؛ Promotion نیازمند تصمیم مستقل، صریح، قابل حسابرسی و دارای اختیار انسانی است.
+- **مرز:** شخص/مرجع دارای اختیار Promotion، Evaluation policy، thresholds، نسخه‌بندی اجرایی و Rollback workflow همچنان OPEN هستند؛ Dataset automation طبق D-0005 مستقل باقی می‌ماند.
+- **منبع:** DC-006 Candidate D-0033 + D-0005؛ پذیرفته‌شده تحت D-0124.
+
+## D-0034 — رفتار ایمن AI در نبود مدل/داده و امکان Rollback
+
+- **تاریخ:** 2026-10-08
+- **حوزه:** Business / AI / Availability & Fail-safe
+- **وضعیت:** Accepted — principle only
+- **تصمیم:** در نبود Model معتبر، خطای AI Runtime یا Context ناکافی، AI نباید جواب ساختگی را به‌عنوان واقعیت یا Decision رسمی ارائه دهد؛ وضعیت نامعتبر/غیرقابل‌دسترسی باید آشکار باشد و فرایند انسانی، تا حد ممکن و بر پایه قرارداد مجاز خودش، مستقل از AI ادامه‌پذیر بماند. امکان Rollback نسخه مدل باید در طراحی آینده پیش‌بینی شود.
+- **مرز:** متن پاسخ در خطا، incident owner، escalation، retry، fallback عملیاتی، مرجع/تریگر Rollback و SLO هنوز OPEN هستند؛ این تصمیم هیچ Provider/Clinical/Financial action را مجاز نمی‌کند.
+- **منبع:** DC-006 Candidate D-0034 + D-0004/D-0005؛ پذیرفته‌شده تحت D-0124.
+
+## D-0035 — منشأ و ردیابی خروجی‌های اثرگذار AI
+
+- **تاریخ:** 2026-10-08
+- **حوزه:** Business / AI / Provenance & Audit
+- **وضعیت:** Accepted — traceability principle
+- **تصمیم:** برای خروجی AI که به مسیر عملیاتی/بازبینی انسانی می‌رسد، هویت AI و نسخه Model، زمان تولید، نسخه Context/ورودی اثرگذار، تصمیم/تغییرات Reviewer انسانی (در صورت لزوم)، و action رسمی بعدی باید به‌صورت قابل انتساب و حسابرسی ردیابی شوند. AI نباید به‌عنوان Actor انسانی ثبت شود.
+- **مرز:** ذخیره متن کامل، retention، data access، logging sanitization و Training Eligibility از این تصمیم استنتاج نمی‌شوند؛ باید مستقل تعیین شوند.
+- **منبع:** DC-006 Candidate D-0035 + D-0015/D-0028؛ پذیرفته‌شده تحت D-0124.
+
+## D-0135 — نخستین Use Case محدود AI برای سالمند و سالمندیار
+
+- **تاریخ:** 2026-10-08
+- **حوزه:** Business / AI Day-one / Minimal Scope
+- **وضعیت:** Accepted — selection of a safe, bounded first use case only
+- **تصمیم:** نخستین Use Case منتخب برای هر دو مخاطب D-0004، «**راهنمایی اطلاعاتی فقط بر اساس محتوای رسمیِ منتشرشده و مصوب نسیم**» است:
+  - **سالمند:** توضیح ساده درباره خدمات و مراحل **واقعاً مصوب/منتشرشده** نسیم و چگونگی درخواست کمک انسانی.
+  - **سالمندیار:** جست‌وجو/توضیح راهنماها و رویه‌های عملیاتی **واقعاً مصوب/منتشرشده و مجاز برای سالمندیار**.
+- **Bounded scope:** read-only/informational؛ بدون دسترسی پیش‌فرض به پرونده شخصی، Case status، اطلاعات سلامت، Provider ranking/selection، Referral mutation، Clinical/Financial instruction یا تغییر Official Record؛ در نبود منبع معتبر یا مجوز دسترسی باید از جعل محتوا خودداری شود.
+- **الزام مستقل:** این انتخاب کوچک، تعهد D-0005 برای **AI هر دو مخاطب و Dataset خودکارِ نسخه‌دار از داده مجاز** در روز اول را کاهش نمی‌دهد یا جایگزین نمی‌کند. AI conversation یا داده عملیاتی خودبه‌خود Training Eligible نیست.
+- **OPEN و مانع گیت:** محتوای واقعاً مصوب، Content Owner/Publication Authority، نسخه منبع، Human Owner/Review، access/consent/legal basis، retention، پاسخ دقیق در نبود منبع، Data Classes مجاز AI Runtime و Training، Dataset Eligibility و Model/Training/Evaluation/Promotion governance. تا احراز این موارد هیچ AI Runtime/API یا Dataset Builder برای این Use Case مجاز نیست.
+- **منبع:** DC-017 AI-U01 و DC-006 Candidate D-0029/D-0030 + BC-004/BC-006 + D-0004/D-0005/D-0021؛ انتخاب اولین Slice کم‌ریسک تحت D-0124. این تصمیم به معنای قبول همه Use Caseهای D-0029/D-0030 نیست.
