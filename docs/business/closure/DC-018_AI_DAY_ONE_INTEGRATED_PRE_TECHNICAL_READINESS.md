@@ -103,6 +103,12 @@ The Product Owner confirmed **it is too early to select Nasim's AI model**. Ther
 
 **Do not defer D-0004/D-0005:** genuine AI for both audiences and eligible-data-only automatically versioned Dataset creation remain Day-one requirements. Delaying a model decision does not justify a production/demo placeholder or broad default AI training permissions.
 
+## 4.2 Detailed AI answer-source versus Training-Eligibility evidence matrix — DC-019
+
+The next concrete documentation-only preparation is [DC-019 — AI Source Use & Training-Eligibility Evidence Matrix](DC-019_AI_SOURCE_USE_AND_TRAINING_ELIGIBILITY_EVIDENCE_MATRIX.md). It traces the current Nasim operational data families and future official content sources separately to **informational AI Runtime** and **Training/Dataset** purpose, and identifies the **actual evidence required before either permission may be accepted**. Every source still lacks a positive AI-runtime/training grant; a compiled matrix is *not* a governed Data Access Matrix, a legal opinion or an eligibility policy.
+
+This is useful before model selection (D-0147), because evaluation, deployment and continuous Dataset creation need real source and permission provenance. Its ten acceptance-check candidates are **not executed tests** and its evidence columns are **not technical schemas**. No new actor, contact, source-of-truth provider, threshold, model or timing has been invented.
+
 ## 5. Fast execution sequence without serial micro-questions
 
 **Wave 1 — CURRENTLY ADMISSIBLE (Business documentation only):** preserve D-0135…D-0147 and map them to A–F; prepare the inventory and eligibility evidence worksheets above; consolidate open dependencies into B1–B5; draft traceable negative-path scenarios; coordinate with PR #8's pre-Stage plan and PR #9's independent Provider decisions **without merging their separate branches by implication**.
