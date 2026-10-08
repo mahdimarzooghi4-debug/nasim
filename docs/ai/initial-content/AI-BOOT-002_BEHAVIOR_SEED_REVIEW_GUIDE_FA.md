@@ -200,3 +200,13 @@
 ۵. مستقل از مرور کیفیت، برای هر Training/Evaluation Purpose، حقوق استفاده، Eligibility، Dataset version/lineage و بازبین/مرجع مجاز تأیید واقعی لازم است (Issue #12).
 
 **وضعیت پایانی:** `AUTHORIAL QUALITY FINDINGS RECORDED / 2 TRACEABLE PROPOSED CORRECTIONS / 84 STILL-UNAPPROVED CANDIDATES / INDEPENDENT HUMAN REVIEW PENDING`. هیچ Train/Eval، Model Selection، Release یا Stage از این ممیزی مجاز نمی‌شود.
+
+
+## ۱۰. بسته تحویل بازبینی مستقل — آماده تحویل، نه تصویب
+
+[AI-BOOT-003 — فهرست ۸۴ نمونه با پیوند ثابت و وضعیت موردبه‌مورد](AI-BOOT-003_INDEPENDENT_REVIEW_HANDOFF_FA.md) تهیه و برای بررسی **یک بازبین واقعی و دارای صلاحیت** در [Issue #13](https://github.com/mahdimarzooghi4-debug/nasim/issues/13) ثبت شد.
+
+- همه ۸۴ نمونه، ۸ متن داستانی و ۲ اصلاحیه با نسخه/شناسه منشأ برای مرور در دسترس‌اند؛ **هیچ موردی هنوز بازبینی مستقل یا تأیید محتوایی نشده**.
+- درخواست اصلی از سازمان، **احراز بازبین واقعی و اختیار او** و ثبت نتیجه بررسی هر شناسه است؛ بازبینی تألیفی توسط AI جای این فرآیند نیست.
+- کیفیت محتوا حتی پس از تأیید مستقل، معادل **Training Eligibility** یا مجوز Evaluation نیست؛ Issue #12 جداگانه باز می‌ماند. Issue #11 نیز برای اسناد رسمیِ منتشرشده باز است.
+- PR همچنان **Draft/Open** است؛ نه Training، نه Model Selection، نه Technical Entry و نه Stage/Production از این بسته مجاز نمی‌شوند.
