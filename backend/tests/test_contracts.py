@@ -175,7 +175,6 @@ def test_malformed_cursor(cursor):
         decode_cursor(cursor)
 
 
-
 @pytest.mark.parametrize(
     "payload",
     [
