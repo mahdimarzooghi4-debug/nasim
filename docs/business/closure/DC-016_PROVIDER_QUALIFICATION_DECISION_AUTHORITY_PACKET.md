@@ -54,6 +54,23 @@ The functional responsibilities are separate; the field proposer must not be fin
 
 **Only the three-function boundary within QD-02 is ACCEPTED (D-0134).** The remaining QD-02 details, QD-01 and QD-03…QD-07 are **OPEN**. Packet labels are not official D-numbers or implementation state constants.
 
+## 2.1 QD-02 — Source of formal authority: decision input (OPEN)
+
+The accepted D-0134 *function* `authorized Provider-network final qualification decision owner` is **not** itself an institutional issuer of authority. The Product Owner has not named the real organization/body empowered to appoint that decision owner. Do not assume the CEO, Board, a supervisor, a named department, or a technical admin has that authority.
+
+**Non-binding possibilities to verify against real institutional documentation:**
+
+| Candidate source for decision-owner appointment | Evidence needed before Product Owner can accept it |
+|---|---|
+| Accountable executive within the actual Nasim legal entity | Real organizational authority, its scope/limits, and documented authority to delegate qualification decisions |
+| Authorized board / organizational governance body | Actual charter/resolution or other valid governance authority granting the body this decision right |
+| Delegated network-governance officer under an authorized principal | Proven primary issuer, explicit documented delegation, scope, duration/withdrawal rules and traceable assignee |
+| Another legally/organizationally empowered decision body | Its identity and independently verifiable source of authority |
+
+**These are examples, not an approved authority matrix or an assumption that such offices exist.**
+
+**Smallest Product Owner answer needed:** identify (a) the real authority-issuing person/body, (b) the evidence/basis for its appointment power, (c) the scope and boundaries of its delegation, and (d) whether the specialist reviewer and final decision signer must be different people, beyond the already accepted separation of responsibilities. Until this is answered, it remains **QD-02 / OPEN** and no role-to-permission grant, qualification decision endpoint or SG-007 is authorized.
+
 ## 3. Explicit separation of business concepts
 
 | Concept | Already exists? | What it means / does not mean |
