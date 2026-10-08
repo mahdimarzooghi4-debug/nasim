@@ -109,6 +109,18 @@ The next concrete documentation-only preparation is [DC-019 — AI Source Use & 
 
 This is useful before model selection (D-0147), because evaluation, deployment and continuous Dataset creation need real source and permission provenance. Its ten acceptance-check candidates are **not executed tests** and its evidence columns are **not technical schemas**. No new actor, contact, source-of-truth provider, threshold, model or timing has been invented.
 
+## 4.3 Authored caregiver/AI teaching drafts — not official source approval
+
+The requested **first real training texts** have now been authored as Persian pedagogical drafts, not just inventory templates:
+
+- [TR-001 — Caregiver Orientation](../../training/drafts/TR-001_CAREGIVER_FOUNDATION_ORIENTATION_FA.md): dignity/communication, record provenance and correction, assigned Case ownership, referral limits, privacy, risk-awareness and practice tasks, with no invented credentials/training hours/pass criteria.
+- [TR-002 — AI Safe-Use Guide](../../training/drafts/TR-002_NASIM_AI_SAFE_USE_GUIDE_FA.md): D-0135 information-only guidance, D-0140 audience classes, D-0142 four-part missing-source fail-safe, D-0143…D-0146 conditional human contact, personal data boundaries, Training/Dataset separation and examples. Includes a proposed **elder-facing quick sheet**, also unapproved.
+- [Training Pack Index / review gates](../../training/README.md): links, provenance, needed human review and exact `DRAFT / UNVERIFIED / UNAPPROVED / UNPUBLISHED` statuses.
+
+This genuinely advances **authoring**, but **does not close B1**: the files are newly authored *candidate sources* under D-0137, not official approved/version-published, validated and audience-permitted Nasim content under D-0135. It also does **not close B4**: teaching employees how AI works is not Training Eligibility for model datasets. Actual Ops Manager authority/appointment, legal/specialist review where relevant, formal publication and classification remain pending under [Issue #11](https://github.com/mahdimarzooghi4-debug/nasim/issues/11); independent use-of-data authorization under [Issue #12](https://github.com/mahdimarzooghi4-debug/nasim/issues/12).
+
+No training certificate, clinical/emergency protocol, user-facing AI activation or Product/Technical Gate is authorized by authoring these drafts.
+
 ## 5. Fast execution sequence without serial micro-questions
 
 **Wave 1 — CURRENTLY ADMISSIBLE (Business documentation only):** preserve D-0135…D-0147 and map them to A–F; prepare the inventory and eligibility evidence worksheets above; consolidate open dependencies into B1–B5; draft traceable negative-path scenarios; coordinate with PR #8's pre-Stage plan and PR #9's independent Provider decisions **without merging their separate branches by implication**.
