@@ -407,9 +407,11 @@ class ProviderQualificationReviewWorkspace:
                     ProviderQualificationEvidenceView.model_validate(row)
                     for row in selected_evidence
                 ],
-                next_cursor=encode_cursor(selected_evidence[-1].recorded_at, selected_evidence[-1].id)
-                if len(evidence_rows) > limit
-                else None,
+                next_cursor=(
+                    encode_cursor(selected_evidence[-1].recorded_at, selected_evidence[-1].id)
+                    if len(evidence_rows) > limit
+                    else None
+                ),
             )
 
             requests_query = select(ProviderQualificationReviewRequestRecord).where(
@@ -438,9 +440,11 @@ class ProviderQualificationReviewWorkspace:
                     ProviderQualificationReviewRequestView.model_validate(row)
                     for row in selected_requests
                 ],
-                next_cursor=encode_cursor(selected_requests[-1].requested_at, selected_requests[-1].id)
-                if len(request_rows) > limit
-                else None,
+                next_cursor=(
+                    encode_cursor(selected_requests[-1].requested_at, selected_requests[-1].id)
+                    if len(request_rows) > limit
+                    else None
+                ),
             )
             return ProviderQualificationReviewWorkspaceView(
                 candidate=ProviderCandidateView.model_validate(candidate),

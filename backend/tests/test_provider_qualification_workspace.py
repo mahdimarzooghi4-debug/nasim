@@ -82,8 +82,12 @@ async def effect_counts(admin_engine) -> tuple[int, int, int, int, int, int]:
     async with admin_engine.connect() as connection:
         return (
             await connection.scalar(select(func.count()).select_from(ProviderCandidateRecord)),
-            await connection.scalar(select(func.count()).select_from(ProviderQualificationEvidenceRecord)),
-            await connection.scalar(select(func.count()).select_from(ProviderQualificationReviewRequestRecord)),
+            await connection.scalar(
+                select(func.count()).select_from(ProviderQualificationEvidenceRecord)
+            ),
+            await connection.scalar(
+                select(func.count()).select_from(ProviderQualificationReviewRequestRecord)
+            ),
             await connection.scalar(select(func.count()).select_from(AuditEntry)),
             await connection.scalar(select(func.count()).select_from(OutboxEvent)),
             await connection.scalar(select(func.count()).select_from(IdempotencyRecord)),
