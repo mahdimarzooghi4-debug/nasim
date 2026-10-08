@@ -4,7 +4,7 @@
 - **Status:** **DRAFT / IMPLEMENTATION-NEUTRAL READINESS PACKAGE** — not an Accepted Decision, Slice Gate, Technical Baseline, Backlog or Sprint authorization
 - **Prepared:** 2026-10-08
 - **PR scope:** [Draft PR #10](https://github.com/mahdimarzooghi4-debug/nasim/pull/10), documentation only
-- **Source of binding decisions:** `docs/DECISIONS.md` (D-0004/D-0005, D-0013…D-0015, D-0021/D-0028, D-0031…D-0035, D-0118/D-0124/D-0130, and D-0135…D-0146 on this **unmerged Draft branch**)
+- **Source of binding decisions:** `docs/DECISIONS.md` (D-0004/D-0005, D-0013…D-0015, D-0021/D-0028, D-0031…D-0035, D-0118/D-0124/D-0130, and D-0135…D-0147 on this **unmerged Draft branch**)
 - **Reference packets:** `DC-005_LEGAL_CONSENT_DATA_ACCESS_TRAINING_ELIGIBILITY_PACKET.md`, `DC-006_AI_DAY1_HUMAN_OVERSIGHT_MODEL_GOVERNANCE_PACKET.md`, `DC-017_AI_DAY_ONE_BOUNDED_USE_CASE_DECISION_PACKET.md`, `BC-004_INTERNAL_AI_ASSISTANT.md`, `BC-006_AI_USE_CASES_HUMAN_OVERSIGHT_LEARNING.md`
 - **Independent readiness reference:** [PR #8 — pre-Stage register](https://github.com/mahdimarzooghi4-debug/nasim/pull/8) (separate Draft branch; **not** included in `main` or this branch)
 - **Independent Provider-governance reference:** [PR #9 — DC-016](https://github.com/mahdimarzooghi4-debug/nasim/pull/9) (separate Draft branch; **Provider Qualification authority is not decided by this AI packet**)
@@ -89,13 +89,23 @@ These are **test-design prompts**. Exact expected response text, authorization s
 | **B2 — Real identity & legal access** | Real publisher/classifier appointments and grants, elder/caregiver authentication/authorization and the legal basis for the **specific** AI Runtime data exposure | **OPEN**; no invented access rights |
 | **B3 — Human follow-up & support** | Real channel to assigned caregiver; if fallback is needed, actual organization/CEO delegation evidence, support role definition/appointment/access; caregiver AI owner and interim/urgent handling | **OPEN**; response policy can be documented but live handoff cannot be claimed |
 | **B4 — Training and data governance** | Per-data-class/event Training Eligibility and consent/legal basis, exclusions, accountable reviewer, correction/withdrawal/retention rules, independent evaluation and explicit model promotion authority | **OPEN**; no Dataset Builder/Trainer admission |
-| **B5 — Day-one implementation and hosting** | Separately approved model/runtime, actual model artifacts/resources, identity/integration/environment inputs and the agreed Phase/Pilot scope | **OPEN**; no selection of LLM, provider, algorithm, GPU, credential or deployment target from this packet |
+| **B5 — Day-one implementation and hosting** | At the later D-0147 Model Benchmark / Technical Selection gate: actual evidence for model/version choice and runtime deployment, with real artifacts/resources, identity/integration/environment inputs and agreed Phase/Pilot scope | **OPEN infrastructure and delivery inputs; exact model choice DEFERRED narrowly by D-0147**, never silently accepted |
 
-No item in B1–B5 is declared **DEFERRED** here. Scope-sensitive items may be dealt with by a future **explicit** bounded deferral if lawful and compatible with D-0004/D-0005; a no-AI or no-policy-gated-Dataset Day-one cannot be presented as compliant with those accepted requirements.
+**D-0147 explicitly DEFERS only final AI model selection/version to the later evidence-based benchmark/technical selection gate.** B1–B4 blockers and other B5 readiness inputs are **OPEN**, not deferred or accepted. Scope-sensitive items may receive only a future explicit bounded deferral when lawful and compatible with D-0004/D-0005; Day-one without real AI or without a policy-gated automatic versioned Dataset cannot be presented as compliant.
+
+## 4.1 Model choice — D-0147 narrowed deferral
+
+The Product Owner confirmed **it is too early to select Nasim's AI model**. There is **no final accepted model**, pinned checkpoint, benchmark winner, training algorithm, inference deployment topology or hardware size. Any prior candidate names are **research ideas only**, not a Business/Technical approval.
+
+**May continue now:** prepare the versioned comparison protocol and future Persian-language elderly usability, source-grounding, non-disclosure, uncertainty, access-safety and infrastructure-measurement scenario inventory. Do not invent results or numeric thresholds.
+
+**Reopen the model decision only** once approved/versioned, audience-permitted content and real comparable evaluation conditions are available, with lawful access, accountable human review and a real infrastructure benchmark. Final selection/promotion require their own accepted gates.
+
+**Do not defer D-0004/D-0005:** genuine AI for both audiences and eligible-data-only automatically versioned Dataset creation remain Day-one requirements. Delaying a model decision does not justify a production/demo placeholder or broad default AI training permissions.
 
 ## 5. Fast execution sequence without serial micro-questions
 
-**Wave 1 — CURRENTLY ADMISSIBLE (Business documentation only):** preserve D-0135…D-0146 and map them to A–F; prepare the inventory and eligibility evidence worksheets above; consolidate open dependencies into B1–B5; draft traceable negative-path scenarios; coordinate with PR #8's pre-Stage plan and PR #9's independent Provider decisions **without merging their separate branches by implication**.
+**Wave 1 — CURRENTLY ADMISSIBLE (Business documentation only):** preserve D-0135…D-0147 and map them to A–F; prepare the inventory and eligibility evidence worksheets above; consolidate open dependencies into B1–B5; draft traceable negative-path scenarios; coordinate with PR #8's pre-Stage plan and PR #9's independent Provider decisions **without merging their separate branches by implication**.
 
 **Wave 2 — EVIDENCE-TRIGGERED:** when authentic content, organization authority evidence and applicable legal/consent rules become available, resolve only the blockers actually necessary for a **bounded** first AI slice. Record actual decisions in `docs/DECISIONS.md` with source/scope. Do not pretend candidate controls or generic "safe" options are Accepted Business policy.
 
