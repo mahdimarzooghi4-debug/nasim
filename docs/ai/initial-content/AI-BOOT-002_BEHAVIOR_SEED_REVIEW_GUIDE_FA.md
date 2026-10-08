@@ -1,7 +1,7 @@
 # AI-BOOT-002 — بسته محتوای اولیه برای آموزش رفتار و زبان فارسی AI نسیم
 
 **نسخه:** Author Draft 0.1 — ۲۰۲۶-۱۰-۰۸  
-**وضعیت:** `AUTHOR-GENERATED SYNTHETIC CANDIDATES / NOT REVIEWED / NOT TRAINING AUTHORIZED`  
+**وضعیت پس از D-0152:** `MANAGER CONTENT-PACKAGE APPROVAL ATTESTED BY PRODUCT OWNER / AUTHOR-GENERATED SYNTHETIC CANDIDATES / INDEPENDENT PER-ID REVIEW NOT EVIDENCED / NOT PUBLISHED / NOT TRAINING AUTHORIZED`  
 **پرسش محصول:** «برای آموزش اولیه خود AI نسیم چه محتوایی همین الآن می‌توان تولید کرد، بدون جعل داده عملیاتی یا مجوز داده؟»  
 **پاسخ:** متن دانش پایه پیشنهادی [AI-BOOT-001](AI-BOOT-001_NASIM_FOUNDATIONAL_KNOWLEDGE_DRAFT_FA.md) و مجموعه ۵۲ مثالِ کاملاً ساختگی فارسی [JSONL v0.1](nasim_synthetic_behavior_candidates_v0_1.jsonl). این‌ها **داده تألیفیِ نامزد** هستند، نه Dataset مصوب، داده First-party واقعی، Label انسانی بازبینی‌شده، گزارش Evaluation یا Training Run.
 
