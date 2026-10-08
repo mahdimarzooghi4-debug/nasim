@@ -116,9 +116,7 @@ async def test_ts03_paginated_reads_reject_invalid_service_limits(
 
 @pytest.mark.parametrize("kind", ["interactions", "observations", "timeline"])
 @pytest.mark.parametrize("limit", [1, 100])
-async def test_ts03_paginated_reads_accept_service_limit_boundaries(
-    service, manager, kind, limit
-):
+async def test_ts03_paginated_reads_accept_service_limit_boundaries(service, manager, kind, limit):
     _, case_id, _ = await seed(service, manager)
     page = await service.read(kind, case_id, manager, limit=limit)
     assert len(page.items) <= limit
