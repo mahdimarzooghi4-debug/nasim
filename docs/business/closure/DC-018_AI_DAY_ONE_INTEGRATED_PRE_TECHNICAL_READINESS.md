@@ -129,6 +129,14 @@ The Product Owner explicitly asked to prepare **initial content for the Nasim AI
 
 **Gates unchanged:** the business facts summarized in AI-BOOT-001 have **not** been approved/published as an official D-0135 answer source (Issue #11, B1). The synthetic samples are not human-reviewed, **not approved for Training or Evaluation**, and do **not** satisfy operational Training Eligibility nor the automatic versioned Dataset Builder commitment under D-0005 (Issue #12, B4). Model selection remains narrowly Deferred by D-0147. No training/evaluation run, architecture change, SG/Technical/Sprint/Code, Stage or Production activity is implied.
 
+## 4.5 Balanced fictional positive grounding — authoring supplement v0.2
+
+The 52 original synthetic prompt/answer candidates were preserved as **immutable authoring baseline v0.1**, and 32 **new** positive source-grounded Persian examples were added in [v0.2 positive supplement](../../ai/initial-content/nasim_synthetic_grounded_positive_candidates_v0_2.jsonl). Every new example is linked to an exact `source_excerpt` in one of [eight explicitly fictional reference fixtures](../../ai/initial-content/nasim_fictional_grounding_fixtures_v0_2.jsonl). The [AI-BOOT-002 review guide](../../ai/initial-content/AI-BOOT-002_BEHAVIOR_SEED_REVIEW_GUIDE_FA.md) now explains composition and limitations.
+
+**Total authoring artifacts:** 84 **synthetic candidate Q/A samples** across two files plus 8 fictional source fixtures, not a single approved Train/Eval partition. These new examples help draft *how to answer when a permitted source is present*; they do **not** constitute evidence of any actual published Nasim content or actor permission. Scenario-level fictional staff restrictions do not instantiate real `داخلی` access grants.
+
+**Gates:** all new records remain `training_permission=NOT_AUTHORIZED`, `evaluation_permission=NOT_AUTHORIZED`; no approved model, dataset, training run, human-reviewed label or live Runtime is implied. D-0005 first-day eligible-only automatic Dataset obligation and D-0147 deferred model decision are unchanged. Issue #11 real official sources and Issue #12 source-specific lawful Training Eligibility remain OPEN.
+
 ## 5. Fast execution sequence without serial micro-questions
 
 **Wave 1 — CURRENTLY ADMISSIBLE (Business documentation only):** preserve D-0135…D-0147 and map them to A–F; prepare the inventory and eligibility evidence worksheets above; consolidate open dependencies into B1–B5; draft traceable negative-path scenarios; coordinate with PR #8's pre-Stage plan and PR #9's independent Provider decisions **without merging their separate branches by implication**.
