@@ -1,6 +1,6 @@
 # DC-017 — Internal AI Day-one Bounded Use Case & Data Governance Decision Packet
 
-- **Status:** DRAFT / PARTIAL BUSINESS CLOSURE — D-0135 THROUGH D-0146 CONDITIONAL CEO AUTHORITY SOURCE ACCEPTED; actual delegation, operational role, source evidence and learning policies OPEN
+- **Status:** DRAFT / PARTIAL BUSINESS CLOSURE — D-0135…D-0146 bounded decisions ACCEPTED, D-0147 exact model selection DEFERRED; authoritative sources, legal access, human operations, Training Eligibility OPEN
 - **Project:** نسیم — نظام سالمند‌یاری محله‌محور
 - **Stage:** Business / context-triggered decision preparation
 - **Prepared:** 2026-10-08
@@ -8,13 +8,13 @@
 - **Existing source packets:** `DC-005_LEGAL_CONSENT_DATA_ACCESS_TRAINING_ELIGIBILITY_PACKET.md`, `DC-006_AI_DAY1_HUMAN_OVERSIGHT_MODEL_GOVERNANCE_PACKET.md`, `BC-004_INTERNAL_AI_ASSISTANT.md`, `BC-006_AI_USE_CASES_HUMAN_OVERSIGHT_LEARNING.md`, `BR-004_CONTEXTUAL_OPEN_DECISION_REGISTER.md`.
 - **Purpose:** Choose the smallest **real**, non-consequential first AI interaction and make its necessary business/data prerequisites explicit. This **does not** authorize an AI runtime, select any model, or satisfy the full D-0005 Day-one dataset obligation by itself.
 
-> This is a **partially resolved Business packet** under DC-006. The bounded first informational use case has been **ACCEPTED as D-0135**, and AI safety/review/governance principles D-0031…D-0035 were accepted under D-0124 on this branch. Other source, human authority, data, training and evaluation policies remain **OPEN**. This packet itself is not an implementation authorization. `OPEN ≠ DEFERRED ≠ ACCEPTED`.
+> This is a **partially resolved Business packet** under DC-006. D-0031…D-0035 and the bounded first use case D-0135 are accepted; content source/audience responsibility and safe human follow-up directions are partly accepted under D-0136…D-0146, but real sources, identity/authority evidence, legal data access, human channels and Training Eligibility remain **OPEN**. Only **exact model selection/version** was explicitly **DEFERRED** by D-0147 to a real-evidence benchmark/Technical Selection gate, without delaying D-0004/D-0005 Day-one AI and governed automatic Dataset obligations. This packet is not implementation authorization. `OPEN ≠ DEFERRED ≠ ACCEPTED`.
 
 ## 1. Accepted direction versus decisions still missing
 
 **Accepted:** Nasim must have an internal AI assistant for both elders and caregivers from the first operational day. The dataset lifecycle must automatically create/update *versioned datasets* from eligible new operational data. Training success does **not** automatically promote a model to Production. AI/System authority is not inferred from execution or actor type.
 
-**Partially Accepted:** only information-only guidance over actually approved/published Nasim content for elders and caregivers (D-0135), and high-level prohibitions, consequential Human Review, non-automatic model promotion, fail-safe and traceability (D-0031…D-0035). **Still OPEN:** actual content sources, published versions and named/authorized publisher account (Business content approval/publication owner is now مدیر عملیات نسیم under D-0136), any other use cases, permitted runtime/training data classes, consent/legal basis, specific human owner/permission mapping, detailed error handling, evaluation, deployment/model/algorithm/hosting, retention and thresholds.
+**Partially Accepted:** first information-only guidance for both audiences (D-0135); content classes and Business import/publish/classification owners (D-0136…D-0141); bounded missing/invalid/conflicting-source fail-safe (D-0142); elder's assigned caregiver as first human follow-up, with future conditional support fallback and organizational authority chain (D-0143…D-0146); and D-0031…D-0035 AI guardrails. **Still OPEN:** real content sources/versions/approval evidence, actual identity and access grants, human contacts, lawful Runtime/Training purposes, eligible Training data classes, concrete safe error/channel handling, independent evaluation/approval governance, deployment/algorithm/hosting, retention. **DEFERRED only:** final model choice/version (D-0147).
 
 A **successful AI demo is not an operational Day-one capability**. A Dataset Builder with no approved eligible data rule is not evidence of authorized training data. Full Day-one readiness needs independently justified runtime, governance and learning capabilities.
 
@@ -63,7 +63,7 @@ The Product Owner explicitly assigned **مدیر عملیات نسیم** (Nasim 
 
 **Import is not publication or validation.** An imported document still needs source/validity evidence, applicable specialist/legal review, explicit publication for a permitted audience and appropriate controls before it can be used as official AI guidance. Naming a Business owner does not appoint a technical Actor or grant Role/Permission access.
 
-**OPEN:** actual documents and issuing organizations, source location and authentication, intake and versioning mechanism, actual published versions, named accountable user and permission grants, audience classification, withdrawal/stale-material rules and all Training Eligibility questions.
+**OPEN:** actual documents and issuers, authenticity and source location, intake/versioning process, actual published versions, identity/permission grants, **document-by-document audience assignments** under the D-0141 Operations Manager Business responsibility, withdrawal/stale-material rules and all Training Eligibility questions.
 
 ## 2.5 Accepted two-level content audience boundary — D-0140
 
@@ -74,7 +74,7 @@ The Product Owner explicitly approved **two Business audience levels** for offic
 
 The word **public/عمومی** means **permitted for both elder and caregiver audiences within Nasim**. It does **not** itself mean anonymous Internet publication, third-party access or that all users can view all documents. Similarly, staff classification does not grant blanket access to all caregivers/staff. No RBAC permission, authentication method, access-policy implementation, actual content classification or document list is approved by this Business-level distinction.
 
-**Still OPEN:** who classifies/changes the audience level on each document, actual access and identity checks per role/scope, version and publication validity, specialist/legal review where applicable, revocation and stale-source rules, and the AI Runtime/Training eligibility boundaries. Import, publication approval, audience classification and data-purpose permissions are separate governance operations.
+**Status reconciliation:** D-0141 **already designates the Operations Manager as Business classifier/reclassifier**. Still OPEN: actual per-document audience assignments, actor authentication/access scope, issuer/version/publication validity, specialist/legal review where applicable, revocation/stale-source rules and independent AI Runtime/Training eligibility. Import, publication, classification and data-purpose permissions remain separate governance operations.
 
 ## 2.6 Audience-classification owner — D-0141 Accepted
 
@@ -90,13 +90,13 @@ Import (D-0139), evidence/validation, audience classification (D-0141), approval
 
 The Product Owner expressly accepted the **entire four-part informational-assistant fail-safe policy**: when content required to answer lacks a valid, current, published and audience-permitted official source, or relevant sources are expired, invalid or conflicting, the assistant must (1) avoid definitive, speculative or fabricated official answers; (2) clearly explain lack of verified content or a conflict, without disclosing inaccessible internal source details; (3) direct the user toward appropriate human follow-up; and (4) withhold the invalid/stale/conflicting information as an official answer until duly resolved.
 
-The actual human destination/channel, publication-version validation method, exact response text, human escalation ownership/recording, source conflict resolution, and incident handling remain **OPEN**. This is a Business policy for D-0135, elaborating D-0034; it is not a technical implementation, does not seed permissions and does not grant access to protected personal or internal content.
+The elder's first human destination is **partially resolved** under D-0143/D-0144: the elder's actually assigned caregiver, followed only **conditionally** by a future authorized support function; caregiver-facing destination, **actual** contacts/channels, publication-version validation, exact message text, escalation audit, conflict resolution and incident handling remain **OPEN**. This is a Business policy for D-0135, elaborating D-0034; it is not a technical implementation, does not seed permissions and does not grant access to protected personal or internal content.
 
 ## 2.8 Elder's first human follow-up contact — D-0143 Accepted
 
 The Product Owner explicitly approved **the assigned caregiver for the same elder (سالمندیار مسئول همان سالمند)** as the **first human follow-up function** when the elder-facing informational assistant cannot provide a safe answer under D-0142. This is an **elder-only** Business responsibility boundary.
 
-This does **not** establish that an assigned caregiver actually exists for a given elder, nor authorize the AI to access case assignment data or personal contact details. Case assignment provenance, consent/legal basis, verification of the actual responsible caregiver, and the eventual user-facing communication channel remain independently gated. In the absence/unavailability of a verifiably assigned caregiver, no fallback owner, message route, default Operations Manager or next authority is inferred.
+This does **not** establish that an assigned caregiver actually exists for a given elder, nor authorize the AI to access case assignment data or personal contact details. Case assignment provenance, consent/legal basis, verification of the actual responsible caregiver, and the eventual user-facing communication channel remain independently gated. In the absence/unavailability of a verifiably assigned caregiver, D-0144 identifies **only a conditional future support fallback**, not an available handoff or an inferred contact/Operations Manager default; no actual operational fallback is established.
 
 **Still OPEN:** the actual elder-to-caregiver contact/queue/notification and audit contract, response deadline, who handles unanswered follow-up or tasks beyond caregiver authority, urgency/emergency escalation, and the **first human destination for caregiver-facing AI users**. D-0143 does not authorize caregiver decisions beyond established scope and cannot affect official records, referrals, clinical care or AI training.
 
@@ -116,7 +116,7 @@ The Product Owner **conditionally accepted** **مدیر عملیات نسیم (N
 
 **Separation:** selecting an intended Business approval owner ≠ ratifying legal/organizational competence ≠ adopting a role contract ≠ appointing support staff ≠ granting technical permissions ≠ operating the elder fallback service. The support function, any interim fallback when no caregiver is available, channels and SLAs remain OPEN. No role, backend permission, deployment or AI case access arises from this document.
 
-**Next narrowly triggered question:** which real organizational person/body grants the Operations Manager authority to define and approve this support function, and what actual source of authority is applicable? Do not assume executive/board approval without Product Owner evidence.
+**Reconciled under D-0146:** the CEO is the Product Owner's **intended source** of authority for this specific future support function. Actual CEO organizational authority, delegating instrument, terms and valid appointment remain **unproven**; do not assume the designation itself is a real grant, or reuse it for Provider Qualification.
 
 ## 2.11 Conditional authority source for establishing the future support function — D-0146
 
@@ -143,7 +143,7 @@ The Product Owner requested an end to low-value serial micro-questions. Proceed 
 | AI-D7 | Training, evaluation and release governance | Training/validation/evaluation dataset isolation, evaluation evidence, approver authority, rollback, versions and production promotion process (no thresholds invented) | Model readiness and governed release cannot be assumed from technical completion |
 | AI-D8 | Operational quality and user safety | Applicable linguistic/accessibility requirements for elderly users, user-facing transparency, human handoff, specific prohibited advice and risk ownership | Needs real user-specific and human/organizational decisions, not guessed UI or clinical policies |
 
-**AI-D1 selection is ACCEPTED under D-0135; AI-D2 source/publisher/audience responsibilities under D-0136…D-0141; fail-safe under D-0142; elder first contact under D-0143; conditional fallback under D-0144; conditional Operations Manager role-definition/approval responsibility under D-0145; and CEO as intended issuer of that authority under D-0146, without assuming actual delegation or charter power.** Real documents, confirmed staffing/authority, interim route, actual channels and grants, caregiver-side destination and Training Eligibility remain OPEN. Actual documents, classification authority, access grants, workflow and Training Eligibility remain OPEN. Actual content/versions and remaining AI-D1…AI-D8 requirements remain OPEN. D-0031…D-0035 accept safeguards without filling in owners, policies or criteria. AI-D labels are packet references, not implementation states.
+**Reconciled statuses:** D-0031…D-0035 AI guardrails ACCEPTED; AI-D1's first use case ACCEPTED under D-0135; AI-D2 source/publisher/audience Business responsibilities partially resolved under D-0136…D-0141; AI-D5 informational fail-safe direction accepted under D-0142; AI-D3 elder follow-up function and future conditional fallback partly resolved under D-0143…D-0146. **D-0147 DEFERRED only exact model selection/version** pending a real-evidence benchmark gate. **OPEN:** real published documents, document-specific classifications, legal/organizational authority proof, real identity/permission grants and contacts, caregiver-side follow-up, Training Eligibility, evaluation/approval and model deployment. AI-D1…AI-D8 packet IDs are agenda references, not code states or a declaration of complete Business closure.
 
 ## 4. Separation between data-to-dataset and model lifecycle
 
@@ -181,14 +181,14 @@ The term **internal AI** has an accepted product meaning; its exact technical de
 
 ## 6.1 Consolidated no-micro-question readiness package — DC-018
 
-The documentation-only integrated preparation and blocker matrix now lives in [DC-018 — AI Day-one Integrated Pre-Technical Readiness](DC-018_AI_DAY_ONE_INTEGRATED_PRE_TECHNICAL_READINESS.md). It consolidates D-0135…D-0146 into implementation-neutral content evidence, publication/classification, human continuity, Runtime safety and automatic Dataset governance packages. It specifies **candidate** tests and grouped B1–B5 source/authority/legal/eligibility blockers, **not** new Accepted Business decisions or entry into Technical/Code.
+The documentation-only integrated preparation and blocker matrix now lives in [DC-018 — AI Day-one Integrated Pre-Technical Readiness](DC-018_AI_DAY_ONE_INTEGRATED_PRE_TECHNICAL_READINESS.md). It consolidates D-0135…D-0147 into implementation-neutral content evidence, publication/classification, human continuity, Runtime safety, narrow deferred model selection and governed automatic Dataset preparation. It specifies **candidate** tests and grouped B1–B5 source/authority/legal/eligibility blockers, **not** new Accepted Business decisions or entry into Technical/Code.
 
 Per the Product Owner's request, carry forward all independently justified preparation in larger work packages; do not ask repetitive micro-questions. Keep actual documents, proven organizational authority, legitimate access, training eligibility and model deployment decisions OPEN until real evidence is supplied. DC-018 does not bypass any process gate.
 
 ## 7. Stage boundary and exit
 
-**Result now: PARTIAL BUSINESS DECISIONS ACCEPTED (D-0031…D-0035, D-0135); AI TECHNICAL ENTRY NOT AUTHORIZED.**
+**Current Gate outcome: PARTIAL BUSINESS CLOSURE (D-0031…D-0035, D-0135…D-0146 ACCEPTED within stated boundaries; D-0147 model choice DEFERRED; B1–B4 and remaining B5 inputs OPEN). AI TECHNICAL ENTRY NOT AUTHORIZED.**
 
 No code, model choice, dataset approval, runtime, role grant, SG/T/Backlog/Sprint, Stage Admission, Stage-based QA, Release or Production is authorized by this packet. D-0130 remains: Hosted Stage is **UNAVAILABLE**. CI's disposable container smoke is not Hosted Stage.
 
-**Next work package (without another micro-question):** prepare a concise Business authority-evidence checklist for D-0145/D-0146, group the support-role contract and caregiver-side human fallback gaps, and separately prioritize real published source and data/AI governance prerequisites. CEO authority evidence and actual delegation remain OPEN until the relevant real organizational documentation exists. Do not ask repetitive micro-questions, and do not advance SG/Technical/Code on guessed authority, content or Training Eligibility.
+**Next critical path, without micro-questions:** use [DC-019's source/code evidence](DC-019_AI_SOURCE_USE_AND_TRAINING_ELIGIBILITY_EVIDENCE_MATRIX.md) and [DC-018's grouped B1–B5 stop/go inputs](DC-018_AI_DAY_ONE_INTEGRATED_PRE_TECHNICAL_READINESS.md). No additional paper-only packet resolves the remaining external facts: the actually validated/published official content, real operational permissions/legal grounds, eligible Training source classes and approval authority, and evidence-backed contact/support arrangements must be supplied and approved at their relevant gates. Continue only independent Business verification and corrections until those sources exist; no inferred SG/Technical/Code authorization.
