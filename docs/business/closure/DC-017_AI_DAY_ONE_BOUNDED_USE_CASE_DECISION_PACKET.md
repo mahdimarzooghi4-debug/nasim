@@ -1,6 +1,6 @@
 # DC-017 — Internal AI Day-one Bounded Use Case & Data Governance Decision Packet
 
-- **Status:** DRAFT / PARTIAL BUSINESS CLOSURE — D-0135 USE CASE THROUGH D-0140 AUDIENCE LEVELS PARTIALLY ACCEPTED; actual document evidence, role grants and learning policies OPEN
+- **Status:** DRAFT / PARTIAL BUSINESS CLOSURE — D-0135 USE CASE THROUGH D-0141 CLASSIFICATION OWNER PARTIALLY ACCEPTED; actual document evidence, role grants and learning policies OPEN
 - **Project:** نسیم — نظام سالمند‌یاری محله‌محور
 - **Stage:** Business / context-triggered decision preparation
 - **Prepared:** 2026-10-08
@@ -76,12 +76,22 @@ The word **public/عمومی** means **permitted for both elder and caregiver au
 
 **Still OPEN:** who classifies/changes the audience level on each document, actual access and identity checks per role/scope, version and publication validity, specialist/legal review where applicable, revocation and stale-source rules, and the AI Runtime/Training eligibility boundaries. Import, publication approval, audience classification and data-purpose permissions are separate governance operations.
 
+## 2.6 Audience-classification owner — D-0141 Accepted
+
+The Product Owner explicitly designated **مدیر عملیات نسیم** as the Business owner for **initial and changed classification** of each approved official content item into the two D-0140 audience levels, **عمومی** (elder/caregiver-permitted in Nasim, not anonymous Internet) and **داخلی** (only caregiver/other staff with separate authorized scope).
+
+This responsibility **does not** waive legal/confidentiality constraints, actual specialist verification, publication approval, actor-level permissions, or source validity. Broadening access to an item with protected content requires its actual legal/professional disclosure conditions to be met; those specifics are **OPEN** and cannot be inferred from the Operations Manager's title or classification label.
+
+Import (D-0139), evidence/validation, audience classification (D-0141), approval/publication (D-0136), and runtime access/training permission remain separate governance steps. No real document has yet been assigned a level, no authorization is seeded, and no publication or AI Runtime is activated by this decision.
+
+**Remaining:** documented real content item list and versions, who verifies applicable legal/specialist access restrictions, authorization for the named manager account and staff users, how changes/reclassification are audited and revoked, safe behavior when a source is invalid, and independent Training Eligibility.
+
 ## 3. Smallest context-triggered Product Owner decisions
 
 | Ref | OPEN decision | Minimum decision evidence | Why it blocks implementation |
 |---|---|---|---|
 | AI-D1 | **PARTIALLY RESOLVED** — first informational use case for **elder and caregiver** (D-0135) | Selection and read-only boundaries accepted; additional use cases, actual publication sources and operational support remain OPEN | D-0004/D-0005 mandate both audiences; D-0135 selects only the first bounded use case, not the full eventual scope |
-| AI-D2 | Official **content** source — **PARTIALLY RESOLVED (D-0136…D-0140)** | **مدیر عملیات نسیم** owns document collection/import and separately official approval/publication (D-0136/D-0139); source classes and future import accepted. **Audience levels accepted under D-0140:** عمومی (elder/caregiver audience) and داخلی (authorized caregiver/staff only). Still OPEN: actual source documents, issuers/versions/authenticity, classification owner, document assignments, per-actor grants and audit, specialist validation and stale/withdrawn handling. | An audience level does not mean anonymous public access or universal staff entitlement. Import or classification does not equal verified publication or Training Eligibility. |
+| AI-D2 | Official **content** source — **PARTIALLY RESOLVED (D-0136…D-0141)** | **مدیر عملیات نسیم** owns collection/import (D-0139), audience-level classification and reclassification (D-0141), and independently approval/publication (D-0136); two levels accepted under D-0140. Still OPEN: actual source documents/issuers/versions and validity, independent legal/specialist checks where needed, actor grants, specific audience access controls, audit/revocation and stale/withdrawn behavior. | The Business classifier does not gain authority to disclose legally restricted content, and the labels do not constitute technical access grants or Training Eligibility. |
 | AI-D3 | Accountable Human Owner / review boundary | Who owns each use case, how users reach a human, which AI outputs (if any) require explicit review; escalation when unsuitable/incomplete | A job title or ActorType cannot grant authority; AI Output ≠ Official Record |
 | AI-D4 | Runtime data-access + legal purpose | Allowed and prohibited data classes for each audience, identity/consent/legal basis, minimal context, audit and retention basis | Operational access ≠ AI Runtime Access ≠ Training Eligibility |
 | AI-D5 | Fail-safe / disclosure / incident ownership | Exact safe responses when source unavailable/contradictory, model absent, privacy authorization denied, or user requests consequential action | No plausible fabricated answer, implicit clinical guidance or business action |
@@ -89,7 +99,7 @@ The word **public/عمومی** means **permitted for both elder and caregiver au
 | AI-D7 | Training, evaluation and release governance | Training/validation/evaluation dataset isolation, evaluation evidence, approver authority, rollback, versions and production promotion process (no thresholds invented) | Model readiness and governed release cannot be assumed from technical completion |
 | AI-D8 | Operational quality and user safety | Applicable linguistic/accessibility requirements for elderly users, user-facing transparency, human handoff, specific prohibited advice and risk ownership | Needs real user-specific and human/organizational decisions, not guessed UI or clinical policies |
 
-**AI-D1 first-use-case selection is ACCEPTED under D-0135; AI-D2 content publisher/source categories/external-document future intake/import owner and the two Business audience levels are ACCEPTED only under D-0136…D-0140.** Actual documents, classification authority, access grants, workflow and Training Eligibility remain OPEN. Actual content/versions and remaining AI-D1…AI-D8 requirements remain OPEN. D-0031…D-0035 accept safeguards without filling in owners, policies or criteria. AI-D labels are packet references, not implementation states.
+**AI-D1 first-use-case selection is ACCEPTED under D-0135. AI-D2 publisher, sources, document import, two audience levels and their Business classification owner are ACCEPTED only to the extent of D-0136…D-0141.** Real content, legal checks, role grants, version/audit and Training Eligibility remain OPEN. Actual documents, classification authority, access grants, workflow and Training Eligibility remain OPEN. Actual content/versions and remaining AI-D1…AI-D8 requirements remain OPEN. D-0031…D-0035 accept safeguards without filling in owners, policies or criteria. AI-D labels are packet references, not implementation states.
 
 ## 4. Separation between data-to-dataset and model lifecycle
 
@@ -118,7 +128,7 @@ The term **internal AI** has an accepted product meaning; its exact technical de
 
 ## 6. Suggested parallel work, each still gated
 
-1. The first informational AI-D1 use case for **both** audiences is already selected under D-0135. **D-0139 closes import-owner responsibility:** the Operations Manager owns collection/import and separately formal publication. D-0140 now defines two Business audience levels. Next decide who may classify each document into those levels and who approves a reclassification; gather actual issuer/version evidence. Missing/stale-source behavior remains OPEN. Do not treat draft Business packets as published services.
+1. The first informational AI-D1 use case for **both** audiences is already selected under D-0135. **D-0139 closes import-owner responsibility:** the Operations Manager owns collection/import and separately formal publication. D-0140 now defines two Business audience levels. D-0141 now designates the Operations Manager to classify/reclassify each document. Next define the safe response to missing, invalid, stale or contradictory approved source content, and gather issuer/version evidence. Missing/stale-source behavior remains OPEN. Do not treat draft Business packets as published services.
 2. Close AI-D3…AI-D5 for the selected use case before authorizing any user-facing AI contract or data access.
 3. Independently determine AI-D6 (training-eligible data classes, purpose/consent, curation and versioning). Until then, do **not** implement a permissive Dataset Builder or pretend a no-data shell satisfies Day-one learning.
 4. Design Training/Evaluation/Model Governance only after AI-D6 and relevant AI-D7 decisions, without picking metrics/thresholds by guess.
@@ -131,4 +141,4 @@ The term **internal AI** has an accepted product meaning; its exact technical de
 
 No code, model choice, dataset approval, runtime, role grant, SG/T/Backlog/Sprint, Stage Admission, Stage-based QA, Release or Production is authorized by this packet. D-0130 remains: Hosted Stage is **UNAVAILABLE**. CI's disposable container smoke is not Hosted Stage.
 
-**Next Product Owner decision:** decide which Business authority assigns and can change each official document's **عمومی/داخلی** audience classification. D-0140 accepts two levels but does not assign the classifier. Actual documents, issuers, validity, identity/access grants and publication records remain unverified. AI Runtime data-purpose permission and Training Eligibility remain separate blockers. Until then, no SG/Technical/Code or inferred Dataset authorization.
+**Next Product Owner decision:** determine the safe informational-assistant response when no valid, current, audience-permitted official content exists or sources conflict. Actual documents, issuers, validity and permissions remain unverified; AI Runtime access and Training Eligibility remain separate blockers. Until then, no SG/Technical/Code or inferred Dataset authorization.
