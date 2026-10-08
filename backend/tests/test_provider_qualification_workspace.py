@@ -48,8 +48,11 @@ def reader() -> ActorContext:
         actor_id="workspace-reviewer",
         actor_type=ActorType.HUMAN,
         capabilities=ALL_READ
-        | {"provider_candidate.register", "provider_qualification_evidence.record",
-           "provider_qualification_review.request"},
+        | {
+            "provider_candidate.register",
+            "provider_qualification_evidence.record",
+            "provider_qualification_review.request",
+        },
         correlation_id="workspace-test",
     )
 
@@ -73,7 +76,8 @@ async def provider_services(admin_engine):
 async def seed_candidate(services, reader: ActorContext, name: str) -> UUID:
     candidate = await services[0].register(
         RegisterProviderCandidate(display_name=name, reason="Read-only workspace setup"),
-        reader, f"candidate-{uuid4()}"
+        reader,
+        f"candidate-{uuid4()}",
     )
     return UUID(candidate["id"])
 
@@ -109,12 +113,14 @@ async def test_workspace_independent_pages_and_no_cross_candidate_data(
                     evidence_reference=f"opaque-{candidate}-{n}",
                     reason="descriptive only",
                 ),
-                reader, f"evidence-{candidate}-{n}"
+                reader,
+                f"evidence-{candidate}-{n}",
             )
             await services[2].request(
                 candidate,
                 RequestProviderQualificationReview(reason=f"Review request {n}"),
-                reader, f"request-{candidate}-{n}"
+                reader,
+                f"request-{candidate}-{n}",
             )
     before = await effect_counts(admin_engine)
     page_one = await services[3].read(first, reader, limit=1)
@@ -190,9 +196,7 @@ async def test_workspace_missing_candidate_and_invalid_limits(provider_services,
 
 
 @pytest.mark.parametrize("slot", ["evidence", "request"])
-async def test_workspace_malformed_cursor_fails_existing_contract(
-    provider_services, reader, slot
-):
+async def test_workspace_malformed_cursor_fails_existing_contract(provider_services, reader, slot):
     candidate = await seed_candidate(provider_services, reader, "Invalid cursor")
     malformed = base64.urlsafe_b64encode(
         json.dumps(["2026-10-08T00:00:00+00:00", {"bad": "uuid"}]).encode()
@@ -224,9 +228,9 @@ async def test_workspace_http_auth_and_openapi(provider_services, reader):
             spec = (await client.get("/openapi.json")).json()
             path = "/api/v1/provider-candidates/{candidate_id}/qualification-review-workspace"
             assert list(spec["paths"][path]) == ["get"]
-            schema = spec["paths"][path]["get"]["responses"]["200"]["content"][
-                "application/json"
-            ]["schema"]
+            schema = spec["paths"][path]["get"]["responses"]["200"]["content"]["application/json"][
+                "schema"
+            ]
             assert "ProviderQualificationReviewWorkspaceView" in str(schema)
             for method in ("post", "patch", "put", "delete"):
                 assert method not in spec["paths"][path]
