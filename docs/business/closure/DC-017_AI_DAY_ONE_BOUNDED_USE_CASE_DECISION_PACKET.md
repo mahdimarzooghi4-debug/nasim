@@ -1,6 +1,6 @@
 # DC-017 — Internal AI Day-one Bounded Use Case & Data Governance Decision Packet
 
-- **Status:** DRAFT / PARTIAL BUSINESS CLOSURE — D-0135 USE CASE THROUGH D-0141 CLASSIFICATION OWNER PARTIALLY ACCEPTED; actual document evidence, role grants and learning policies OPEN
+- **Status:** DRAFT / PARTIAL BUSINESS CLOSURE — D-0135 USE CASE THROUGH D-0142 FAIL-SAFE POLICY PARTIALLY ACCEPTED; actual document evidence, human escalation, grants and learning policies OPEN
 - **Project:** نسیم — نظام سالمند‌یاری محله‌محور
 - **Stage:** Business / context-triggered decision preparation
 - **Prepared:** 2026-10-08
@@ -86,6 +86,12 @@ Import (D-0139), evidence/validation, audience classification (D-0141), approval
 
 **Remaining:** documented real content item list and versions, who verifies applicable legal/specialist access restrictions, authorization for the named manager account and staff users, how changes/reclassification are audited and revoked, safe behavior when a source is invalid, and independent Training Eligibility.
 
+## 2.7 Accepted bounded source-failure response — D-0142
+
+The Product Owner expressly accepted the **entire four-part informational-assistant fail-safe policy**: when content required to answer lacks a valid, current, published and audience-permitted official source, or relevant sources are expired, invalid or conflicting, the assistant must (1) avoid definitive, speculative or fabricated official answers; (2) clearly explain lack of verified content or a conflict, without disclosing inaccessible internal source details; (3) direct the user toward appropriate human follow-up; and (4) withhold the invalid/stale/conflicting information as an official answer until duly resolved.
+
+The actual human destination/channel, publication-version validation method, exact response text, human escalation ownership/recording, source conflict resolution, and incident handling remain **OPEN**. This is a Business policy for D-0135, elaborating D-0034; it is not a technical implementation, does not seed permissions and does not grant access to protected personal or internal content.
+
 ## 3. Smallest context-triggered Product Owner decisions
 
 | Ref | OPEN decision | Minimum decision evidence | Why it blocks implementation |
@@ -94,12 +100,12 @@ Import (D-0139), evidence/validation, audience classification (D-0141), approval
 | AI-D2 | Official **content** source — **PARTIALLY RESOLVED (D-0136…D-0141)** | **مدیر عملیات نسیم** owns collection/import (D-0139), audience-level classification and reclassification (D-0141), and independently approval/publication (D-0136); two levels accepted under D-0140. Still OPEN: actual source documents/issuers/versions and validity, independent legal/specialist checks where needed, actor grants, specific audience access controls, audit/revocation and stale/withdrawn behavior. | The Business classifier does not gain authority to disclose legally restricted content, and the labels do not constitute technical access grants or Training Eligibility. |
 | AI-D3 | Accountable Human Owner / review boundary | Who owns each use case, how users reach a human, which AI outputs (if any) require explicit review; escalation when unsuitable/incomplete | A job title or ActorType cannot grant authority; AI Output ≠ Official Record |
 | AI-D4 | Runtime data-access + legal purpose | Allowed and prohibited data classes for each audience, identity/consent/legal basis, minimal context, audit and retention basis | Operational access ≠ AI Runtime Access ≠ Training Eligibility |
-| AI-D5 | Fail-safe / disclosure / incident ownership | Exact safe responses when source unavailable/contradictory, model absent, privacy authorization denied, or user requests consequential action | No plausible fabricated answer, implicit clinical guidance or business action |
+| AI-D5 | Fail-safe / disclosure / incident ownership — **PARTIALLY RESOLVED (D-0142)** | In the information-only use case, never guess; disclose insufficient/invalid/conflicting verified content without leaking restricted data; direct human follow-up; withhold invalid official answer. Still OPEN: precise validity/conflict mechanism, real human channel/owner, detailed messages, incident handling, Runtime/privacy errors and crisis/escalation scope. | Accepted Business policy does not grant access, choose a human recipient or implement fail-safe code. |
 | AI-D6 | Day-one automatic **Dataset** source policy | Exact eligible source data/event classes, exclusions, source-of-truth, de-identification/purpose/consent, verification, revision/withdrawal effect, eligible-signal owner and versioning | D-0005 does not permit arbitrary new Production data to become training data |
 | AI-D7 | Training, evaluation and release governance | Training/validation/evaluation dataset isolation, evaluation evidence, approver authority, rollback, versions and production promotion process (no thresholds invented) | Model readiness and governed release cannot be assumed from technical completion |
 | AI-D8 | Operational quality and user safety | Applicable linguistic/accessibility requirements for elderly users, user-facing transparency, human handoff, specific prohibited advice and risk ownership | Needs real user-specific and human/organizational decisions, not guessed UI or clinical policies |
 
-**AI-D1 first-use-case selection is ACCEPTED under D-0135. AI-D2 publisher, sources, document import, two audience levels and their Business classification owner are ACCEPTED only to the extent of D-0136…D-0141.** Real content, legal checks, role grants, version/audit and Training Eligibility remain OPEN. Actual documents, classification authority, access grants, workflow and Training Eligibility remain OPEN. Actual content/versions and remaining AI-D1…AI-D8 requirements remain OPEN. D-0031…D-0035 accept safeguards without filling in owners, policies or criteria. AI-D labels are packet references, not implementation states.
+**AI-D1 first-use-case selection is ACCEPTED under D-0135. AI-D2 publisher, sources, document import, two audience levels and their Business classification owner are ACCEPTED only under D-0136…D-0141. AI-D5's bounded information-failure response is ACCEPTED under D-0142.** Real content, human follow-up, legal checks, role grants, version/audit and Training Eligibility remain OPEN. Actual documents, classification authority, access grants, workflow and Training Eligibility remain OPEN. Actual content/versions and remaining AI-D1…AI-D8 requirements remain OPEN. D-0031…D-0035 accept safeguards without filling in owners, policies or criteria. AI-D labels are packet references, not implementation states.
 
 ## 4. Separation between data-to-dataset and model lifecycle
 
@@ -128,7 +134,7 @@ The term **internal AI** has an accepted product meaning; its exact technical de
 
 ## 6. Suggested parallel work, each still gated
 
-1. The first informational AI-D1 use case for **both** audiences is already selected under D-0135. **D-0139 closes import-owner responsibility:** the Operations Manager owns collection/import and separately formal publication. D-0140 now defines two Business audience levels. D-0141 now designates the Operations Manager to classify/reclassify each document. Next define the safe response to missing, invalid, stale or contradictory approved source content, and gather issuer/version evidence. Missing/stale-source behavior remains OPEN. Do not treat draft Business packets as published services.
+1. The first informational AI-D1 use case for **both** audiences is already selected under D-0135. **D-0139 closes import-owner responsibility:** the Operations Manager owns collection/import and separately formal publication. D-0140 now defines two Business audience levels. D-0141 now designates the Operations Manager to classify/reclassify each document. D-0142 now defines the safe Business response when source content is missing/stale/conflicting. Next identify the accountable human follow-up destination and gather actual issuer/version evidence; exact escalation mechanism remains OPEN. Do not treat draft Business packets as published services.
 2. Close AI-D3…AI-D5 for the selected use case before authorizing any user-facing AI contract or data access.
 3. Independently determine AI-D6 (training-eligible data classes, purpose/consent, curation and versioning). Until then, do **not** implement a permissive Dataset Builder or pretend a no-data shell satisfies Day-one learning.
 4. Design Training/Evaluation/Model Governance only after AI-D6 and relevant AI-D7 decisions, without picking metrics/thresholds by guess.
@@ -141,4 +147,4 @@ The term **internal AI** has an accepted product meaning; its exact technical de
 
 No code, model choice, dataset approval, runtime, role grant, SG/T/Backlog/Sprint, Stage Admission, Stage-based QA, Release or Production is authorized by this packet. D-0130 remains: Hosted Stage is **UNAVAILABLE**. CI's disposable container smoke is not Hosted Stage.
 
-**Next Product Owner decision:** determine the safe informational-assistant response when no valid, current, audience-permitted official content exists or sources conflict. Actual documents, issuers, validity and permissions remain unverified; AI Runtime access and Training Eligibility remain separate blockers. Until then, no SG/Technical/Code or inferred Dataset authorization.
+**Next Product Owner decision:** identify the actual accountable human function to whom elderly users and caregivers should be directed when D-0142 blocks an official AI answer. Exact channels and escalation procedures, actual document validation and Runtime/Training access remain OPEN. No SG/Technical/Code or inferred Dataset authorization.
