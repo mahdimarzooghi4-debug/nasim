@@ -1,0 +1,35 @@
+name: Operational Web Contract CI
+on:
+  pull_request:
+    paths: ['web/**', '.github/workflows/web-ci.yml']
+  push:
+    branches: [main]
+    paths: ['web/**', '.github/workflows/web-ci.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: web-ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  web-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22.16.0'
+      - name: Install exact direct dependencies (Draft web foundation)
+        working-directory: web
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: TypeScript and Vitest contract tests
+        working-directory: web
+        run: |
+          npm run typecheck
+          npm test
+      - name: Produce static read-only UI
+        working-directory: web
+        run: npm run build
