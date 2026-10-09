@@ -5,6 +5,8 @@
 **Baseline:** D-0171 (React/TypeScript organization panels), D-0173 (approved emerald/coral UI palette); BC-005/009/013/020/022 (organizational, reporting, funding, identity and privacy boundaries).
 **Design:** https://www.figma.com/design/i61F2sxmja12zxmMS1jZNR/Nasim?node-id=47-2
 
+**Product direction update (D-0174):** The Product Owner has explicitly added organization-side person registration, authorized per-person support-status visibility and governed financial injection as required product capabilities. The exact identity linkage, status fields, permission grants, funds destination and payment mechanics are **not yet contracted or implemented**. The earlier aggregate-only screens in this document remain a design subset; see [UX-007](UX-007_SUPPORTER_PEOPLE_STATUS_FUNDING_PROTOTYPES.md) and [DC-022](../business/closure/DC-022_SUPPORTER_BENEFICIARIES_STATUS_FUNDING_PACKET.md) for the new concept and open decisions.
+
 ## Purpose and audience boundary
 
 This is a **proposed supportive-organization** dashboard. The existing Business documents describe a separate `employer` role and potential funding/oversight; they **do not finalize** a new supporter-org actor's exact authority or grant it the employer's capabilities by default. Formal Actor/tenant contracts, organization relationship to Nasim, reporting purposes, minimum aggregate group size and approval matrix remain OPEN.
