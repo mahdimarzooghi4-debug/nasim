@@ -20,9 +20,12 @@ EXPECTED = {
     "/api/v1/provider-candidates/{candidate_id}/qualification-evidence": {"get", "post"},
     "/api/v1/provider-qualification-evidence/{evidence_id}": {"get"},
     "/api/v1/provider-candidates/{candidate_id}/qualification-review-requests": {"get", "post"},
+    "/api/v1/provider-candidates/{candidate_id}/qualification-review-workspace": {"get"},
     "/api/v1/provider-qualification-review-requests/{request_id}": {"get"},
     "/api/v1/cases/{case_id}/referrals": {"get", "post"},
     "/api/v1/referrals/{referral_id}": {"get"},
+    "/api/v1/referrals/{referral_id}/follow-up-records": {"get", "post"},
+    "/api/v1/referral-follow-up-records/{record_id}": {"get"},
     "/api/v1/cases": {"post"},
     "/api/v1/cases/{case_id}": {"get"},
     "/api/v1/cases/{case_id}/workspace": {"get"},
@@ -135,6 +138,7 @@ async def test_every_read_fails_closed_without_context(path):
         response = await client.get(
             path.replace("{case_id}", str(uuid4()))
             .replace("{referral_id}", str(uuid4()))
+            .replace("{record_id}", str(uuid4()))
             .replace("{candidate_id}", str(uuid4()))
             .replace("{evidence_id}", str(uuid4()))
             .replace("{request_id}", str(uuid4())),
