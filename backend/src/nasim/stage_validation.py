@@ -16,6 +16,8 @@ EXPECTED_ROUTES = {
     "/api/v1/provider-qualification-review-requests/{request_id}": {"get"},
     "/api/v1/cases/{case_id}/referrals": {"get", "post"},
     "/api/v1/referrals/{referral_id}": {"get"},
+    "/api/v1/referrals/{referral_id}/follow-up-records": {"get", "post"},
+    "/api/v1/referral-follow-up-records/{record_id}": {"get"},
     "/api/v1/authorization/self": {"get"},
     "/api/v1/cases": {"post"},
     "/api/v1/cases/{case_id}": {"get"},
@@ -104,6 +106,25 @@ def validate_http(base_url: str) -> None:
         status, _ = request(base_url, path)
         if status != 401:
             raise RuntimeError("Anonymous Referral read did not fail closed")
+    for path in (
+        f"/api/v1/referrals/{referral_id}/follow-up-records",
+        f"/api/v1/referral-follow-up-records/{uuid4()}",
+    ):
+        status, _ = request(base_url, path)
+        if status != 401:
+            raise RuntimeError("Anonymous Referral follow-up read did not fail closed")
+    status, _ = request(
+        base_url,
+        f"/api/v1/referrals/{referral_id}/follow-up-records",
+        "POST",
+        {
+            "expected_current_assignment_id": str(uuid4()),
+            "note": "smoke",
+            "reason": "smoke",
+        },
+    )
+    if status != 401:
+        raise RuntimeError("Anonymous Referral follow-up write did not fail closed")
     for action in ("accept", "reject", "dispatch", "complete", "cancel", "escalate", "corrections"):
         status, _ = request(base_url, f"/api/v1/referrals/{referral_id}/{action}", "POST", {})
         if status != 404:

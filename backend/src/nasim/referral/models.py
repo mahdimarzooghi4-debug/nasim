@@ -3,7 +3,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import CheckConstraint, DateTime, ForeignKeyConstraint, Index, String, Text
+from sqlalchemy import CheckConstraint, DateTime, ForeignKey, ForeignKeyConstraint, Index, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from nasim.infrastructure.models import Base, Identified
@@ -34,4 +34,27 @@ class ReferralRecord(Identified, Base):
             name="ck_referral_provenance",
         ),
         Index("ix_referral_case_created", "case_id", "created_at", "id"),
+    )
+
+
+class ReferralFollowUpRecord(Identified, Base):
+    """Append-only human note linked to an existing Referral."""
+
+    __tablename__ = "referral_follow_up_record"
+    referral_id: Mapped[UUID] = mapped_column(ForeignKey("referral_record.id"))
+    recorded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    recorded_by_actor_id: Mapped[str] = mapped_column(String(200))
+    recorded_by_actor_type: Mapped[str] = mapped_column(String(20))
+    note: Mapped[str] = mapped_column(Text)
+    reason: Mapped[str] = mapped_column(Text)
+    correlation_id: Mapped[str] = mapped_column(String(200))
+    __table_args__ = (
+        CheckConstraint("recorded_by_actor_type = 'HUMAN'", name="ck_referral_follow_up_human"),
+        CheckConstraint(
+            "note ~ '[^[:space:]]' AND reason ~ '[^[:space:]]' "
+            "AND length(trim(recorded_by_actor_id)) > 0 "
+            "AND length(trim(correlation_id)) > 0",
+            name="ck_referral_follow_up_provenance",
+        ),
+        Index("ix_referral_follow_up_recorded", "referral_id", "recorded_at", "id"),
     )
