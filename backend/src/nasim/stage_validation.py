@@ -20,7 +20,7 @@ EXPECTED_ROUTES = {
     "/api/v1/referrals/{referral_id}/follow-up-records": {"get", "post"},
     "/api/v1/referral-follow-up-records/{record_id}": {"get"},
     "/api/v1/authorization/self": {"get"},
-    "/api/v1/cases": {"post"},
+    "/api/v1/cases": {"get", "post"},
     "/api/v1/cases/{case_id}": {"get"},
     "/api/v1/cases/{case_id}/workspace": {"get"},
     "/api/v1/cases/{case_id}/journey-workspace": {"get"},
@@ -66,6 +66,9 @@ def validate_http(base_url: str) -> None:
     actual = {path: set(methods) for path, methods in contract["paths"].items()}
     if actual != EXPECTED_ROUTES:
         raise RuntimeError("Stage API surface differs from TS-03 contract")
+    status, _ = request(base_url, "/api/v1/cases")
+    if status != 401:
+        raise RuntimeError("Anonymous Case index read did not fail closed")
     status, body = request(
         base_url,
         "/api/v1/cases",

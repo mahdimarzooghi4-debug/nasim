@@ -10,6 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from nasim.application.care_journey import CareJourneyWorkspace, CareJourneyWorkspaceView
+from nasim.application.case_index import AssignedCaseIndex
 from nasim.application.casework import Casework
 from nasim.authorization.contracts import TrustedPrincipal
 from nasim.authorization.service import AuthorizationResolver
@@ -110,12 +111,17 @@ def get_casework(request: Request) -> Casework:
     return request.app.state.casework
 
 
+def get_case_index(request: Request) -> AssignedCaseIndex:
+    return request.app.state.case_index
+
+
 def get_care_journey(request: Request) -> CareJourneyWorkspace:
     return request.app.state.care_journey
 
 
 Actor = Annotated[ActorContext, Depends(get_actor)]
 Service = Annotated[Casework, Depends(get_casework)]
+CaseIndexService = Annotated[AssignedCaseIndex, Depends(get_case_index)]
 CareJourneyService = Annotated[CareJourneyWorkspace, Depends(get_care_journey)]
 ReferralService = Annotated[Referrals, Depends(get_referrals)]
 ReferralFollowUpService = Annotated[ReferralFollowUps, Depends(get_referral_follow_ups)]
@@ -172,6 +178,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = FastAPI(title="Nasim TS-03", version="0.1.0", lifespan=lifespan)
     app.state.engine = engine
     app.state.casework = Casework(make_sessions(engine))
+    app.state.case_index = AssignedCaseIndex(make_sessions(engine))
     app.state.authorization = AuthorizationResolver(make_sessions(engine))
     app.state.referrals = Referrals(make_sessions(engine))
     app.state.referral_follow_ups = ReferralFollowUps(make_sessions(engine))
@@ -447,6 +454,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         except (SQLAlchemyError, OSError):
             return JSONResponse(status_code=503, content={"status": "not_ready"})
         return {"status": "ok"}
+
+    @app.get("/api/v1/cases", response_model=Page[CaseProfileView], responses=ERRORS)
+    async def list_cases(
+        actor: Actor, service: CaseIndexService, cursor: Cursor = None, limit: Limit = 50
+    ) -> Any:
+        return await service.list(actor, cursor, limit)
 
     @app.post("/api/v1/cases", response_model=CaseProfileView, responses=ERRORS, status_code=201)
     async def create(body: CreateCase, actor: Actor, service: Service, key: Key) -> Any:
