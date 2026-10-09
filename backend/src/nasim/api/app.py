@@ -42,6 +42,7 @@ from nasim.provider_registry.contracts import (
     ProviderCandidateView,
     ProviderQualificationEvidenceView,
     ProviderQualificationReviewRequestView,
+    ProviderQualificationReviewWorkspaceView,
     RecordProviderQualificationEvidence,
     RegisterProviderCandidate,
     RequestProviderQualificationReview,
@@ -50,6 +51,7 @@ from nasim.provider_registry.service import (
     ProviderCandidates,
     ProviderQualificationEvidence,
     ProviderQualificationReviewRequests,
+    ProviderQualificationReviewWorkspace,
 )
 from nasim.referral.contracts import (
     CreateReferral,
@@ -89,6 +91,12 @@ def get_provider_qualification_review_requests(
     return request.app.state.provider_qualification_review_requests
 
 
+def get_provider_qualification_review_workspace(
+    request: Request,
+) -> ProviderQualificationReviewWorkspace:
+    return request.app.state.provider_qualification_review_workspace
+
+
 def get_referrals(request: Request) -> Referrals:
     return request.app.state.referrals
 
@@ -111,6 +119,9 @@ ProviderQualificationEvidenceService = Annotated[
 ]
 ProviderQualificationReviewRequestService = Annotated[
     ProviderQualificationReviewRequests, Depends(get_provider_qualification_review_requests)
+]
+ProviderQualificationWorkspaceService = Annotated[
+    ProviderQualificationReviewWorkspace, Depends(get_provider_qualification_review_workspace)
 ]
 Key = Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)]
 Cursor = Annotated[str | None, Query(max_length=500)]
@@ -161,6 +172,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.provider_candidates = ProviderCandidates(make_sessions(engine))
     app.state.provider_qualification_evidence = ProviderQualificationEvidence(make_sessions(engine))
     app.state.provider_qualification_review_requests = ProviderQualificationReviewRequests(
+        make_sessions(engine)
+    )
+    app.state.provider_qualification_review_workspace = ProviderQualificationReviewWorkspace(
         make_sessions(engine)
     )
 
@@ -282,6 +296,21 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         service: ProviderQualificationReviewRequestService,
     ) -> Any:
         return await service.get(request_id, actor)
+
+    @app.get(
+        "/api/v1/provider-candidates/{candidate_id}/qualification-review-workspace",
+        response_model=ProviderQualificationReviewWorkspaceView,
+        responses=ERRORS,
+    )
+    async def get_provider_qualification_review_workspace_view(
+        candidate_id: UUID,
+        actor: Actor,
+        service: ProviderQualificationWorkspaceService,
+        evidence_cursor: Annotated[str | None, Query(max_length=500)] = None,
+        request_cursor: Annotated[str | None, Query(max_length=500)] = None,
+        limit: Limit = 50,
+    ) -> Any:
+        return await service.read(candidate_id, actor, evidence_cursor, request_cursor, limit)
 
     @app.post(
         "/api/v1/cases/{case_id}/referrals",

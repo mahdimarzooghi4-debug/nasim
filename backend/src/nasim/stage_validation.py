@@ -13,6 +13,7 @@ EXPECTED_ROUTES = {
     "/api/v1/provider-candidates/{candidate_id}/qualification-evidence": {"get", "post"},
     "/api/v1/provider-qualification-evidence/{evidence_id}": {"get"},
     "/api/v1/provider-candidates/{candidate_id}/qualification-review-requests": {"get", "post"},
+    "/api/v1/provider-candidates/{candidate_id}/qualification-review-workspace": {"get"},
     "/api/v1/provider-qualification-review-requests/{request_id}": {"get"},
     "/api/v1/cases/{case_id}/referrals": {"get", "post"},
     "/api/v1/referrals/{referral_id}": {"get"},
@@ -183,6 +184,12 @@ def validate_http(base_url: str) -> None:
         status, _ = request(base_url, path)
         if status != 401:
             raise RuntimeError("Anonymous qualification review request read did not fail closed")
+    status, _ = request(
+        base_url,
+        f"/api/v1/provider-candidates/{candidate_id}/qualification-review-workspace",
+    )
+    if status != 401:
+        raise RuntimeError("Anonymous Provider Qualification workspace read did not fail closed")
     for action in (
         "assign",
         "review",
