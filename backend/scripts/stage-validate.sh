@@ -36,6 +36,7 @@ if os.getuid() == 0:
 for module in ('pytest', 'ruff', 'pyright', 'httpx'):
     if importlib.util.find_spec(module) is not None:
         raise SystemExit(f'Development package unexpectedly installed: {module}')
+from nasim.infrastructure.schema import SCHEMA_REVISION
 from nasim.infrastructure.stage_config import load_stage_settings
 settings = load_stage_settings()
 import asyncio
@@ -46,7 +47,7 @@ async def check_db():
     try:
         async with engine.connect() as conn:
             revision = await conn.scalar(text('SELECT version_num FROM alembic_version'))
-            if revision != '0008_learning_manifest':
+            if revision != SCHEMA_REVISION:
                 raise SystemExit('Unexpected Stage migration revision')
             if await conn.scalar(text('SELECT rolsuper FROM pg_roles WHERE rolname=current_user')):
                 raise SystemExit('Stage runtime DB role must not be a superuser')
