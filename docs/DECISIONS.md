@@ -370,3 +370,54 @@
 - **OPEN باقی می‌ماند:** reviewer identity/authority، approver authority، assignment، review SLA/cadence، qualification criteria، decision vocabulary/state machine، evidence sufficiency، evidence pinning policy، approval/activation authority، activation scope/effective date، Provider Type، Service mapping، geography eligibility، Capacity، Provider Selection، Referral response، Provider Data Access و Suspension/Termination.
 - **ممنوع:** Technical یا Code نباید از وجود Review Request نتیجه Reviewed/Qualified/Approved/Active بسازد.
 - **منبع:** BC-008 + DC-007 + BX-007 + D-0037 + D-0132؛ source-supported need for review with unresolved reviewer/approver details؛ پذیرفته‌شده تحت D-0124.
+
+
+## D-0154 — مالک محصول استفاده از ۸۴ نمونه مصنوعی تألیفی نسیم را به‌عنوان ورودی اولیه مجاز دانست
+
+- **تاریخ:** 2026-10-09
+- **حوزه:** Business / Initial Synthetic AI Data / Purpose-limited Admission
+- **وضعیت:** Accepted — **اجازه استفاده از منبع مصنوعی اولیه؛ نه تأیید خودکار کیفیت یا اجرای Training**
+- **منبع تصمیم:** پاسخ صریح مالک محصول به سؤال Dataset اولیه: «داده‌هایی که خود تو به عنوان دیتا ست اولیه آماده کردی مجاز است و بعد از آن به مرور زمان داده‌هایی که در نسیم تایید می‌شوند».
+- **دامنه دقیق:** مجموعه ۵۲ + ۳۲ نمونه مصنوعیِ تألیفی موجود در PR #10، همراه با ۸ منبع داستانی و دو اصلاحیه پیشنهادیِ جداگانه. صرفاً برای ثبت ورودی مصنوعیِ آغازین و آماده‌سازی مسیر Dataset/Training/Evaluation تحت گیت‌های مستقل. این اجازه مجوز داده واقعی سالمندان یا ادعای رسمی بودن محتوای ساختگی نیست.
+- **عدم تعمیم:** هر نمونه هنوز `AUTHOR_DRAFT_UNREVIEWED` است و برچسب تاریخی `training_permission/evaluation_permission=NOT_AUTHORIZED` در نسخه اصلی به‌صورت مخفیانه تغییر نمی‌کند. اظهار جدید مالک محصول باید به‌صورت سند تصمیم جداگانه پیوند شود؛ پیش از مصرف برای Training/Evaluation، بررسی واقعی کیفیت ۸۴ رکورد، جداسازی Training/Evaluation، سلامت منبع/نسخه و قبول Dataset باید مستقل ثبت شود. هیچ AI-authored signoff جای Human Review را نمی‌گیرد.
+- **Technical scope:** ساخت یک inventory قابل بازتولید از Git blobهای پین‌شده مجاز است؛ «Dataset APPROVED» یا Training Run خودکار تا تکمیل گیت‌ها مجاز شمرده نمی‌شود.
+
+## D-0155 — پذیرش تدریجی فقط داده‌های واقعاً تأییدشده در نسیم برای Dataset آینده
+
+- **تاریخ:** 2026-10-09
+- **حوزه:** Business / Real Operational Learning
+- **وضعیت:** Accepted principle — per-source/per-purpose authorization details OPEN
+- **تصمیم:** پس از بسته مصنوعی اولیه، فقط داده‌هایی که در نسیم واقعاً بررسی و برای Purpose مشخص تأیید می‌شوند می‌توانند به تدریج Candidate ساخت Dataset شوند. صرف ثبت Operational، Approval پرونده یا رویداد Outbox به‌تنهایی مجوز Training/Evaluation نیست.
+- **الزام باقیمانده:** مالک حقوقی و حاکمیتی، مبنای مجاز/رضایت برای Training مستقل از خدمات، Data Classes، exclusions، اثر Withdrawal، حریم خصوصی، کالیبراسیون کیفیت، تفکیک household/lineage و هدف Evaluation در BC-007/Issue #12 هنوز باید با شواهد واقعی بسته شوند. هیچ default eligible=true ساخته نشود. D-0005 درباره ساخت خودکار Dataset از داده **واقعاً eligible** همچنان الزام است.
+
+## D-0156 — Keycloak اولویت Identity است، نه انتخاب یا استقرار مصوب
+
+- **تاریخ:** 2026-10-09
+- **حوزه:** Business / Authentication / Browser
+- **وضعیت:** Preference accepted / technical provisioning OPEN
+- **تصمیم:** سرویس هویت هنوز انتخاب نشده؛ `Keycloak` گزینه اولویت‌دار بررسی فنی و انتخاب آینده است. تا زمانی که انتخاب، محیط، OIDC issuer/client، policy نشست، role mapping و شواهد صحت استقرار مشخص نشده‌اند، browser session fail-closed باقی می‌ماند. هیچ login، token، secret یا production identity جعلی تولید نشود.
+
+## D-0157 — مسئول تصمیم انسانی Provider و انتخاب مقصد ارجاع: مدیر عملیات نسیم
+
+- **تاریخ:** 2026-10-09
+- **حوزه:** Business / Provider Qualification, Activation & Human Referral Destination
+- **وضعیت:** Accepted at organizational decision-owner level
+- **تصمیم:** سمت سازمانی «مدیر عملیات نسیم» مرجع انسانی تصمیم نهایی تأیید صلاحیت Provider، فعال‌سازی عملیاتی Provider و انتخاب Provider مقصد ارجاع است؛ این پاسخ به پرسش صریح این سه حوزه داده شد.
+- **محدودیت:** این سمت به معنی هویت شخص، احراز هویت، انتصاب رسمی، قابلیت فنی از پیش Provisionشده، معیار بررسی مدارک، نوع Provider، مجوز قرارداد، پوشش خدمت، ظرفیت، رضایت اشتراک اطلاعات، Service Completion Evidence، Reassessment Rule، یا اختیار پزشکی نیست. Ruleهای عملیاتی و تمایز Reviewer/Approver هنوز باید به‌طور مستقل تصویب شوند. هیچ Candidate صرفاً به‌علت وجود این نقش Active نمی‌شود؛ AI حق انتخاب نهایی ندارد.
+
+## D-0158 — منشأ بسته محتوایی نسیم همان بسته تألیفی PR #10 است
+
+- **تاریخ:** 2026-10-09
+- **حوزه:** Business / Official Content Reference / AI Day-one
+- **وضعیت:** Product-owner source identification accepted; publication evidence and independent per-record review OPEN
+- **تصمیم:** مالک محصول مجموعه محتوای اولیه را «همونی هست که خودت تهیه کردی» معرفی کرد. مرجع فعلیِ نسخه‌دار GitHub، فایل‌های PR #10 در SHA `faf33342497ec23f7c0969930ce808787e476be6` است. گزارش قبلی مالک محصول مبنی بر تأیید/تحویل و انتشار توسط مدیر عملیات در D-0152/0153 (هنوز روی PR #10 unmerged) تکراراً سؤال نشود.
+- **مرز:** داده‌های داستانی، اسناد Draft یا AI-generated به صرف گفته فوق سند رسمی خدمت واقعی نمی‌شوند. محل/نسخه واقعی نشر، مخاطب مجاز و ارزیابی ۸۴ نمونه توسط بازبین انسانی مستقل هنوز در Issues #11 و #13 نیازمند شواهد جداگانه‌اند. بازبینی مستقل از سوی مؤلفِ هوش مصنوعی ادعا نشود.
+
+## D-0159 — مجوز مشروط مالک محصول برای ادغام PRهای آماده
+
+- **تاریخ:** 2026-10-09
+- **حوزه:** Delivery Governance / Integration
+- **وضعیت:** Accepted conditional authorization, NOT automatic merge of every open PR
+- **تصمیم:** مالک محصول به پیشنهاد «ادغام پس از تطبیق کامل تغییرات، بازبینی مستقل و CI سبز، به ترتیب وابستگی» پاسخ مثبت داد.
+- **گیت لازم:** بازسازی تاریخچه و جلوگیری از double-apply برای PRهای واگرا، بازبینی مستقل واقعی در سطح لازم، CI سبز دقیق HEAD و ترتیب صحیح وابستگی. COMMENT مؤلف/عامل خودکار معادل independent human approval نیست. اگر گیتی کامل نیست، PR همان Draft/Open باقی بماند؛ نباید آن را به صرف این Yes ادغام یا Ready کرد. Stage/QA/Release/Production همچنان زیر D-0130 مستقل‌اند.
+- **هماهنگی شاخه:** D-0134…D-0153 فعلاً در PR #10 unmerged هستند؛ هنگام ادغام باید تاریخچه canonical `docs/DECISIONS.md` با آن شاخه تطبیق شود و هیچ تصمیم پذیرفته‌شده‌ای overwrite نشود.
