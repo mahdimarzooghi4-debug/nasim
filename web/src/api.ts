@@ -1,5 +1,5 @@
 import type {
-  ActorContext, AssignmentView, CareJourneyWorkspaceView, CaseProfileView, Page,
+  ActorContext, AssignmentView, CareJourneyWorkspaceView, CaseProfileView, FollowUpView, Page,
   ProviderCandidateView, ProviderWorkspaceView, TimelineEntry,
 } from "./types";
 import type { ContactRecord } from "./caseCommands";
@@ -94,6 +94,11 @@ export const api = {
       referral_id: opts.referralId, observation_cursor: opts.observationCursor,
       referral_cursor: opts.referralCursor, follow_up_cursor: opts.followUpCursor, limit: 20,
     }), signal),
+  caseFollowUps: (caseId: string, cursor?: string | null, signal?: AbortSignal) =>
+    getJson<Page<FollowUpView>>(
+      "/api/v1/cases/" + id(caseId) + "/referral-follow-ups" +
+        params({ cursor, limit: 20 }),
+      signal),
   providers: (cursor?: string | null, signal?: AbortSignal) =>
     getJson<Page<ProviderCandidateView>>(
       "/api/v1/provider-candidates" + params({ cursor, limit: 20 }), signal),

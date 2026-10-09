@@ -54,6 +54,25 @@ describe("same-origin live API contract", () => {
     expect(path).toContain("observation_cursor=a%2Bb%3D%3D");
     expect(path).not.toContain("https:");
   });
+  it("reads Case follow-up records only from the same-origin authorized endpoint", async () => {
+    const spy = vi.fn().mockResolvedValue(new Response(JSON.stringify({
+      items: [], next_cursor: null,
+    }), { status: 200, headers: { "content-type": "application/json" } }));
+    globalThis.fetch = spy;
+    const page = await api.caseFollowUps("case/id", "cursor+==");
+    expect(page).toEqual({ items: [], next_cursor: null });
+    expect(spy).toHaveBeenCalledWith(
+      "/api/v1/cases/case%2Fid/referral-follow-ups?cursor=cursor%2B%3D%3D&limit=20",
+      expect.objectContaining({
+        method: "GET", cache: "no-store", mode: "same-origin",
+        credentials: "same-origin", redirect: "error",
+      }),
+    );
+    globalThis.fetch = vi.fn().mockResolvedValue(new Response(null, { status: 403 }));
+    await expect(api.caseFollowUps("case-id")).rejects.toMatchObject({
+      status: 403, code: "ACCESS_DENIED",
+    });
+  });
   it("does not invent grants from the role name or actor type", () => {
     expect(canReadCases(human([]))).toBe(false);
     expect(canReadCases(human(["case.assignment.manage"]))).toBe(false);
