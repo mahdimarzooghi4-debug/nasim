@@ -16,6 +16,6 @@ All routes are *read only*. All backend fields are treated as recorded data only
 
 ## Build/test contract
 
-Automated web workflow on this same exact SHA: Node 22, TS strict typecheck, Vitest typed API auth/permission/JSON and SSR fail-closed tests, Vite static bundle. Existing Backend 4 jobs also run on web changes to ensure exact-HEAD compatibility. Because no preapproved auth issuer or production gateway exists, real browser/real login E2E and hosted Stage remain blocked. Dependency lockfile, gateway security headers, and production image require later gate; no claim that Draft UI is deployable to real elderly data.
+Automated web workflow on this same exact SHA: Node 22, TS strict typecheck, Vitest typed API auth/permission/JSON and SSR fail-closed tests, Vite static bundle. Existing Backend 4 jobs also run on web changes to ensure exact-HEAD compatibility. Because no preapproved auth issuer or production gateway exists, real browser/real login E2E and hosted Stage remain blocked. Gateway security headers, production image and real IdP require later gate; no claim that Draft UI is deployable to real elderly data.
 
 No DB schema/migration, backend endpoint or permission changes.

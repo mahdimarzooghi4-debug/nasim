@@ -10,6 +10,6 @@ Scope: **Draft frontend operational foundation**, not a deployed product or appr
 - Developer proxy to http://127.0.0.1:8000 does not create credentials, impersonate users or turn 401 into 200.
 - UI has no Figma signoff (product owner requested software before Figma).
 
-Development: Node >=22.12, `npm install`, `npm run dev` (Vite on localhost). CI: `npm run check`; tests use test-only mocked fetch and static SSR, **never mock runtime product data**.
+Development: Node >=22.12, `npm ci`, `npm run dev` (Vite on localhost). CI: `npm run check`; tests use test-only mocked fetch and static SSR, **never mock runtime product data**.
 
-Deployment: static frontend assets must be hosted **same origin** as backend via an operator-configured TLS reverse proxy after IdP integration, explicit security review and Stage/Production approval; until then no real-world access should be claimed. Open tasks: lockfile/reproducible install, approved IdP integration, security headers/CSP at trusted gateway, browser-based end-to-end tests with real authenticated principals, and independent design/accessibility QA.
+Deployment: static frontend assets must be hosted **same origin** as backend via an operator-configured TLS reverse proxy after IdP integration, explicit security review and Stage/Production approval; until then no real-world access should be claimed. Open tasks: approved IdP integration, security headers/CSP at trusted gateway, browser-based end-to-end tests with real authenticated principals, and independent design/accessibility QA.
