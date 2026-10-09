@@ -51,7 +51,13 @@ from nasim.provider_registry.service import (
     ProviderQualificationEvidence,
     ProviderQualificationReviewRequests,
 )
-from nasim.referral.contracts import CreateReferral, ReferralView
+from nasim.referral.contracts import (
+    CreateReferral,
+    RecordReferralFollowUp,
+    ReferralFollowUpView,
+    ReferralView,
+)
+from nasim.referral.follow_up import ReferralFollowUps
 from nasim.referral.service import Referrals
 
 
@@ -87,6 +93,10 @@ def get_referrals(request: Request) -> Referrals:
     return request.app.state.referrals
 
 
+def get_referral_follow_ups(request: Request) -> ReferralFollowUps:
+    return request.app.state.referral_follow_ups
+
+
 def get_casework(request: Request) -> Casework:
     return request.app.state.casework
 
@@ -94,6 +104,7 @@ def get_casework(request: Request) -> Casework:
 Actor = Annotated[ActorContext, Depends(get_actor)]
 Service = Annotated[Casework, Depends(get_casework)]
 ReferralService = Annotated[Referrals, Depends(get_referrals)]
+ReferralFollowUpService = Annotated[ReferralFollowUps, Depends(get_referral_follow_ups)]
 ProviderCandidateService = Annotated[ProviderCandidates, Depends(get_provider_candidates)]
 ProviderQualificationEvidenceService = Annotated[
     ProviderQualificationEvidence, Depends(get_provider_qualification_evidence)
@@ -119,7 +130,7 @@ ERRORS: dict[int | str, dict[str, Any]] = {
         "description": (
             "CASE_NOT_FOUND / RECORD_NOT_FOUND / REFERRAL_NOT_FOUND / "
             "PROVIDER_CANDIDATE_NOT_FOUND / PROVIDER_QUALIFICATION_EVIDENCE_NOT_FOUND / "
-            "PROVIDER_QUALIFICATION_REVIEW_REQUEST_NOT_FOUND"
+            "PROVIDER_QUALIFICATION_REVIEW_REQUEST_NOT_FOUND / REFERRAL_FOLLOW_UP_NOT_FOUND"
         ),
     },
     409: {
@@ -146,6 +157,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.casework = Casework(make_sessions(engine))
     app.state.authorization = AuthorizationResolver(make_sessions(engine))
     app.state.referrals = Referrals(make_sessions(engine))
+    app.state.referral_follow_ups = ReferralFollowUps(make_sessions(engine))
     app.state.provider_candidates = ProviderCandidates(make_sessions(engine))
     app.state.provider_qualification_evidence = ProviderQualificationEvidence(make_sessions(engine))
     app.state.provider_qualification_review_requests = ProviderQualificationReviewRequests(
@@ -297,6 +309,47 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get("/api/v1/referrals/{referral_id}", response_model=ReferralView, responses=ERRORS)
     async def get_referral(referral_id: UUID, actor: Actor, service: ReferralService) -> Any:
         return await service.get(referral_id, actor)
+
+    @app.post(
+        "/api/v1/referrals/{referral_id}/follow-up-records",
+        response_model=ReferralFollowUpView,
+        responses=ERRORS,
+        status_code=201,
+    )
+    async def record_referral_follow_up(
+        referral_id: UUID,
+        body: RecordReferralFollowUp,
+        actor: Actor,
+        service: ReferralFollowUpService,
+        key: Key,
+    ) -> Any:
+        return await service.record(referral_id, body, actor, key)
+
+    @app.get(
+        "/api/v1/referrals/{referral_id}/follow-up-records",
+        response_model=Page[ReferralFollowUpView],
+        responses=ERRORS,
+    )
+    async def list_referral_follow_ups(
+        referral_id: UUID,
+        actor: Actor,
+        service: ReferralFollowUpService,
+        cursor: Cursor = None,
+        limit: Limit = 50,
+    ) -> Any:
+        return await service.list(referral_id, actor, cursor, limit)
+
+    @app.get(
+        "/api/v1/referral-follow-up-records/{record_id}",
+        response_model=ReferralFollowUpView,
+        responses=ERRORS,
+    )
+    async def get_referral_follow_up(
+        record_id: UUID,
+        actor: Actor,
+        service: ReferralFollowUpService,
+    ) -> Any:
+        return await service.get(record_id, actor)
 
     @app.get("/api/v1/authorization/self", response_model=ActorContext, responses=ERRORS)
     async def authorization_self(actor: Actor) -> ActorContext:
