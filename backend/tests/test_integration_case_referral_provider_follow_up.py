@@ -112,13 +112,9 @@ async def test_real_care_journey_and_provider_boundary_with_caregiver_handover(
         "int-request",
     )
 
-    app = create_app(
-        Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"]))
-    )
+    app = create_app(Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"])))
     referral_path = f"/api/v1/cases/{case_id}/referrals"
-    provider_path = (
-        f"/api/v1/provider-candidates/{candidate_id}/qualification-review-workspace"
-    )
+    provider_path = f"/api/v1/provider-candidates/{candidate_id}/qualification-review-workspace"
     note = "Sensitive human referral follow-up note — never a service success"
     try:
         async with httpx.AsyncClient(
