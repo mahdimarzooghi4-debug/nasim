@@ -33,10 +33,17 @@ def attest_stored_manifest(manifest: DatasetManifest) -> None:
     """Verify content address & deterministic ID without granting eligibility."""
 
     # Integrity verification is not a substitute for an admission decision.
-    ordered = tuple(sorted(manifest.sources, key=lambda source: (
-        source.namespace, str(source.source_id),
-        source.source_version_sha256, source.curation_evidence_sha256,
-    )))
+    ordered = tuple(
+        sorted(
+            manifest.sources,
+            key=lambda source: (
+                source.namespace,
+                str(source.source_id),
+                source.source_version_sha256,
+                source.curation_evidence_sha256,
+            ),
+        )
+    )
     if not ordered or len({s.source_key for s in ordered}) != len(ordered):
         raise ManifestError("CORRUPT_MANIFEST_MEMBERSHIP")
     canonical = {
@@ -46,9 +53,9 @@ def attest_stored_manifest(manifest: DatasetManifest) -> None:
         "approval_evidence_sha256": manifest.approval_evidence_sha256,
         "sources": [source.serialized() for source in ordered],
     }
-    packed = json.dumps(
-        canonical, ensure_ascii=True, sort_keys=True, separators=(",", ":")
-    ).encode("utf-8")
+    packed = json.dumps(canonical, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode(
+        "utf-8"
+    )
     digest = sha256(packed).hexdigest()
     if (
         manifest.sources != ordered
@@ -119,9 +126,7 @@ class ProposedManifestRegistry:
             return await self._read(session, manifest_id)
 
     @staticmethod
-    async def _read(
-        session: AsyncSession, manifest_id: UUID
-    ) -> DatasetManifest | None:
+    async def _read(session: AsyncSession, manifest_id: UUID) -> DatasetManifest | None:
         header = await session.get(ProposedDatasetManifest, manifest_id)
         if header is None:
             return None

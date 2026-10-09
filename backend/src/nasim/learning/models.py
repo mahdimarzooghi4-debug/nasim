@@ -52,8 +52,7 @@ class ProposedDatasetSource(Base):
             name="ck_learning_source_namespace",
         ),
         CheckConstraint(
-            f"source_version_sha256 ~ '{SHA_CHECK}' AND "
-            f"curation_evidence_sha256 ~ '{SHA_CHECK}'",
+            f"source_version_sha256 ~ '{SHA_CHECK}' AND curation_evidence_sha256 ~ '{SHA_CHECK}'",
             name="ck_learning_source_digests",
         ),
     )

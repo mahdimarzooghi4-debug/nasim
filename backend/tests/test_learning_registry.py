@@ -70,9 +70,7 @@ def owner_registry(admin_engine):
 async def row_counts(engine) -> tuple[int, int]:
     async with engine.connect() as connection:
         return (
-            (
-                await connection.scalar(select(func.count()).select_from(ProposedDatasetManifest))
-            )
+            (await connection.scalar(select(func.count()).select_from(ProposedDatasetManifest)))
             or 0,
             (await connection.scalar(select(func.count()).select_from(ProposedDatasetSource))) or 0,
         )
@@ -111,9 +109,7 @@ async def test_concurrent_identical_replays_are_race_safe(admin_engine, owner_re
     assert await row_counts(admin_engine) == (1, 4)
 
 
-async def test_separate_evaluation_manifest_is_distinct_and_immutable(
-    admin_engine, owner_registry
-):
+async def test_separate_evaluation_manifest_is_distinct_and_immutable(admin_engine, owner_registry):
     ref = synthetic_source()
     training = await owner_registry.propose(DatasetPurpose.TRAINING, [ref])
     evaluation = await owner_registry.propose(DatasetPurpose.EVALUATION, [ref])

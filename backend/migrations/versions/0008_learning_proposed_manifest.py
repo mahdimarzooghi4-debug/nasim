@@ -27,9 +27,7 @@ def upgrade() -> None:
         sa.Column("recorded_at", sa.DateTime(timezone=True), nullable=False),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("manifest_sha256", name="uq_learning_manifest_digest"),
-        sa.CheckConstraint(
-            "purpose IN ('TRAINING', 'EVALUATION')", name="ck_learning_purpose"
-        ),
+        sa.CheckConstraint("purpose IN ('TRAINING', 'EVALUATION')", name="ck_learning_purpose"),
         sa.CheckConstraint("source_count > 0", name="ck_learning_source_count"),
         sa.CheckConstraint(
             "manifest_sha256 ~ '^[0-9a-f]{64}$' "
