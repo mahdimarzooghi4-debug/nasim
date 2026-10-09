@@ -122,9 +122,7 @@ def test_duplicate_or_competing_version_of_same_source_fails_before_admission():
 def test_policy_verifier_must_explicitly_attest_to_exact_all_membership():
     one, two = source(), source()
     request = (one, two)
-    subset = VersionedManifestBuilder(
-        SyntheticOnlyAdmission(admitted=membership((one,)))
-    )
+    subset = VersionedManifestBuilder(SyntheticOnlyAdmission(admitted=membership((one,))))
     with pytest.raises(AdmissionUnavailable, match="UNAPPROVED_OR_STALE"):
         subset.build(DatasetPurpose.TRAINING, request)
     surplus = VersionedManifestBuilder(
@@ -158,9 +156,17 @@ def test_deterministic_manifest_identity_independent_of_input_order_and_replay()
     assert a == b == c
     assert a.manifest_sha256 == b.manifest_sha256
     assert len(a.sources) == len(records)
-    assert tuple(a.sources) == tuple(sorted(records, key=lambda s: (
-        s.namespace, str(s.source_id), s.source_version_sha256, s.curation_evidence_sha256
-    )))
+    assert tuple(a.sources) == tuple(
+        sorted(
+            records,
+            key=lambda s: (
+                s.namespace,
+                str(s.source_id),
+                s.source_version_sha256,
+                s.curation_evidence_sha256,
+            ),
+        )
+    )
     assert a.to_dict()["manifest_id"] == str(a.manifest_id)
 
 
@@ -181,10 +187,15 @@ def test_policy_approval_purpose_or_content_change_yields_new_immutable_identity
     new_version = VersionedManifestBuilder(SyntheticOnlyAdmission()).build(
         DatasetPurpose.TRAINING, [replace(item, source_version_sha256=D)]
     )
-    assert len({
-        manifest.manifest_id
-        for manifest in (baseline, new_policy, new_approval, new_purpose, new_version)
-    }) == 5
+    assert (
+        len(
+            {
+                manifest.manifest_id
+                for manifest in (baseline, new_policy, new_approval, new_purpose, new_version)
+            }
+        )
+        == 5
+    )
     with pytest.raises(FrozenInstanceError):
         baseline.policy_sha256 = D
 
