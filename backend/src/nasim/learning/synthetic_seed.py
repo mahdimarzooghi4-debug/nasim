@@ -56,7 +56,7 @@ def _read_source(
     if path.is_symlink() or not path.is_file():
         raise SeedIntegrityError("SEED_SOURCE_MISSING_OR_SYMLINK")
     raw = path.read_bytes()
-    blob = sha1(b"blob " + str(len(raw)).encode("ascii") + b"\\0" + raw).hexdigest()
+    blob = sha1(b"blob " + str(len(raw)).encode("ascii") + bytes([0]) + raw).hexdigest()
     if blob != pinned_blob:
         raise SeedIntegrityError("SEED_GIT_BLOB_ATTESTATION_FAILED")
     try:
