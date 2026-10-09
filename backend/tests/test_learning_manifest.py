@@ -197,7 +197,7 @@ def test_policy_approval_purpose_or_content_change_yields_new_immutable_identity
         == 5
     )
     with pytest.raises(FrozenInstanceError):
-        setattr(baseline, "policy_sha256", D)
+        baseline.__setattr__("policy_sha256", D)
 
 
 def test_partition_overlap_blocked_even_when_source_versions_differ():
