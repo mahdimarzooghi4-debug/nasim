@@ -36,6 +36,10 @@ from nasim.domain.contracts import (
     WorkspaceView,
 )
 from nasim.domain.errors import DomainError
+from nasim.identity_context.browser_boundary import (
+    browser_session_is_unbound,
+    browser_session_unavailable,
+)
 from nasim.identity_context.contracts import ActorContext
 from nasim.infrastructure.config import Settings, load_settings
 from nasim.infrastructure.database import make_engine, make_sessions
@@ -176,6 +180,16 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         await engine.dispose()
 
     app = FastAPI(title="Nasim TS-03", version="0.1.0", lifespan=lifespan)
+
+    @app.middleware("http")
+    async def deny_unconfigured_browser_identity(request: Request, call_next: Any) -> Any:
+        # No approved browser session exists yet. A browser-origin request
+        # cannot obtain authority through a cookie, Origin, Fetch Metadata,
+        # Referer, a reverse-proxy actor header, or injected ActorContext.
+        if browser_session_is_unbound(request):
+            return browser_session_unavailable()
+        return await call_next(request)
+
     app.state.engine = engine
     app.state.casework = Casework(make_sessions(engine))
     app.state.case_index = AssignedCaseIndex(make_sessions(engine))
