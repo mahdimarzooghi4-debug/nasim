@@ -29,9 +29,7 @@ BROWSER_CONTEXTS = [
 
 
 def app_for_test():
-    return create_app(
-        Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"]))
-    )
+    return create_app(Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"])))
 
 
 @pytest.mark.parametrize("headers", BROWSER_CONTEXTS)
@@ -156,9 +154,7 @@ async def test_openapi_remains_public_for_contract_read_even_with_browser_metada
         await app.state.engine.dispose()
 
 
-async def test_real_api_ignores_trusted_principal_supplied_as_http_headers(
-    admin_engine, manager
-):
+async def test_real_api_ignores_trusted_principal_supplied_as_http_headers(admin_engine, manager):
     app = app_for_test()
     try:
         async with httpx.AsyncClient(
