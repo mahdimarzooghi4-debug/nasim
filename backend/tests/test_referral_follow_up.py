@@ -143,7 +143,9 @@ async def test_follow_up_append_only_effects_no_outcome_leak(env, admin_engine, 
     assert all(item.action.startswith("case.") for item in case_timeline.items)
 
 
-@pytest.mark.parametrize("field", ["status", "closed", "complete", "outcome", "provider_id", "rating"])
+@pytest.mark.parametrize(
+    "field", ["status", "closed", "complete", "outcome", "provider_id", "rating"]
+)
 def test_follow_up_contract_forbids_unapproved_fields(env, field):
     with pytest.raises(ValidationError):
         RecordReferralFollowUp(**command(env).model_dump(), **{field: "invented"})
@@ -187,7 +189,9 @@ async def test_multiple_notes_and_paginated_read_isolation(env, admin_engine):
     second_referral = await referrals.create(
         case_id,
         CreateReferral(
-            source_need_observation_id=(await referrals.get(ref_id, actor)).source_need_observation_id,
+            source_need_observation_id=(
+                await referrals.get(ref_id, actor)
+            ).source_need_observation_id,
             expected_current_assignment_id=aid,
             reason="Another referral recording for the same Need",
         ),
@@ -230,7 +234,9 @@ async def test_record_deny_ai_automation_wrong_assignment_and_missing_referral(e
                 f"actor-{other_type.value}",
             )
     with pytest.raises(DomainError) as err:
-        await followups.record(ref_id, command(env), actor.model_copy(update={"actor_id": "other"}), "other")
+        await followups.record(
+            ref_id, command(env), actor.model_copy(update={"actor_id": "other"}), "other"
+        )
     assert err.value.code == "ASSIGNED_CAREGIVER_REQUIRED"
     with pytest.raises(DomainError) as err:
         await followups.record(
