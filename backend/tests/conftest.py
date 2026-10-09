@@ -71,7 +71,8 @@ async def admin_engine() -> AsyncIterator[AsyncEngine]:
                 "case_assignment, "
                 "case_interaction, case_observation, audit_entry, outbox_event, "
                 "idempotency_record, referral_follow_up_record, "
-                "learning_proposed_source, learning_proposed_manifest, learning_source_purpose_claim, "
+                "learning_proposed_source, learning_proposed_manifest, "
+                "learning_source_purpose_claim, "
                 "provider_qualification_review_request_record, "
                 "provider_qualification_evidence_record, provider_candidate_record CASCADE"
             )

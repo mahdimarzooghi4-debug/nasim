@@ -12,8 +12,8 @@ from hashlib import sha256
 from uuid import UUID, uuid5
 
 from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.dialects.postgresql import insert as pg_insert
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from nasim.learning.dataset_manifest import (

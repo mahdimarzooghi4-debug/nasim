@@ -5,8 +5,8 @@ verifiers are imported by the serving runtime or provide legal permission.
 """
 
 import asyncio
-from dataclasses import replace
 import os
+from dataclasses import replace
 from uuid import uuid4
 
 import pytest
@@ -287,7 +287,8 @@ async def test_direct_privileged_source_insert_cannot_bypass_partition_guard(
             await connection.execute(
                 text(
                     "INSERT INTO learning_proposed_source "
-                    "(manifest_id,namespace,source_id,source_version_sha256,curation_evidence_sha256) "
+                    " (manifest_id,namespace,source_id,source_version_sha256, "
+                    "curation_evidence_sha256) "
                     "VALUES (:manifest_id,:namespace,:source_id,:source_version_sha256,"
                     ":curation_evidence_sha256)"
                 ),
