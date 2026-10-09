@@ -21,7 +21,7 @@ from uuid import UUID, uuid5
 
 _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 _NAMESPACE = UUID("7c926789-2ae3-47aa-8909-02a901c6d2d8")
-_SOURCE_NAMESPACE = re.compile(r"[a-z][a-z0-9_.-]{0,79}\\Z")
+_SOURCE_NAMESPACE = re.compile(r"[a-z][a-z0-9_.-]{0,79}\Z")
 
 
 class ManifestError(ValueError):
