@@ -14,7 +14,7 @@ import json
 import re
 from collections.abc import Iterable
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from hashlib import sha256
 from typing import Protocol
 from uuid import UUID, uuid5
@@ -32,7 +32,7 @@ class AdmissionUnavailable(PermissionError):
     """Dataset creation is unauthorized or the required admission is absent."""
 
 
-class DatasetPurpose(str, Enum):
+class DatasetPurpose(StrEnum):
     TRAINING = "TRAINING"
     EVALUATION = "EVALUATION"
 

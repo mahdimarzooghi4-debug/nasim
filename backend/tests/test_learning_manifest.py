@@ -66,7 +66,9 @@ class SyntheticOnlyAdmission:
         return AdmissionEvidence(
             policy_sha256=self.policy,
             approval_evidence_sha256=self.approval,
-            eligible_sources=self.admitted if self.admitted is not None else membership(request.sources),
+            eligible_sources=(
+                self.admitted if self.admitted is not None else membership(request.sources)
+            ),
         )
 
 
