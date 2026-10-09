@@ -46,3 +46,11 @@ The approved TS-03 immutable Case writes can be exercised by authenticated **HUM
 - Browser commands are fixed same-origin 201 JSON, cryptographically secured per-payload idempotency and no actor/authorization spoofing. 401 closes the operational UI; 403/409 fail closed; accepted results prompt fresh server reads; client renders no optimistic official Case state.
 
 **Not authorized by this code:** Enrollment verification, real browser Identity Provider, cookie-session/CSRF/Origin defenses, final RBAC provisioning, outbound contact, Provider choice, Case closure, service Outcome or AI Training. Before real protected use, these require separate approved contracts and security/E2E evidence. CI container smoke is not Hosted Stage (D-0130).
+
+## Sprint 017 — Auditable Case Activity & Revision Lineage (Draft)
+
+Human users with existing `case.read.assigned` or `case.read.oversight` may inspect **only already-authorized Case data** via four separate read models: cursor-bounded `GET /cases/{id}/timeline` (technical Casework audit events, reason, actor and before/after resource identifiers), `GET /cases/{id}/assignments` (actual starting/ending assignment history), cursor-bounded `GET /cases/{id}/interactions` and `GET /cases/{id}/observations` (all immutable revisions with supersession references). The React UI uses 20-item pages for cursor feeds, supports manual refresh, generic error handling and cancels in-flight requests on view/cursor switches.
+
+A Case timeline is **not** a cross-context health, Provider, Referral or Outcome event ledger; it includes only Casework events accepted by that existing API. No invented status, work priority, eligibility, compliance verdict or downstream effect is derived from events. An unended assignment is shown only as lacking an end timestamp, not interpreted as verified service delivery. Timeline pages are not an immutable snapshot: data may change between reads. Client access gating supplements existing backend's per-request actor/assignment authorization and does not grant new roles.
+
+The unconfigured browser IdP/session remains *fully blocked* by Sprint 015. Real browser authentication, legal access and Stage require separate explicit governance. This Sprint does not create a login or change Backend schema/permissions. No Figma signoff and no real Production access claimed.

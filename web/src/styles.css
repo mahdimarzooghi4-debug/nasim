@@ -98,3 +98,9 @@ code { color: #3b586a; font-family: Consolas, monospace; font-size: .82em; overf
 }
 .record-form button[type="submit"] { justify-self: start; margin-top: 8px; }
 .record-form .notice { margin: 0; }
+
+.history-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.history-tabs button.active { background: #1a5566; color: white; border-color: #1a5566; }
+.history-records { list-style: decimal; padding-inline-start: 22px; }
+.history-records li { padding-inline-start: 8px; }
+.history-records bdi { overflow-wrap: anywhere; }

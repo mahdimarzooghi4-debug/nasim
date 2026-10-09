@@ -1,6 +1,6 @@
 import type {
-  ActorContext, CareJourneyWorkspaceView, CaseProfileView, Page,
-  ProviderCandidateView, ProviderWorkspaceView,
+  ActorContext, AssignmentView, CareJourneyWorkspaceView, CaseProfileView, Page,
+  ProviderCandidateView, ProviderWorkspaceView, TimelineEntry,
 } from "./types";
 import type { ContactRecord } from "./caseCommands";
 import type { InteractionRecorded } from "./correctionCommands";
@@ -69,6 +69,11 @@ export const api = {
     getJson<Page<CaseProfileView>>("/api/v1/cases" + params({ cursor, limit: 20 }), signal),
   caseProfile: (caseId: string, signal?: AbortSignal) =>
     getJson<CaseProfileView>("/api/v1/cases/" + id(caseId), signal),
+  assignments: (caseId: string, signal?: AbortSignal) =>
+    getJson<AssignmentView[]>("/api/v1/cases/" + id(caseId) + "/assignments", signal),
+  timeline: (caseId: string, cursor?: string | null, signal?: AbortSignal) =>
+    getJson<Page<TimelineEntry>>(
+      "/api/v1/cases/" + id(caseId) + "/timeline" + params({ cursor, limit: 20 }), signal),
   contacts: (caseId: string, signal?: AbortSignal) =>
     getJson<ContactRecord[]>("/api/v1/cases/" + id(caseId) + "/contacts", signal),
   interactions: (caseId: string, cursor?: string | null, signal?: AbortSignal) =>
