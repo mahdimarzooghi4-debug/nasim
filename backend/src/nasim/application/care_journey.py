@@ -88,9 +88,7 @@ class CareJourneyWorkspace:
                 # A referral belonging to another Case cannot be selected in this workspace.
                 raise DomainError("REFERRAL_NOT_FOUND", 404)
             follow_ups = Page[ReferralFollowUpView].model_validate(
-                await self.follow_ups.list(
-                    referral_id, actor, cursor=follow_up_cursor, limit=limit
-                )
+                await self.follow_ups.list(referral_id, actor, cursor=follow_up_cursor, limit=limit)
             )
         return CareJourneyWorkspaceView(
             case=summary,

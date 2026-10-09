@@ -112,9 +112,7 @@ async def effects(admin_engine) -> tuple[int, int, int]:
         )
 
 
-async def test_case_journey_independent_pages_and_referral_scoped_follow_ups(
-    journey, admin_engine
-):
+async def test_case_journey_independent_pages_and_referral_scoped_follow_ups(journey, admin_engine):
     reader, case_id, _, referral_ids, actor = journey
     before = await effects(admin_engine)
     page = await reader.read(case_id, actor, referral_id=referral_ids[0], limit=1)
@@ -251,9 +249,7 @@ async def test_journey_revokes_old_caregiver_after_human_reassignment(
 
 async def test_journey_http_shape_anonymous_and_no_mutation(journey):
     _, case_id, _, referral_ids, actor = journey
-    app = create_app(
-        Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"]))
-    )
+    app = create_app(Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"])))
     route = f"/api/v1/cases/{case_id}/journey-workspace"
     try:
         async with httpx.AsyncClient(
@@ -261,9 +257,7 @@ async def test_journey_http_shape_anonymous_and_no_mutation(journey):
         ) as client:
             assert (await client.get(route)).status_code == 401
             app.dependency_overrides[get_actor] = lambda: actor
-            good = await client.get(
-                route, params={"referral_id": str(referral_ids[0]), "limit": 1}
-            )
+            good = await client.get(route, params={"referral_id": str(referral_ids[0]), "limit": 1})
             assert good.status_code == 200, good.text
             payload = good.json()
             assert payload["case"]["case"]["id"] == str(case_id)
