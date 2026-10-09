@@ -44,9 +44,7 @@ def upgrade() -> None:
         sa.Column("reason", sa.Text(), nullable=False),
         sa.Column("correlation_id", sa.String(length=200), nullable=False),
         sa.Column("id", sa.Uuid(), nullable=False),
-        sa.CheckConstraint(
-            "recorded_by_actor_type = 'HUMAN'", name="ck_referral_follow_up_human"
-        ),
+        sa.CheckConstraint("recorded_by_actor_type = 'HUMAN'", name="ck_referral_follow_up_human"),
         sa.CheckConstraint(
             "note ~ '[^[:space:]]' AND reason ~ '[^[:space:]]' "
             "AND length(trim(recorded_by_actor_id)) > 0 "
