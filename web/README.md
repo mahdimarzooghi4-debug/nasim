@@ -54,3 +54,10 @@ Human users with existing `case.read.assigned` or `case.read.oversight` may insp
 A Case timeline is **not** a cross-context health, Provider, Referral or Outcome event ledger; it includes only Casework events accepted by that existing API. No invented status, work priority, eligibility, compliance verdict or downstream effect is derived from events. An unended assignment is shown only as lacking an end timestamp, not interpreted as verified service delivery. Timeline pages are not an immutable snapshot: data may change between reads. Client access gating supplements existing backend's per-request actor/assignment authorization and does not grant new roles.
 
 The unconfigured browser IdP/session remains *fully blocked* by Sprint 015. Real browser authentication, legal access and Stage require separate explicit governance. This Sprint does not create a login or change Backend schema/permissions. No Figma signoff and no real Production access claimed.
+
+
+## Sprint 021 — Case-wide Referral follow-up index (Draft)
+
+A separate read-only list under an authorized Case Journey displays the actual human Follow-up notes already recorded for all Referrals in that Case, with referral identity, recorder, recorded timestamp, original note/reason, bounded server-side keyset pages and a back-navigation control. The Backend independently validates **all three** existing Case, Referral and Follow-up read grants, each against the current assigned caregiver or an explicit oversight grant for that exact read family. AI and stale assignees are rejected. No note data is stored locally, inferred, turned into a Training Label, or sent to an external service.
+
+A Case-wide follow-up view is **not** an action-required queue, due date, service completion, verified Outcome, satisfaction score, real-time notification, or a new Provider workflow. Without an approved real browser IdP/session, the existing fail-closed browser barrier still prevents operational usage. Hosted Stage/Production remain unapproved.

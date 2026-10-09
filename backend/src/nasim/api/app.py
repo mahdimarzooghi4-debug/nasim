@@ -399,6 +399,20 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         return await service.list(referral_id, actor, cursor, limit)
 
     @app.get(
+        "/api/v1/cases/{case_id}/referral-follow-ups",
+        response_model=Page[ReferralFollowUpView],
+        responses=ERRORS,
+    )
+    async def list_case_referral_follow_ups(
+        case_id: UUID,
+        actor: Actor,
+        service: ReferralFollowUpService,
+        cursor: Cursor = None,
+        limit: Limit = 50,
+    ) -> Any:
+        return await service.list_for_case(case_id, actor, cursor, limit)
+
+    @app.get(
         "/api/v1/referral-follow-up-records/{record_id}",
         response_model=ReferralFollowUpView,
         responses=ERRORS,
