@@ -158,8 +158,10 @@ async def test_follow_up_append_only_effects_no_outcome_leak(env, admin_engine, 
     "field", ["status", "closed", "complete", "outcome", "provider_id", "rating"]
 )
 def test_follow_up_contract_forbids_unapproved_fields(env, field):
+    payload = command(env).model_dump(mode="json")
+    payload[field] = "invented"
     with pytest.raises(ValidationError):
-        RecordReferralFollowUp(**command(env).model_dump(), **{field: "invented"})
+        RecordReferralFollowUp.model_validate(payload)
 
 
 @pytest.mark.parametrize("value", ["", " ", "\n"])

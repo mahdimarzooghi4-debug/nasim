@@ -10,7 +10,7 @@ from nasim.infrastructure.referral_effects import ReferralEffects
 from nasim.referral.contracts import ReferralFollowUpView
 
 
-class ReferralFollowUpEffects(ReferralEffects):
+class ReferralFollowUpEffects:
     @staticmethod
     def scope(actor: ActorContext, referral_id: UUID, key: str) -> dict[str, str]:
         return {
@@ -19,6 +19,17 @@ class ReferralFollowUpEffects(ReferralEffects):
             "target": str(referral_id),
             "key": key,
         }
+
+    def __init__(self) -> None:
+        self._shared = ReferralEffects()
+
+    async def lock(self, session: AsyncSession, scope: dict[str, str]) -> None:
+        await self._shared.lock(session, scope)
+
+    async def prior(
+        self, session: AsyncSession, scope: dict[str, str], payload_hash: str
+    ) -> dict | None:
+        return await self._shared.prior(session, scope, payload_hash)
 
     async def append(
         self,
