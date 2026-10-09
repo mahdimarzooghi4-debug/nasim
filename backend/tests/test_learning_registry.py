@@ -70,7 +70,10 @@ def owner_registry(admin_engine):
 async def row_counts(engine) -> tuple[int, int]:
     async with engine.connect() as connection:
         return (
-            (await connection.scalar(select(func.count()).select_from(ProposedDatasetManifest))) or 0,
+            (
+                await connection.scalar(select(func.count()).select_from(ProposedDatasetManifest))
+            )
+            or 0,
             (await connection.scalar(select(func.count()).select_from(ProposedDatasetSource))) or 0,
         )
 
@@ -84,7 +87,9 @@ async def test_default_denial_performs_no_database_write(admin_engine):
     assert await registry.read(uuid4()) is None
 
 
-async def test_synthetic_manifest_atomic_persistence_digest_and_replay(admin_engine, owner_registry):
+async def test_synthetic_manifest_atomic_persistence_digest_and_replay(
+    admin_engine, owner_registry
+):
     a, b, c = synthetic_source(), synthetic_source(), synthetic_source()
     created = await owner_registry.propose(DatasetPurpose.TRAINING, [b, c, a])
     assert created == await owner_registry.read(created.manifest_id)
