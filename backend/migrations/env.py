@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 from nasim.authorization import models as authorization_models  # noqa: F401
 from nasim.infrastructure.config import load_settings
+from nasim.learning import models as learning_models  # noqa: F401
 from nasim.infrastructure.models import Base
 from nasim.provider_registry import models as provider_registry_models  # noqa: F401
 from nasim.referral import models as referral_models  # noqa: F401
