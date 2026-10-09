@@ -209,9 +209,9 @@ async def test_real_care_journey_and_provider_boundary_with_caregiver_handover(
 
 async def test_cross_context_unauthorized_actor_has_no_implicit_combined_access(service):
     """Even the same human identity must have grants for each context separately."""
+    from nasim.domain.errors import DomainError
     from nasim.provider_registry.service import ProviderQualificationReviewWorkspace
     from nasim.referral.follow_up import ReferralFollowUps
-    from nasim.domain.errors import DomainError
 
     actor = ActorContext(
         actor_id="limited-human",
