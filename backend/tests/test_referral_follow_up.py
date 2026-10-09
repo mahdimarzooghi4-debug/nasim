@@ -400,7 +400,9 @@ async def test_case_wide_follow_up_index_pages_all_referrals_without_mutation(
     second = await referrals.create(
         case_id,
         CreateReferral(
-            source_need_observation_id=(await referrals.get(ref_id, actor)).source_need_observation_id,
+            source_need_observation_id=(
+                await referrals.get(ref_id, actor)
+            ).source_need_observation_id,
             expected_current_assignment_id=aid,
             reason="Independent recorded referral",
         ),
@@ -593,7 +595,9 @@ async def test_case_index_http_contract_auth_denial_and_no_mutation(env, admin_e
             assert (await client.get(url, params={"limit": 0})).status_code == 422
             assert (await client.get(url, params={"cursor": "wrong"})).status_code == 422
             assert (await client.post(url, json={})).status_code == 405
-            assert (await client.get(url, headers={"Origin": "https://example.invalid"})).status_code == 401
+            assert (
+                await client.get(url, headers={"Origin": "https://example.invalid"})
+            ).status_code == 401
             app.dependency_overrides[get_actor] = lambda: actor.model_copy(
                 update={"capabilities": frozenset({"case.read.assigned"})}
             )
