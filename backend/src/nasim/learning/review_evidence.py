@@ -17,7 +17,6 @@ from pathlib import Path
 from typing import Any
 
 from nasim.learning.synthetic_seed import (
-    SOURCE_DIR,
     SOURCE_SPECS,
     SeedIntegrityError,
     _read_source,
