@@ -68,6 +68,55 @@ async def test_atomic_creation_idempotency(service, admin_engine, manager, careg
         assert "elder_reference" not in payload
 
 
+@pytest.mark.parametrize("operation", ["create", "reassign", "contact_add", "profile_correct"])
+async def test_case_idempotent_replay_cross_actor_type_is_rejected(
+    service, admin_engine, manager, caregiver, operation
+):
+    """Same actor_id across trusted actor types cannot receive cached TS-03 effects."""
+    if operation == "create":
+        actor = manager
+        case_id = None
+        command = create_command()
+    else:
+        original, case_id, assignment_id = await seed(service, manager)
+        if operation == "reassign":
+            actor = manager
+            command = ReassignCaregiver(
+                expected_current_assignment_id=assignment_id,
+                caregiver_actor_id="new-caregiver",
+                reason="actor type provenance test",
+            )
+        elif operation == "contact_add":
+            actor = caregiver
+            command = AddContactPoint(
+                expected_current_assignment_id=assignment_id,
+                contact_kind="phone",
+                contact_value="synthetic-test-contact",
+            )
+        else:
+            actor = manager
+            command = CorrectCaseProfile(
+                expected_current_assignment_id=assignment_id,
+                expected_current_revision_id=UUID(original["profile"]["id"]),
+                elder_reference="synthetic-corrected",
+                correction_reason="actor type provenance test",
+            )
+
+    key = "actor-type-replay"
+    original_result = await service.mutate(operation, command, actor, key, case_id)
+    before = await effects(admin_engine)
+    # Same business request, key, actor ID and permissions; only trusted actor type differs.
+    cross_type = actor.model_copy(update={"actor_type": ActorType.AUTOMATION})
+    with pytest.raises(DomainError) as error:
+        await service.mutate(operation, command, cross_type, key, case_id)
+    assert error.value.code == "IDEMPOTENCY_KEY_REUSED_WITH_DIFFERENT_PAYLOAD"
+    assert error.value.status == 409
+    assert await effects(admin_engine) == before
+    # The original human principal retains ordinary idempotent replay.
+    assert await service.mutate(operation, command, actor, key, case_id) == original_result
+    assert await effects(admin_engine) == before
+
+
 async def test_key_payload_conflict(service, admin_engine, manager):
     await seed(service, manager)
     with pytest.raises(DomainError, match="IDEMPOTENCY_KEY_REUSED_WITH_DIFFERENT_PAYLOAD"):
@@ -97,6 +146,41 @@ async def test_each_read_requires_current_caregiver(service, manager, caregiver,
         await service.read(kind, case_id, other)
     await service.read(kind, case_id, caregiver)
     await service.read(kind, case_id, manager)
+
+
+@pytest.mark.parametrize("kind", ["interactions", "observations", "timeline"])
+@pytest.mark.parametrize("limit", [-1, 0, 101])
+async def test_ts03_paginated_reads_reject_invalid_service_limits(
+    service, admin_engine, manager, kind, limit
+):
+    """Service-level callers get the same 422 bound as REST and other bounded contexts."""
+    _, case_id, _ = await seed(service, manager)
+    before = await effects(admin_engine)
+    with pytest.raises(DomainError) as error:
+        await service.read(kind, case_id, manager, limit=limit)
+    assert error.value.code == "INVALID_PAGE_LIMIT"
+    assert error.value.status == 422
+    assert await effects(admin_engine) == before
+
+
+@pytest.mark.parametrize("kind", ["interactions", "observations", "timeline"])
+@pytest.mark.parametrize("limit", [1, 100])
+async def test_ts03_paginated_reads_accept_service_limit_boundaries(service, manager, kind, limit):
+    _, case_id, _ = await seed(service, manager)
+    page = await service.read(kind, case_id, manager, limit=limit)
+    assert len(page.items) <= limit
+    assert page.next_cursor is None
+
+
+async def test_ts03_paginated_reads_deny_unauthorized_actor_before_limit_validation(
+    service, manager, caregiver
+):
+    _, case_id, _ = await seed(service, manager)
+    outsider = caregiver.model_copy(update={"capabilities": frozenset()})
+    with pytest.raises(DomainError) as error:
+        await service.read("timeline", case_id, outsider, limit=0)
+    assert error.value.code == "CAPABILITY_REQUIRED"
+    assert error.value.status == 403
 
 
 @pytest.mark.parametrize("actor_id", ["family", "provider", "employer", "elder"])
