@@ -64,9 +64,7 @@ def _reviewed_at(mapping: dict[str, Any]) -> str:
 
 def _canonical_digest(value: Any) -> str:
     return sha256(
-        json.dumps(value, sort_keys=True, ensure_ascii=True, separators=(",", ":")).encode(
-            "utf-8"
-        )
+        json.dumps(value, sort_keys=True, ensure_ascii=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
 
 
@@ -140,8 +138,7 @@ def reconcile_initial_review_evidence(
     _reference(evidence, "review_batch_evidence_ref")
 
     sources = {
-        entry["record_id"]: entry["record_sha256"]
-        for entry in inventory["candidate_records"]
+        entry["record_id"]: entry["record_sha256"] for entry in inventory["candidate_records"]
     }
     decisions = _entries(evidence["records"], sources, is_patch=False)
     patch_file, patch_blob, patch_count, patch_prefix = SOURCE_SPECS[3]
