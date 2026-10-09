@@ -125,10 +125,9 @@ class ProposedManifestRegistry:
             # The PostgreSQL trigger is the authoritative cross-manifest
             # partition guard, including concurrent competing proposals.
             # Never reinterpret unrelated DB failures as business eligibility.
-            if (
-                getattr(error.orig, "sqlstate", None) == "23514"
-                and "LEARNING_SOURCE_PARTITION_CONFLICT" in str(error.orig)
-            ):
+            if getattr(
+                error.orig, "sqlstate", None
+            ) == "23514" and "LEARNING_SOURCE_PARTITION_CONFLICT" in str(error.orig):
                 raise ManifestError("TRAINING_EVALUATION_SOURCE_OVERLAP") from error
             raise
         return manifest

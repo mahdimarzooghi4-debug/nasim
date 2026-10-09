@@ -239,9 +239,7 @@ async def test_same_purpose_can_reuse_identity_across_versioned_manifests(
         assert await connection.scalar(select(func.count()).select_from(SourcePurposeClaim)) == 1
 
 
-async def test_concurrent_opposite_purpose_only_one_is_persisted(
-    admin_engine, owner_registry
-):
+async def test_concurrent_opposite_purpose_only_one_is_persisted(admin_engine, owner_registry):
     source = synthetic_source()
 
     async def attempt(purpose):
@@ -267,9 +265,7 @@ async def test_concurrent_same_purpose_distinct_versions_remain_allowed(
     source = synthetic_source()
     results = await asyncio.gather(
         owner_registry.propose(DatasetPurpose.TRAINING, [source]),
-        owner_registry.propose(
-            DatasetPurpose.TRAINING, [replace(source, source_version_sha256=D)]
-        ),
+        owner_registry.propose(DatasetPurpose.TRAINING, [replace(source, source_version_sha256=D)]),
     )
     assert results[0].manifest_id != results[1].manifest_id
     assert await row_counts(admin_engine) == (2, 2)
