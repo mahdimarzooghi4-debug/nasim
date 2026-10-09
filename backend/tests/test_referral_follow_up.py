@@ -62,7 +62,7 @@ async def env(service, manager, caregiver):
         update={
             "capabilities": caregiver.capabilities
             | {"referral.create.assigned", "referral.read.assigned"}
-            | frozenset(REFERRAL_FOLLOW_UP_PERMISSIONS)
+            | frozenset(REFERRAL_FOLLOW_UP_PERMISSIONS[:2])
         }
     )
     referrals = Referrals(service.sessions)
@@ -99,19 +99,19 @@ async def counts(admin_engine):
         return (
             await conn.scalar(select(func.count()).select_from(ReferralFollowUpRecord)),
             await conn.scalar(
-                select(func.count()).select_from(AuditEntry).where(
-                    AuditEntry.action == "referral.follow_up_recorded.v1"
-                )
+                select(func.count())
+                .select_from(AuditEntry)
+                .where(AuditEntry.action == "referral.follow_up_recorded.v1")
             ),
             await conn.scalar(
-                select(func.count()).select_from(OutboxEvent).where(
-                    OutboxEvent.event_type == "referral.follow_up_recorded.v1"
-                )
+                select(func.count())
+                .select_from(OutboxEvent)
+                .where(OutboxEvent.event_type == "referral.follow_up_recorded.v1")
             ),
             await conn.scalar(
-                select(func.count()).select_from(IdempotencyRecord).where(
-                    IdempotencyRecord.operation.like("referral.follow_up.record.%")
-                )
+                select(func.count())
+                .select_from(IdempotencyRecord)
+                .where(IdempotencyRecord.operation.like("referral.follow_up.record.%"))
             ),
         )
 
@@ -122,8 +122,14 @@ async def test_follow_up_append_only_effects_no_outcome_leak(env, admin_engine, 
     assert created["referral_id"] == str(referral_id)
     assert created["recorded_by_actor_type"] == "HUMAN"
     assert set(created) == {
-        "id", "referral_id", "recorded_at", "recorded_by_actor_id",
-        "recorded_by_actor_type", "note", "reason", "correlation_id",
+        "id",
+        "referral_id",
+        "recorded_at",
+        "recorded_by_actor_id",
+        "recorded_by_actor_type",
+        "note",
+        "reason",
+        "correlation_id",
     }
     assert await counts(admin_engine) == (1, 1, 1, 1)
     async with admin_engine.connect() as conn:
@@ -133,8 +139,13 @@ async def test_follow_up_append_only_effects_no_outcome_leak(env, admin_engine, 
             )
         )
         assert set(event) == {
-            "follow_up_record_id", "referral_id", "case_id", "actor_id",
-            "actor_type", "recorded_at", "correlation_id",
+            "follow_up_record_id",
+            "referral_id",
+            "case_id",
+            "actor_id",
+            "actor_type",
+            "recorded_at",
+            "correlation_id",
         }
         assert event["case_id"] == str(case_id)
         assert "Caregiver recorded" not in str(event)
@@ -183,7 +194,8 @@ async def test_multiple_notes_and_paginated_read_isolation(env, admin_engine):
     assert first_page.next_cursor
     assert not next_page.next_cursor
     assert {str(first_page.items[0].id), str(next_page.items[0].id)} == {
-        first["id"], second["id"],
+        first["id"],
+        second["id"],
     }
     assert (await followups.get(UUID(first["id"]), actor)).note == "First"
     second_referral = await referrals.create(
@@ -230,7 +242,9 @@ async def test_record_deny_ai_automation_wrong_assignment_and_missing_referral(e
     for other_type in (ActorType.AI, ActorType.SYSTEM, ActorType.AUTOMATION):
         with pytest.raises(DomainError):
             await followups.record(
-                ref_id, command(env), actor.model_copy(update={"actor_type": other_type}),
+                ref_id,
+                command(env),
+                actor.model_copy(update={"actor_type": other_type}),
                 f"actor-{other_type.value}",
             )
     with pytest.raises(DomainError) as err:
@@ -332,25 +346,29 @@ async def test_http_read_write_with_trusted_actor(env, admin_engine):
             transport=httpx.ASGITransport(app=app), base_url="http://test"
         ) as client:
             assert (await client.get(url)).status_code == 401
-            assert (await client.post(
-                url, json=command(env).model_dump(mode="json"),
-                headers={"Idempotency-Key": "http"}
-            )).status_code == 401
+            assert (
+                await client.post(
+                    url,
+                    json=command(env).model_dump(mode="json"),
+                    headers={"Idempotency-Key": "http"},
+                )
+            ).status_code == 401
             app.dependency_overrides[get_actor] = lambda: actor
             created = await client.post(
-                url, json=command(env).model_dump(mode="json"),
-                headers={"Idempotency-Key": "http"}
+                url, json=command(env).model_dump(mode="json"), headers={"Idempotency-Key": "http"}
             )
             assert created.status_code == 201, created.text
             assert (await client.get(url)).json()["items"][0]["id"] == created.json()["id"]
-            assert (await client.get(
-                f"/api/v1/referral-follow-up-records/{created.json()['id']}"
-            )).status_code == 200
+            assert (
+                await client.get(f"/api/v1/referral-follow-up-records/{created.json()['id']}")
+            ).status_code == 200
             assert (await client.get(url, params={"limit": 0})).status_code == 422
-            assert (await client.patch(
-                f"/api/v1/referral-follow-up-records/{created.json()['id']}",
-                json={"note": "tamper"}
-            )).status_code == 405
+            assert (
+                await client.patch(
+                    f"/api/v1/referral-follow-up-records/{created.json()['id']}",
+                    json={"note": "tamper"},
+                )
+            ).status_code == 405
     finally:
         app.dependency_overrides.clear()
         await app.state.engine.dispose()
@@ -370,6 +388,4 @@ async def test_malformed_pagination_is_bounded(env, slot):
         with pytest.raises(DomainError) as error:
             await followups.list(ref_id, actor, cursor=token)
     assert error.value.status == 422
-    assert error.value.code == (
-        "INVALID_PAGE_LIMIT" if slot == "limit" else "INVALID_CURSOR"
-    )
+    assert error.value.code == ("INVALID_PAGE_LIMIT" if slot == "limit" else "INVALID_CURSOR")
