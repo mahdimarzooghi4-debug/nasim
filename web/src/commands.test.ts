@@ -64,11 +64,11 @@ describe("approved operational recording contracts", () => {
   });
 
   it("uses distinct reviewed routes for Contact/Monitoring, Referral and Follow-up", async () => {
-    const spy = vi.fn().mockResolvedValue(
+    const spy = vi.fn().mockImplementation(() => Promise.resolve(
       new Response(JSON.stringify({ id: needId }), {
         status: 201, headers: { "content-type": "application/json" },
       }),
-    );
+    ));
     globalThis.fetch = spy;
     await recordCareAction("interaction", caseId, null, {
       expected_current_assignment_id: assignmentId,
