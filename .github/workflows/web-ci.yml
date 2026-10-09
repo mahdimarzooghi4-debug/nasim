@@ -25,6 +25,18 @@ jobs:
       - name: Install exact direct dependencies (Draft web foundation)
         working-directory: web
         run: npm install --ignore-scripts --no-audit --no-fund
+      # Temporary non-secret transfer used to pin the exact public npm dependency graph.
+      # Removed as soon as the generated npm lockfile is committed.
+      - name: Emit reproducible public npm lock chunks
+        working-directory: web
+        run: |
+          python3 - <<'PY'
+          import base64
+          from pathlib import Path
+          data = base64.b64encode(Path("package-lock.json").read_bytes()).decode("ascii")
+          for index in range(0, len(data), 8000):
+              print(f"NASIM_PUBLIC_LOCK_CHUNK_{index // 8000:04d}=" + data[index:index+8000])
+          PY
       - name: TypeScript and Vitest contract tests
         working-directory: web
         run: |
