@@ -3,8 +3,6 @@
 This index has no lifecycle status, priority, outcome, or inferred work queue.
 """
 
-from uuid import UUID
-
 from sqlalchemy import literal, select, tuple_
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 

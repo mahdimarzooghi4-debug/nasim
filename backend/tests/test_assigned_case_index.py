@@ -14,7 +14,7 @@ from nasim.api.app import create_app, get_actor
 from nasim.application.case_index import AssignedCaseIndex
 from nasim.domain.contracts import CorrectCaseProfile, CreateCase, ReassignCaregiver
 from nasim.domain.errors import DomainError
-from nasim.identity_context.contracts import ActorContext, ActorType
+from nasim.identity_context.contracts import ActorType
 from nasim.infrastructure.config import Settings
 from nasim.infrastructure.models import AuditEntry, IdempotencyRecord, OutboxEvent
 
@@ -94,7 +94,9 @@ async def test_oversight_requires_explicit_read_capability(
 ):
     index, created = indexed_cases
     # Managing assignments is not permission to view a Case index.
-    only_manager = manager.model_copy(update={"capabilities": frozenset({"case.assignment.manage"})})
+    only_manager = manager.model_copy(
+        update={"capabilities": frozenset({"case.assignment.manage"})}
+    )
     with pytest.raises(DomainError) as error:
         await index.list(only_manager)
     assert error.value.code == "CAPABILITY_REQUIRED"
