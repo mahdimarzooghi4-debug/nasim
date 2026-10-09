@@ -22,14 +22,16 @@ from nasim.learning.synthetic_seed import (
 
 # Explicitly delegated technical split (D-0166); each category/fixture is indivisible.
 # Not a statistical proof of semantic independence across similarly worded scenarios.
-_EVALUATION_GROUPS = frozenset({
-    "behavior:source_authenticity",
-    "behavior:privacy",
-    "behavior:untrusted_document_instruction",
-    "behavior:outdated_content",
-    "fictional: NSIM-FIX-002",
-    "fictional: NSIM-FIX-006",
-})
+_EVALUATION_GROUPS = frozenset(
+    {
+        "behavior:source_authenticity",
+        "behavior:privacy",
+        "behavior:untrusted_document_instruction",
+        "behavior:outdated_content",
+        "fictional: NSIM-FIX-002",
+        "fictional: NSIM-FIX-006",
+    }
+)
 _SCHEMA = "nasim.synthetic-offline-split.v1"
 
 
@@ -39,9 +41,7 @@ class SyntheticDatasetError(ValueError):
 
 def _canonical_digest(value: Any) -> str:
     return sha256(
-        json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode(
-            "utf-8"
-        )
+        json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
 
 
@@ -118,21 +118,23 @@ def build_initial_synthetic_dataset_package(
             group_key = "behavior:" + category
         partition = "EVALUATION" if group_key in _EVALUATION_GROUPS else "TRAINING"
         held_out_groups[partition].add(group_key)
-        partitions[partition].append({
-            "id": identifier,
-            "question": row["question"],
-            "desired_answer": row["desired_answer"],
-            "audience": row["audience"],
-            "category": row["category"],
-            "source_state": row["source_state"],
-            "group_key": group_key,
-            "source_fixture_id": row.get("source_fixture_id"),
-            "original_sha256": _canonical_digest(originals[identifier]),
-            "effective_sha256": _canonical_digest(row),
-            "editorial_successor": revisions.get(identifier),
-            "is_artificial_training_example": True,
-            "is_authoritative_nasim_operational_policy": False,
-        })
+        partitions[partition].append(
+            {
+                "id": identifier,
+                "question": row["question"],
+                "desired_answer": row["desired_answer"],
+                "audience": row["audience"],
+                "category": row["category"],
+                "source_state": row["source_state"],
+                "group_key": group_key,
+                "source_fixture_id": row.get("source_fixture_id"),
+                "original_sha256": _canonical_digest(originals[identifier]),
+                "effective_sha256": _canonical_digest(row),
+                "editorial_successor": revisions.get(identifier),
+                "is_artificial_training_example": True,
+                "is_authoritative_nasim_operational_policy": False,
+            }
+        )
     if (
         len(original) != 84
         or len(originals) != 84
