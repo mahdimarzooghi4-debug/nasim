@@ -3,7 +3,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from nasim.domain.contracts import Contract, Text
+from nasim.domain.contracts import Contract, Page, Text
 from nasim.identity_context.contracts import ActorType
 
 PROVIDER_CANDIDATE_PERMISSIONS = (
@@ -67,3 +67,11 @@ class ProviderQualificationReviewRequestView(Contract):
     requested_by_actor_type: ActorType
     reason: str
     correlation_id: str
+
+
+class ProviderQualificationReviewWorkspaceView(Contract):
+    """Bounded descriptive read model; never a qualification evaluation."""
+
+    candidate: ProviderCandidateView
+    evidence: Page[ProviderQualificationEvidenceView]
+    review_requests: Page[ProviderQualificationReviewRequestView]
