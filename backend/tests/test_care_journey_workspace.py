@@ -224,6 +224,62 @@ async def test_journey_rejects_wrong_referral_selection_and_cursor_without_conte
     assert error.value.code == "INVALID_CURSOR"
 
 
+async def test_selected_referral_from_different_case_is_masked_even_for_oversight(
+    journey, service, manager
+):
+    reader, case_id, _, _, actor = journey
+    foreign = await service.mutate(
+        "create",
+        CreateCase(
+            upstream_enrollment_ref="different-validated-upstream-reference",
+            elder_reference="another-opaque-elder",
+            initial_caregiver_actor_id=actor.actor_id,
+        ),
+        manager,
+        "journey-foreign-case",
+    )
+    other_case_id = UUID(foreign["case"]["id"])
+    other_assignment_id = UUID(foreign["current_assignment"]["id"])
+    observation = await service.mutate(
+        "observation_add",
+        RecordObservation(
+            expected_current_assignment_id=other_assignment_id,
+            record_type="NEED_CAPTURE",
+            occurred_at=datetime.now(UTC),
+            content="Need under another Case",
+        ),
+        actor,
+        "journey-foreign-need",
+        other_case_id,
+    )
+    other_referral = await Referrals(service.sessions).create(
+        other_case_id,
+        CreateReferral(
+            source_need_observation_id=UUID(observation["id"]),
+            expected_current_assignment_id=other_assignment_id,
+            reason="Other Case Referral",
+        ),
+        actor,
+        "journey-foreign-referral",
+    )
+    oversight = ActorContext(
+        actor_id="oversight-for-cross-case-test",
+        actor_type=ActorType.HUMAN,
+        capabilities=frozenset(
+            {
+                "case.read.oversight",
+                "referral.read.oversight",
+                "referral.follow_up.read.oversight",
+            }
+        ),
+        correlation_id="cross-case-denial",
+    )
+    with pytest.raises(DomainError) as error:
+        await reader.read(case_id, oversight, referral_id=UUID(other_referral["id"]))
+    assert error.value.code == "REFERRAL_NOT_FOUND"
+    assert error.value.status == 404
+
+
 async def test_journey_revokes_old_caregiver_after_human_reassignment(
     journey, service, manager, admin_engine
 ):
