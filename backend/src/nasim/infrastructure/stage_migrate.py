@@ -62,6 +62,7 @@ async def grant_runtime_access(migration_url: str, app_role: str) -> None:
             readonly_learning_tables = (
                 "learning_proposed_manifest",
                 "learning_proposed_source",
+                "learning_source_purpose_claim",
             )
             for table in readonly_learning_tables:
                 if await connection.scalar(

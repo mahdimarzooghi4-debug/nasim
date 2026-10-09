@@ -5,6 +5,7 @@ verifiers are imported by the serving runtime or provide legal permission.
 """
 
 import asyncio
+from dataclasses import replace
 import os
 from uuid import uuid4
 
@@ -23,7 +24,11 @@ from nasim.learning.dataset_manifest import (
     DatasetPurpose,
     ManifestError,
 )
-from nasim.learning.models import ProposedDatasetManifest, ProposedDatasetSource
+from nasim.learning.models import (
+    ProposedDatasetManifest,
+    ProposedDatasetSource,
+    SourcePurposeClaim,
+)
 from nasim.learning.registry import ProposedManifestRegistry, attest_stored_manifest
 
 pytestmark = pytest.mark.integration
@@ -109,18 +114,17 @@ async def test_concurrent_identical_replays_are_race_safe(admin_engine, owner_re
     assert await row_counts(admin_engine) == (1, 4)
 
 
-async def test_separate_evaluation_manifest_is_distinct_and_immutable(admin_engine, owner_registry):
+async def test_cross_manifest_training_evaluation_overlap_is_rejected_durably(
+    admin_engine, owner_registry
+):
     ref = synthetic_source()
     training = await owner_registry.propose(DatasetPurpose.TRAINING, [ref])
-    evaluation = await owner_registry.propose(DatasetPurpose.EVALUATION, [ref])
-    assert training.manifest_id != evaluation.manifest_id
-    assert await row_counts(admin_engine) == (2, 2)
-    # A proposal is NOT authorization to actually train/evaluate; overlap gate
-    # remains independent and must be invoked before approved evaluation.
-    from nasim.learning.dataset_manifest import verify_partition_isolation
-
     with pytest.raises(ManifestError, match="TRAINING_EVALUATION_SOURCE_OVERLAP"):
-        verify_partition_isolation(training, evaluation)
+        await owner_registry.propose(DatasetPurpose.EVALUATION, [ref])
+    assert await row_counts(admin_engine) == (1, 1)
+    assert await owner_registry.read(training.manifest_id) == training
+    async with admin_engine.connect() as connection:
+        assert await connection.scalar(select(func.count()).select_from(SourcePurposeClaim)) == 1
 
 
 async def test_pg_update_delete_triggers_protect_all_immutable_rows(admin_engine, owner_registry):
@@ -182,7 +186,11 @@ async def test_serving_runtime_may_read_but_cannot_insert_update_or_delete_manif
     engine = make_engine(Settings(database_url=PostgresDsn(db_url)))
     try:
         async with engine.connect() as conn:
-            for table in ("learning_proposed_manifest", "learning_proposed_source"):
+            for table in (
+                "learning_proposed_manifest",
+                "learning_proposed_source",
+                "learning_source_purpose_claim",
+            ):
                 write_grants = await conn.scalar(
                     text(
                         "SELECT has_table_privilege(current_user,:table,"
@@ -203,3 +211,111 @@ async def test_serving_runtime_may_read_but_cannot_insert_update_or_delete_manif
     finally:
         await engine.dispose()
     assert await row_counts(admin_engine) == (0, 0)
+
+
+async def test_different_versions_cannot_cross_purpose_after_registration(
+    admin_engine, owner_registry
+):
+    ref = synthetic_source()
+    await owner_registry.propose(DatasetPurpose.TRAINING, [ref])
+    with pytest.raises(ManifestError, match="TRAINING_EVALUATION_SOURCE_OVERLAP"):
+        await owner_registry.propose(
+            DatasetPurpose.EVALUATION, [replace(ref, source_version_sha256=D)]
+        )
+    assert await row_counts(admin_engine) == (1, 1)
+
+
+async def test_same_purpose_can_reuse_identity_across_versioned_manifests(
+    admin_engine, owner_registry
+):
+    ref = synthetic_source()
+    earlier = await owner_registry.propose(DatasetPurpose.TRAINING, [ref])
+    later = await owner_registry.propose(
+        DatasetPurpose.TRAINING, [replace(ref, source_version_sha256=D)]
+    )
+    assert earlier.manifest_id != later.manifest_id
+    assert await row_counts(admin_engine) == (2, 2)
+    async with admin_engine.connect() as connection:
+        assert await connection.scalar(select(func.count()).select_from(SourcePurposeClaim)) == 1
+
+
+async def test_concurrent_opposite_purpose_only_one_is_persisted(
+    admin_engine, owner_registry
+):
+    source = synthetic_source()
+
+    async def attempt(purpose):
+        try:
+            return await owner_registry.propose(purpose, [source])
+        except ManifestError as error:
+            return str(error)
+
+    results = await asyncio.gather(
+        attempt(DatasetPurpose.TRAINING),
+        attempt(DatasetPurpose.EVALUATION),
+    )
+    assert sum(isinstance(r, str) for r in results) == 1
+    assert "TRAINING_EVALUATION_SOURCE_OVERLAP" in results
+    assert await row_counts(admin_engine) == (1, 1)
+    async with admin_engine.connect() as connection:
+        assert await connection.scalar(select(func.count()).select_from(SourcePurposeClaim)) == 1
+
+
+async def test_concurrent_same_purpose_distinct_versions_remain_allowed(
+    admin_engine, owner_registry
+):
+    source = synthetic_source()
+    results = await asyncio.gather(
+        owner_registry.propose(DatasetPurpose.TRAINING, [source]),
+        owner_registry.propose(
+            DatasetPurpose.TRAINING, [replace(source, source_version_sha256=D)]
+        ),
+    )
+    assert results[0].manifest_id != results[1].manifest_id
+    assert await row_counts(admin_engine) == (2, 2)
+
+
+async def test_direct_privileged_source_insert_cannot_bypass_partition_guard(
+    admin_engine, owner_registry
+):
+    training_ref = synthetic_source()
+    eval_ref = synthetic_source()
+    await owner_registry.propose(DatasetPurpose.TRAINING, [training_ref])
+    evaluation = await owner_registry.propose(DatasetPurpose.EVALUATION, [eval_ref])
+    with pytest.raises(DBAPIError, match="LEARNING_SOURCE_PARTITION_CONFLICT"):
+        async with admin_engine.begin() as connection:
+            await connection.execute(
+                text(
+                    "INSERT INTO learning_proposed_source "
+                    "(manifest_id,namespace,source_id,source_version_sha256,curation_evidence_sha256) "
+                    "VALUES (:manifest_id,:namespace,:source_id,:source_version_sha256,"
+                    ":curation_evidence_sha256)"
+                ),
+                {
+                    "manifest_id": evaluation.manifest_id,
+                    "namespace": training_ref.namespace,
+                    "source_id": training_ref.source_id,
+                    "source_version_sha256": D,
+                    "curation_evidence_sha256": B,
+                },
+            )
+    assert await row_counts(admin_engine) == (2, 2)
+
+
+async def test_partition_claim_is_append_only_for_all_database_writers(
+    admin_engine, owner_registry
+):
+    source = synthetic_source()
+    await owner_registry.propose(DatasetPurpose.TRAINING, [source])
+    async with admin_engine.connect() as connection:
+        with pytest.raises(DBAPIError):
+            async with connection.begin():
+                await connection.execute(
+                    text("UPDATE learning_source_purpose_claim SET purpose='EVALUATION'")
+                )
+        await connection.rollback()
+        with pytest.raises(DBAPIError):
+            async with connection.begin():
+                await connection.execute(text("DELETE FROM learning_source_purpose_claim"))
+        await connection.rollback()
+    assert await row_counts(admin_engine) == (1, 1)
