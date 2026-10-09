@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import CareActions from "./CareActions";
+import CaseCreate from "./CaseCreate";
+import CaseOperations from "./CaseOperations";
+import CaseProfileOperations from "./CaseProfileOperations";
+import { mayManageCases } from "./caseCommands";
 import ProviderIntake from "./ProviderIntake";
 import { canRecordProvider } from "./providerCommands";
 import type { ReactNode } from "react";
@@ -133,6 +137,12 @@ function CaseJourney({ caseId, actor, back, onLost }: {
           {refCursor && <button className="subtle" type="button" onClick={() => setRefCursor(null)}>شروع ارجاعات</button>}
         </section>
       </div>
+      <CaseOperations
+        actor={actor}
+        profile={view.case}
+        onAuthenticationLost={onLost}
+        onChanged={() => setRevision(value => value + 1)}
+      />
       <CareActions
         actor={actor}
         caseId={caseId}
@@ -181,6 +191,10 @@ function CaseIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAccess 
   useEffect(() => {
     const controller = new AbortController();
     setBusy(true); setError(null); setData(null);
+    if (!canReadCases(actor)) {
+      setBusy(false);
+      return () => controller.abort();
+    }
     api.cases(cursor, controller.signal).then(next => {
       if (!controller.signal.aborted) setData(next);
     }).catch(e => {
@@ -189,16 +203,17 @@ function CaseIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAccess 
       else setError(errorMessage(e));
     }).finally(() => { if (!controller.signal.aborted) setBusy(false); });
     return () => controller.abort();
-  }, [cursor, revision, onLost]);
+  }, [cursor, revision, actor, onLost]);
 
   if (selected) {
-    if (!canReadJourney(actor)) return <section className="card">
-      <button type="button" onClick={() => setSelected(null)}>بازگشت به پرونده‌ها</button>
-      <Alert>برای مشاهده سفر پرونده، مجوزهای خواندن ارجاع و پیگیری نیز ضروری هستند.</Alert>
-    </section>;
-    return <CaseJourney
-      caseId={selected} actor={actor} onLost={onLost} back={() => setSelected(null)}
-    />;
+    return canReadJourney(actor)
+      ? <CaseJourney
+        caseId={selected} actor={actor} onLost={onLost} back={() => setSelected(null)}
+      />
+      : <CaseProfileOperations
+        caseId={selected} actor={actor} onAuthenticationLost={onLost}
+        back={() => { setSelected(null); setRevision(value => value + 1); }}
+      />;
   }
 
   return <section>
@@ -207,7 +222,12 @@ function CaseIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAccess 
       <button type="button" className="subtle" onClick={() => setRevision(v => v + 1)}>به‌روزرسانی</button>
     </header>
     <p className="disclaimer">فهرست تنها پرونده‌های مجاز در لحظه درخواست را نشان می‌دهد؛ فاقد اولویت، وضعیت خدمت یا ارزیابی خودکار است.</p>
-    <Status busy={busy} error={error} />
+    <CaseCreate
+      actor={actor} onAuthenticationLost={onLost}
+      onAccepted={() => { setCursor(null); setHistory([]); setRevision(value => value + 1); }}
+    />
+    {!canReadCases(actor) && <Alert>مجوز خواندن فهرست پرونده‌ها موجود نیست؛ تنها عملیات مدیریتیِ مجاز در دسترس است.</Alert>}
+    <Status busy={busy && canReadCases(actor)} error={error} />
     {data && <>
       {data.items.length === 0 && <Empty text="پرونده‌ای با این مجوز و تخصیص فعلی در این صفحه پیدا نشد." />}
       <div className="cards">
@@ -216,8 +236,8 @@ function CaseIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAccess 
             <p className="meta">شناسه: <bdi>{shortId(item.case.id)}</bdi> · ایجاد: {formatDate(item.case.created_at)}</p>
             <p className="meta">سالمندیار فعلی: <bdi>{item.current_assignment.caregiver_actor_id}</bdi></p></div>
           <button type="button" onClick={() => setSelected(item.case.id)}
-            disabled={!canReadJourney(actor)} aria-label={"مشاهده سفر پرونده " + item.profile.elder_reference}>
-            مشاهده سفر پرونده
+            aria-label={"مشاهده جزئیات مجاز پرونده " + item.profile.elder_reference}>
+            مشاهده جزئیات مجاز
           </button>
         </article>)}
       </div>
@@ -380,7 +400,7 @@ function ProviderIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAcc
 function OperationalShell({ actor, onLost }: {
   actor: ActorContext; onLost: LostAccess;
 }) {
-  const cases = canReadCases(actor);
+  const cases = canReadCases(actor) || mayManageCases(actor);
   const providers = canReadProviders(actor) || canRecordProvider(actor, "candidate");
   const [tab, setTab] = useState<"cases" | "providers">(cases ? "cases" : "providers");
   return <div className="app-shell">
@@ -392,7 +412,7 @@ function OperationalShell({ actor, onLost }: {
       <nav aria-label="بخش‌های عملیاتی" className="nav">
         {cases && <button type="button" className={tab === "cases" ? "active" : ""}
           aria-current={tab === "cases" ? "page" : undefined} onClick={() => setTab("cases")}>
-          پرونده‌های سالمند
+          پرونده‌ها و تخصیص‌ها
         </button>}
         {providers && <button type="button" className={tab === "providers" ? "active" : ""}
           aria-current={tab === "providers" ? "page" : undefined} onClick={() => setTab("providers")}>

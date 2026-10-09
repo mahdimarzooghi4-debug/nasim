@@ -2,6 +2,7 @@ import type {
   ActorContext, CareJourneyWorkspaceView, CaseProfileView, Page,
   ProviderCandidateView, ProviderWorkspaceView,
 } from "./types";
+import type { ContactRecord } from "./caseCommands";
 
 export class ApiError extends Error {
   constructor(readonly status: number, readonly code: string) {
@@ -64,6 +65,10 @@ export const api = {
   self: (signal?: AbortSignal) => getJson<ActorContext>("/api/v1/authorization/self", signal),
   cases: (cursor?: string | null, signal?: AbortSignal) =>
     getJson<Page<CaseProfileView>>("/api/v1/cases" + params({ cursor, limit: 20 }), signal),
+  caseProfile: (caseId: string, signal?: AbortSignal) =>
+    getJson<CaseProfileView>("/api/v1/cases/" + id(caseId), signal),
+  contacts: (caseId: string, signal?: AbortSignal) =>
+    getJson<ContactRecord[]>("/api/v1/cases/" + id(caseId) + "/contacts", signal),
   journey: (
     caseId: string, opts: {
       referralId?: string | null;
