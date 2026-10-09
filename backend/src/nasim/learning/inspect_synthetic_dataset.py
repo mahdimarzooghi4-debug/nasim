@@ -5,4 +5,10 @@ import json
 from nasim.learning.synthetic_dataset import build_initial_synthetic_dataset_package
 
 if __name__ == "__main__":
-    print(json.dumps(build_initial_synthetic_dataset_package()["manifest"], ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            build_initial_synthetic_dataset_package()["manifest"],
+            ensure_ascii=False,
+            indent=2,
+        )
+    )

@@ -14,7 +14,11 @@ from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
-from nasim.learning.synthetic_seed import SOURCE_SPECS, _read_source, build_initial_synthetic_inventory
+from nasim.learning.synthetic_seed import (
+    SOURCE_SPECS,
+    _read_source,
+    build_initial_synthetic_inventory,
+)
 
 # Explicitly delegated technical split (D-0166); each category/fixture is indivisible.
 # Not a statistical proof of semantic independence across similarly worded scenarios.
@@ -35,7 +39,9 @@ class SyntheticDatasetError(ValueError):
 
 def _canonical_digest(value: Any) -> str:
     return sha256(
-        json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        json.dumps(value, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode(
+            "utf-8"
+        )
     ).hexdigest()
 
 

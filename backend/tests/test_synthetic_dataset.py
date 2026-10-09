@@ -1,15 +1,11 @@
 """No real learner, reviewer signature or elder record is created in these tests."""
 
-from copy import deepcopy
 from pathlib import Path
 
 import pytest
 
+from nasim.learning.synthetic_dataset import build_initial_synthetic_dataset_package
 from nasim.learning.synthetic_seed import SOURCE_DIR, SOURCE_SPECS
-from nasim.learning.synthetic_dataset import (
-    SyntheticDatasetError,
-    build_initial_synthetic_dataset_package,
-)
 
 
 def test_approved_two_editorial_successors_and_group_disjoint_partition():
@@ -26,8 +22,9 @@ def test_approved_two_editorial_successors_and_group_disjoint_partition():
     assert manifest["production_model_promotion"] is False
     assert set(manifest["training_groups"]).isdisjoint(manifest["evaluation_groups"])
     assert len({row["id"] for part in ("training", "evaluation") for row in package[part]}) == 84
-    assert all(row["is_authoritative_nasim_operational_policy"] is False for part in ("training", "evaluation") for row in package[part])
-    assert all(row["is_artificial_training_example"] is True for part in ("training", "evaluation") for row in package[part])
+    all_rows = [row for part in ("training", "evaluation") for row in package[part]]
+    assert all(row["is_authoritative_nasim_operational_policy"] is False for row in all_rows)
+    assert all(row["is_artificial_training_example"] is True for row in all_rows)
 
 
 def test_both_user_accepted_edits_applied_only_in_derived_version():
