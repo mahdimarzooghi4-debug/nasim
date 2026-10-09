@@ -118,9 +118,7 @@ def build_initial_synthetic_inventory(project_root: Path | None = None) -> dict[
         filename: _read_source(root, filename, blob, count, prefix)
         for filename, blob, count, prefix in SOURCE_SPECS
     }
-    behavior, positive, fixtures, corrections = [
-        groups[spec[0]] for spec in SOURCE_SPECS
-    ]
+    behavior, positive, fixtures, corrections = [groups[spec[0]] for spec in SOURCE_SPECS]
     fixture_ids = {row["id"] for row in fixtures}
     if any(
         row.get("source_fixture_id") not in fixture_ids
@@ -143,8 +141,9 @@ def build_initial_synthetic_inventory(project_root: Path | None = None) -> dict[
                     "record_id": row["id"],
                     "source_file": file,
                     "record_sha256": sha256(
-                        json.dumps(row, sort_keys=True, ensure_ascii=True, separators=(",", ":"))
-                        .encode("utf-8")
+                        json.dumps(
+                            row, sort_keys=True, ensure_ascii=True, separators=(",", ":")
+                        ).encode("utf-8")
                     ).hexdigest(),
                 }
             )
@@ -167,7 +166,8 @@ def build_initial_synthetic_inventory(project_root: Path | None = None) -> dict[
         "production_training_enabled": False,
     }
     inventory["inventory_sha256"] = sha256(
-        json.dumps(inventory, sort_keys=True, ensure_ascii=True, separators=(",", ":"))
-        .encode("utf-8")
+        json.dumps(inventory, sort_keys=True, ensure_ascii=True, separators=(",", ":")).encode(
+            "utf-8"
+        )
     ).hexdigest()
     return inventory
