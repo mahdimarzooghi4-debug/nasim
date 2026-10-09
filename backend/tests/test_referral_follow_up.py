@@ -520,7 +520,7 @@ async def test_case_index_refuses_stale_caregiver_after_reassignment(
 
 async def test_case_index_excludes_followups_from_other_case(env, service, manager):
     followups, referrals, case_id, _, ref_id, actor = env
-    await followups.record(ref_id, command(env), actor, "local-record")
+    await followups.record(ref_id, command(env, "local-record"), actor, "local-record")
     foreign = await service.mutate(
         "create",
         CreateCase(
