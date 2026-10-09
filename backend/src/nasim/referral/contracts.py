@@ -27,3 +27,28 @@ class ReferralView(Contract):
     created_by_actor_type: ActorType
     reason: str
     correlation_id: str
+
+
+REFERRAL_FOLLOW_UP_PERMISSIONS = (
+    "referral.follow_up.record.assigned",
+    "referral.follow_up.read.assigned",
+    "referral.follow_up.read.oversight",
+)
+
+
+class RecordReferralFollowUp(AssignedCommand):
+    """Recorded human observation, not a Provider response or verified outcome."""
+
+    note: Text
+    reason: Text
+
+
+class ReferralFollowUpView(Contract):
+    id: UUID
+    referral_id: UUID
+    recorded_at: datetime
+    recorded_by_actor_id: str
+    recorded_by_actor_type: ActorType
+    note: str
+    reason: str
+    correlation_id: str

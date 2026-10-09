@@ -46,7 +46,7 @@ async def check_db():
     try:
         async with engine.connect() as conn:
             revision = await conn.scalar(text('SELECT version_num FROM alembic_version'))
-            if revision != '0006_provider_qreview':
+            if revision != '0008_learning_manifest':
                 raise SystemExit('Unexpected Stage migration revision')
             if await conn.scalar(text('SELECT rolsuper FROM pg_roles WHERE rolname=current_user')):
                 raise SystemExit('Stage runtime DB role must not be a superuser')
