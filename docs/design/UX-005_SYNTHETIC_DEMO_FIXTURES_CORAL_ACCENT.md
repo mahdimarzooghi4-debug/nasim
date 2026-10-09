@@ -1,6 +1,6 @@
 # UX-005 — Cohesive Synthetic Demo Fixtures and Coral Contrast for Nasim Mobile
 
-**Status:** Figma design iteration / proposed visual accent; **not** a live app, authorized elder record, official case workflow or accepted commercial catalogue.
+**Status:** Product Owner-approved emerald/coral design baseline (D-0173); Figma demo fixtures remain design-only — **not** a live app, authorized elder record, official case workflow or accepted commercial catalogue.
 **Date:** 2026-10-09
 **Requested by Product Owner:** Fill mobile app mockups with realistic **fake data** and introduce a color contrasting with overused green.
 **Basis:** D-0170 (child pays using own account when real purchase is built; elder credit deferred), D-0171 (React Native/TypeScript mobile), D-0172 (integrated elder services and AI UX), UX-003 and UX-004, BC-002/003/006/014/022.
@@ -44,7 +44,7 @@ Calculated sRGB contrast (reference only, **not** a substitute for mobile access
 
 Updated editable navigation master components for both elder/family app and professional caregiver app: selected item uses `color/accent-soft` with `color/accent-ink` label. Some important actions use coral + white for visual rhythm while other UI remains emerald, cloud-white and muted neutral.
 
-**Palette status:** proposed design iteration pending user's visual feedback, not a separate final corporate brand-identity decision.
+**Palette status:** product owner explicitly accepted this emerald/coral combination as the **baseline for continued Nasim UI design** in D-0173. This is not final acceptance of all screens or an irreversible corporate identity freeze; accessibility/user testing and explicit later decisions still apply.
 
 ## 4. Demo architecture constraint for React Native implementation
 
