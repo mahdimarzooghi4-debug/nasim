@@ -40,3 +40,12 @@ Offline CLI from `backend/`: `uv run --locked python -m nasim.learning.inspect_r
 
 ## PB-023 / Sprint 023 / delivery controls
 Scope: Decision Register update D-0160..0161, review evidence parser and CLI, exhaustive tests of 84/duplicates/staleness/role/purpose coercion and tamper, full CI, non-approving technical Code Review. Exclusions: creating sample outcomes, fabricating reviewer signatures, inventing real legal data eligibility, changing source flags, real Dataset partitions, Training/Model/AI API, Provider workflow, Hosted Stage (D-0130), merge absent independent code approval.
+
+
+## Addendum 2026-10-09 — D-0162 supersedes the previously unknown *reported outcome*
+
+The Product Owner confirmed the Operations Manager approved **all 84 original synthetic examples** after personally reviewing them. Content-outcome uncertainty is now resolved at the level of **owner-reported human decision**: 84 accepted, zero reported rejected/rewrite-required. Do not ask the owner again whether review occurred or whether every one was accepted.
+
+`build_owner_reported_content_acceptance()` provides a deterministic **non-authoritative** per-source overlay for those 84 exact current inventory IDs/row digests. Its SHA-256 binds the derived inventory but **cannot prove that the manager reviewed those same exact blob versions**. No individual decision timestamp, evidence reference, authenticated reviewer signature, source version at human review or record-level authorization is invented. The offline report cannot be consumed as the signed external evidence format expected by `reconcile_initial_review_evidence` and never authorizes Training/Evaluation, any real operational data, Dataset approval or Production.
+
+The two separately proposed v0.3 authorial replacements `NSIM-EDIT-001` and `NSIM-EDIT-002` retain their distinct pending decision; D-0162 covers only the 84 original examples. This addendum updates the earlier T-023 description stating no outcomes were known; that earlier state was accurate before the owner's later explicit clarification.
