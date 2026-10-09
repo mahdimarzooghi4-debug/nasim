@@ -79,9 +79,8 @@ async def test_assigned_index_is_bounded_and_uses_latest_profile(
     assert UUID(created[1]["case"]["id"]) not in ids
     assert all(row.current_assignment.caregiver_actor_id == caregiver.actor_id for row in combined)
     assert [str(row.case.id) for row in combined] == [
-        str(row.case.id) for row in sorted(
-            combined, key=lambda row: (row.case.created_at, row.case.id)
-        )
+        str(row.case.id)
+        for row in sorted(combined, key=lambda row: (row.case.created_at, row.case.id))
     ]
     assert next(row.profile.elder_reference for row in combined if row.case.id == case_id) == (
         "corrected-opaque-profile"
@@ -89,9 +88,7 @@ async def test_assigned_index_is_bounded_and_uses_latest_profile(
     assert await effect_counts(admin_engine) == before
 
 
-async def test_oversight_requires_explicit_read_capability(
-    indexed_cases, manager, caregiver
-):
+async def test_oversight_requires_explicit_read_capability(indexed_cases, manager, caregiver):
     index, created = indexed_cases
     # Managing assignments is not permission to view a Case index.
     only_manager = manager.model_copy(
@@ -101,9 +98,7 @@ async def test_oversight_requires_explicit_read_capability(
         await index.list(only_manager)
     assert error.value.code == "CAPABILITY_REQUIRED"
     oversight = await index.list(manager, limit=100)
-    assert {row.case.id for row in oversight.items} == {
-        UUID(x["case"]["id"]) for x in created
-    }
+    assert {row.case.id for row in oversight.items} == {UUID(x["case"]["id"]) for x in created}
     no_read = caregiver.model_copy(update={"capabilities": frozenset({"case.monitor.assigned"})})
     with pytest.raises(DomainError) as error:
         await index.list(no_read)
