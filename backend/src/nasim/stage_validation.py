@@ -23,6 +23,7 @@ EXPECTED_ROUTES = {
     "/api/v1/cases": {"post"},
     "/api/v1/cases/{case_id}": {"get"},
     "/api/v1/cases/{case_id}/workspace": {"get"},
+    "/api/v1/cases/{case_id}/journey-workspace": {"get"},
     "/api/v1/cases/{case_id}/profile/corrections": {"post"},
     "/api/v1/cases/{case_id}/reassignments": {"post"},
     "/api/v1/cases/{case_id}/assignments": {"get"},
@@ -77,6 +78,9 @@ def validate_http(base_url: str) -> None:
     )
     if status != 401 or body.get("error", {}).get("code") != "ACTOR_CONTEXT_REQUIRED":
         raise RuntimeError("Anonymous business mutation did not fail closed")
+    status, _ = request(base_url, f"/api/v1/cases/{uuid4()}/journey-workspace")
+    if status != 401:
+        raise RuntimeError("Anonymous Elder Journey Workspace read did not fail closed")
     status, _ = request(base_url, "/api/v1/authorization/self")
     if status != 401:
         raise RuntimeError("Anonymous authorization inspection did not fail closed")

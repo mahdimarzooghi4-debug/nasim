@@ -29,6 +29,7 @@ EXPECTED = {
     "/api/v1/cases": {"post"},
     "/api/v1/cases/{case_id}": {"get"},
     "/api/v1/cases/{case_id}/workspace": {"get"},
+    "/api/v1/cases/{case_id}/journey-workspace": {"get"},
     "/api/v1/cases/{case_id}/profile/corrections": {"post"},
     "/api/v1/cases/{case_id}/reassignments": {"post"},
     "/api/v1/cases/{case_id}/assignments": {"get"},
