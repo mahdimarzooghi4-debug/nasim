@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CareActions from "./CareActions";
+import CaseCorrections from "./CaseCorrections";
 import CaseCreate from "./CaseCreate";
 import CaseOperations from "./CaseOperations";
 import CaseProfileOperations from "./CaseProfileOperations";
@@ -140,6 +141,11 @@ function CaseJourney({ caseId, actor, back, onLost }: {
       <CaseOperations
         actor={actor}
         profile={view.case}
+        onAuthenticationLost={onLost}
+        onChanged={() => setRevision(value => value + 1)}
+      />
+      <CaseCorrections
+        actor={actor} profile={view.case}
         onAuthenticationLost={onLost}
         onChanged={() => setRevision(value => value + 1)}
       />
