@@ -14,6 +14,7 @@ export default function CaseFollowUpIndex({
   const [cursors, setCursors] = useState<(string | null)[]>([null]);
   const cursor = cursors[cursors.length - 1] ?? null;
   const [page, setPage] = useState<Page<FollowUpView> | null>(null);
+  const [refresh, setRefresh] = useState(0);
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const allowed = canReadJourney(actor);
@@ -36,7 +37,7 @@ export default function CaseFollowUpIndex({
       if (!controller.signal.aborted) setBusy(false);
     });
     return () => controller.abort();
-  }, [allowed, caseId, cursor, onAuthenticationLost]);
+  }, [allowed, caseId, cursor, refresh, onAuthenticationLost]);
 
   if (!allowed) return null;
 
@@ -48,11 +49,8 @@ export default function CaseFollowUpIndex({
       </div>
       <button type="button" className="subtle" onClick={() => {
         setCursors([null]);
-        if (cursors.length === 1) {
-          // A separate refresh can use the existing reset-on-recording remount.
-          setPage(null);
-        }
-      }}>بازگشت به شروع</button>
+        setRefresh(value => value + 1);
+      }}>تازه‌سازی از ابتدا</button>
     </header>
     <p className="disclaimer">
       این نما فقط یادداشت‌های انسانیِ ارجاع را نشان می‌دهد و اثبات انجام خدمت،
