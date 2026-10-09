@@ -393,9 +393,7 @@ async def test_malformed_pagination_is_bounded(env, slot):
     assert error.value.code == ("INVALID_PAGE_LIMIT" if slot == "limit" else "INVALID_CURSOR")
 
 
-async def test_case_wide_follow_up_index_pages_all_referrals_without_mutation(
-    env, admin_engine
-):
+async def test_case_wide_follow_up_index_pages_all_referrals_without_mutation(env, admin_engine):
     followups, referrals, case_id, aid, ref_id, actor = env
     second = await referrals.create(
         case_id,
@@ -424,19 +422,20 @@ async def test_case_wide_follow_up_index_pages_all_referrals_without_mutation(
         ids.append(str(page.items[0].id))
         if page.next_cursor is None:
             break
-        page = await followups.list_for_case(
-            case_id, actor, cursor=page.next_cursor, limit=1
-        )
+        page = await followups.list_for_case(case_id, actor, cursor=page.next_cursor, limit=1)
     assert ids == expected
     assert await counts(admin_engine) == before
     assert (await followups.list_for_case(case_id, actor, limit=100)).next_cursor is None
 
 
-@pytest.mark.parametrize("missing", [
-    "case.read.assigned",
-    "referral.read.assigned",
-    "referral.follow_up.read.assigned",
-])
+@pytest.mark.parametrize(
+    "missing",
+    [
+        "case.read.assigned",
+        "referral.read.assigned",
+        "referral.follow_up.read.assigned",
+    ],
+)
 async def test_case_index_requires_every_read_family(env, missing):
     followups, _, case_id, _, ref_id, actor = env
     await followups.record(ref_id, command(env), actor, "scoped-note")
@@ -450,22 +449,32 @@ async def test_case_index_requires_every_read_family(env, missing):
 async def test_case_index_does_not_borrow_oversight_between_permission_families(env):
     followups, _, case_id, _, ref_id, actor = env
     await followups.record(ref_id, command(env), actor, "oversight-note")
-    other_actor = actor.model_copy(update={
-        "actor_id": "different-caregiver",
-        "capabilities": frozenset({
-            "case.read.oversight",
-            "referral.read.assigned",
-            "referral.follow_up.read.oversight",
-        }),
-    })
+    other_actor = actor.model_copy(
+        update={
+            "actor_id": "different-caregiver",
+            "capabilities": frozenset(
+                {
+                    "case.read.oversight",
+                    "referral.read.assigned",
+                    "referral.follow_up.read.oversight",
+                }
+            ),
+        }
+    )
     with pytest.raises(DomainError) as err:
         await followups.list_for_case(case_id, other_actor)
     assert err.value.status == 403
-    oversight = other_actor.model_copy(update={"capabilities": frozenset({
-        "case.read.oversight",
-        "referral.read.oversight",
-        "referral.follow_up.read.oversight",
-    })})
+    oversight = other_actor.model_copy(
+        update={
+            "capabilities": frozenset(
+                {
+                    "case.read.oversight",
+                    "referral.read.oversight",
+                    "referral.follow_up.read.oversight",
+                }
+            )
+        }
+    )
     assert len((await followups.list_for_case(case_id, oversight)).items) == 1
 
 

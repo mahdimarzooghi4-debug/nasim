@@ -133,7 +133,6 @@ class ReferralFollowUps:
                 else None,
             )
 
-
     async def list_for_case(
         self, case_id: UUID, actor: ActorContext, cursor: str | None = None, limit: int = 50
     ) -> Page[ReferralFollowUpView]:
