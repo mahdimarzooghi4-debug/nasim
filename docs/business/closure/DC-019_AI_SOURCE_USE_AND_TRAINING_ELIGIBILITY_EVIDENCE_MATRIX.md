@@ -108,4 +108,16 @@ All ten scenarios are **suggested future acceptance checks, not executed tests**
 
 Only a **documented subset actually required by that slice** needs a Business decision first, not every future possible source class. However, no approved source or consent may be forged, and AI must not be scoped away from Day-one; the continuous eligible-data versioned Dataset requirement is independently mandatory. On a genuine Slice Gate acceptance: `Business → Technical → Product Backlog → Sprint → Code → Code Review → exact-HEAD CI → Hosted Stage (when provisioned)`.
 
+## 5. Public legal-source leads for qualified review — not a legal determination
+
+A preliminary source search on 2026-10-25 located the following primary-text references relevant to the legal review requested in Issue #12:
+
+- [National legal and regulatory database: Electronic Commerce Law, consolidated text](https://qavanin.ir/Law/TreeText/?IDS=15700719202226051269) — the page identifies a text with amendments/additions. Confirm the currently applicable text and history for the proposed processing.
+- [Islamic Consultative Assembly: Electronic Commerce Law](https://rc.majlis.ir/fa/law/show/93997) — Persian text of the law; its Article 60 text refers medical/health-record data processing to regulations under Article 79.
+- [WIPO Lex: English translation of the Electronic Commerce Act](https://www.wipo.int/wipolex/en/legislation/details/7711) — translation aid only; use the applicable Persian text for legal review.
+
+These references are **research leads only**. This is not an exhaustive review of Iranian law and makes no conclusion about the legality of Nasim's proposed secondary use, which rules apply to each event class, or whether a particular consent is sufficient. A qualified legal reviewer must identify applicable laws and implementing regulations, distinguish service delivery from Training and independent Evaluation, and provide a source-backed decision for each actual data class and purpose.
+
+**No grant follows from this research.** No consent, lawful basis, authority, retention/deletion rule, or real training-eligible operational source has been evidenced here. Issue #12 remains **OPEN / NOT AUTHORIZED** until actual organizational and legal evidence is recorded. Do not put personal, health, consent, or confidential records in this public repository.
+
 **Current disposition:** **EVIDENCE MATRIX PREPARED; NO POSITIVE AI RUNTIME OR TRAINING ELIGIBILITY GRANTS; NO AI TECHNICAL ENTRY**. Current `main` green CI is not a model evaluation or Hosted Stage result (D-0130). The user has requested batched real decisions and no repeated micro-questions: ask next only when the relevant source/legal/institutional facts exist or an unavoidable material option changes the product.
