@@ -146,3 +146,10 @@ The 52 original synthetic prompt/answer candidates were preserved as **immutable
 **Wave 3 — FUTURE GATED DELIVERY:** only after Business Slice Gate passes, author Technical → Product Backlog → Sprint → Code → Code Review → exact-head CI. Handle AI Runtime, Dataset and human handoff as independently gated capabilities. Tests and local/disposable container smoke may precede Hosted Stage but cannot replace it.
 
 **Current result: INTEGRATED BUSINESS READINESS PACKAGE PREPARED; AI TECHNICAL ENTRY NOT YET AUTHORIZED.** No model selected, API/schema/workflow deployed, source file imported, dataset generated, user permission granted, Stage Admission or Production action performed by this document. Further user questions should be reserved for genuine **material** scope, legal, organizational authority or eligibility choices, not routine document-field micro-decisions.
+
+
+## Decision update — 2026-10-25 (D-0179)
+
+The Product Owner has selected **Qwen/Qwen3.5-9B** at pinned revision `c202236235762e1c871ad0ccb60c8ee5ba337b9a` as the internal Nasim assistant's base model. No challenger model is required. This supersedes D-0147 only for model identity/version selection. A single-model acceptance assessment remains necessary before activation; this is not an evaluation result or Production promotion.
+
+**Gates unchanged:** official D-0135 sources, audience permissions, lawful Training Eligibility, evaluation-data authorization, human review, runtime/infrastructure, and Promotion authority remain OPEN. The 10 Internet-source candidates remain unauthorized for Evaluation/Training. Hosted Stage remains unavailable under D-0130. Therefore AI Technical Entry and runtime activation are still **NOT AUTHORIZED**.
