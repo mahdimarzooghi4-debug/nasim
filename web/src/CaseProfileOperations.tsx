@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api, ApiError } from "./api";
 import CaseOperations from "./CaseOperations";
 import CaseCorrections from "./CaseCorrections";
+import CaseHistory from "./CaseHistory";
 import { errorMessage, formatDate } from "./format";
 import type { ActorContext, CaseProfileView } from "./types";
 
@@ -58,6 +59,8 @@ export default function CaseProfileOperations({
         onChanged={() => setRevision(value => value + 1)}
         onAuthenticationLost={onAuthenticationLost}
       />
+      <CaseHistory caseId={caseId} actor={actor}
+        onAuthenticationLost={onAuthenticationLost} />
     </div>}
   </section>;
 }

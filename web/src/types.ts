@@ -68,3 +68,19 @@ export interface ProviderWorkspaceView {
   evidence: Page<ProviderEvidenceView>;
   review_requests: Page<ProviderReviewRequestView>;
 }
+
+/** Exact existing TS-03 AuditEntry read response; not verified service Outcome. */
+export interface TimelineEntry {
+  id: string;
+  case_id: string;
+  actor_id: string;
+  actor_type: string;
+  action: string;
+  resource_type: string;
+  resource_id: string;
+  timestamp: string;
+  correlation_id: string;
+  before_reference: string | null;
+  after_reference: string;
+  reason: string | null;
+}
