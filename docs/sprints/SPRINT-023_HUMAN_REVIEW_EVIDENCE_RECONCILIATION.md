@@ -1,0 +1,1 @@
+# Sprint-023 — Review evidence intake foundation\n\nBase is Draft PR #34. Record D-0160/0161, validate complete human-supplied review metadata against versioned 84-sample synthetic corpus. Green CI required; Draft/Open PR; review COMMENT not independent Human code approval. No Hosted Stage per D-0130, QA/Release/Production/auto Training or merge.\n
