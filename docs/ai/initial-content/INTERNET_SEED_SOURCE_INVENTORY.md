@@ -1,0 +1,32 @@
+# Internet AI Seed Source Inventory — first review
+
+- **Status:** Candidate inventory only. No source in this file is yet approved for a Nasim Training Run or official AI publication.
+- **Reviewed:** 2026-10-25
+- **Decision context:** D-0177 authorizes researching and preparing internet-source candidates for the initial AI seed. D-0161 reserves source-specific Training Eligibility approval to the Nasim Operations Manager. D-0135 keeps AI informational, read-only and grounded in approved/current Nasim content.
+- **Use boundary:** Publicly reachable does not mean reusable for model training. Evaluate the exact item, owner, version, license, permitted purpose, adaptation/translation conditions, attribution, commercial status, and applicable jurisdictions. Do not ingest a source whose license or rights remain unclear.
+
+## Reviewed candidates
+
+| Source | Authenticity and relevance | Published reuse terms observed | Current status for Nasim |
+|---|---|---|---|
+| [WHO ICOPE handbook, 2nd edition (2025)](https://www.who.int/publications/i/item/9789240103726) | WHO publication; practical care pathways for health and care workers, including community care and support needs. | WHO's catalogue identifies **CC BY-NC-SA 3.0 IGO**. Non-commercial reuse/adaptation is allowed with attribution and ShareAlike; commercial use needs permission. The handbook can contain third-party material with separate rights. | **CANDIDATE_NOT_AUTHORIZED.** Nasim's commercial status/use and the precise training/adaptation rights have not been cleared. Do not include in a product-training dataset unless the use is confirmed non-commercial or written permission covers it. |
+| [WHO ICOPE community-level guidelines (2017)](https://www.who.int/publications/i/item/9789241550109) | WHO guideline with evidence-based recommendations for community-level interventions. | WHO's general publication policy says publications since 12 November 2016 use CC BY-NC-SA 3.0 IGO; non-commercial adaptation is allowed with attribution and ShareAlike; commercial use requires permission. Check the publication's own credits for third-party material. | **CANDIDATE_NOT_AUTHORIZED.** Same commercial-use and third-party-rights gate as above. |
+| [MedlinePlus: using content](https://medlineplus.gov/about/using/usingcontent/) | National Library of Medicine (U.S.) explains content-specific reuse boundaries. Its public-domain areas include health-topic summaries and medical-test information in English and Spanish. | NLM says only identified areas are public domain under U.S. law and requests source acknowledgement. Other content—including A.D.A.M. encyclopedia, ASHP drug monographs and many images—is copyrighted/licensed. This inventory does not determine protection or training exceptions outside U.S. law. | **CANDIDATE_NOT_AUTHORIZED.** Potential source for human review and independently authored Persian seed items, limited to clearly identified public-domain text; obtain jurisdiction-specific review and Operations Manager approval before any Dataset inclusion. Exclude licensed pages, drug monographs, images and RSS-derived content. |
+| [CDC: use of agency materials](https://www.cdc.gov/other/agencymaterials.html) | U.S. Centers for Disease Control and Prevention material can be relevant to general public-health topics. | CDC says most, but not all, material is public domain; third-party/contractor items may be restricted. It requires attribution and a non-endorsement disclaimer, says substantive content must not be changed, and notes rights may differ internationally. | **CANDIDATE_NOT_AUTHORIZED.** Do not use for translated/adapted training items until a source-specific review resolves the no-substantive-change requirement and applicable international rights. Exclude all third-party material. |
+| [Iranian Ministry of Health older-adult integrated-care booklet (1398)](https://rey.tums.ac.ir/uploads/86/2020/Aug/23/%D8%A8%D9%88%DA%A9%D9%84%D8%AA%20%D8%B3%D8%A7%D9%84%D9%85%D9%86%D8%AF%D8%A7%D9%86%20-%20%D9%85%D9%87%D8%B198.pdf) | The PDF identifies Iran's Ministry of Health, its older-adult health office and the 1398 edition; directly relevant to local practice. | The PDF states that all material and moral rights belong to the Ministry of Health, Treatment and Medical Education. No AI-training/reproduction license was found in the reviewed copy. | **CANDIDATE_NOT_AUTHORIZED.** Do not copy, translate, adapt or train on it absent written permission from the actual rights holder. Its official status does not itself grant reuse rights. |
+
+## Preparation and review rules
+
+1. Keep a source record per exact URL/file/version, including retrieval date, publisher/issuer, checksum, license text/link, third-party exclusions, permitted purposes, territory, and any permission correspondence.
+2. Separate source facts from Nasim-authored Persian paraphrases and from synthetic question/answer examples. Preserve source references and version lineage.
+3. Human subject-matter review must check factual fidelity, current validity, localization to Iran, and whether advice would be unsafe when applied without a clinician. Do not turn general guidance into diagnosis, medication, individualized treatment, or emergency triage.
+4. Source approval for runtime/publication is separate from rights to use it for Training or Evaluation. Training permission is also separate from Dataset inclusion and model promotion.
+5. Only after all required rights and reviews are evidenced may an item move from `CANDIDATE_NOT_AUTHORIZED` to an approved status. No actual source has moved yet.
+
+## References checked
+
+- WHO publication record and rights metadata: [ICOPE 2nd edition](https://www.who.int/publications/b/71300)
+- WHO copyright/licensing policy: [Copyright, Licensing and Permissions](https://www.who.int/about/policies/publishing/copyright)
+- MedlinePlus content-specific rules: [Linking to and Using Content](https://medlineplus.gov/about/using/usingcontent/)
+- CDC exceptions and attribution rules: [Use of Agency Materials](https://www.cdc.gov/other/agencymaterials.html)
+- Iranian Ministry booklet rights statement: [PDF](https://rey.tums.ac.ir/uploads/86/2020/Aug/23/%D8%A8%D9%88%DA%A9%D9%84%D8%AA%20%D8%B3%D8%A7%D9%84%D9%85%D9%86%D8%AF%D8%A7%D9%86%20-%20%D9%85%D9%87%D8%B198.pdf)
