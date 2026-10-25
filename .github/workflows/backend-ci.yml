@@ -1,10 +1,10 @@
 name: Backend and Stage foundation CI
 on:
   pull_request:
-    paths: ['backend/**', 'compose*.yaml', '.dockerignore', '.github/workflows/backend-ci.yml', 'docs/stage/**']
+    paths: ['backend/**', 'web/**', 'compose*.yaml', '.dockerignore', '.github/workflows/backend-ci.yml', '.github/workflows/web-ci.yml', 'docs/stage/**']
   push:
     branches: [main, stage-foundation, sprint-002-ts05-identity-authorization-foundation, sprint-003-referral-foundation, sprint-004-provider-candidate-registry-foundation, sprint-005-provider-qualification-evidence-foundation, sprint-006-provider-qualification-review-request-foundation]
-    paths: ['backend/**', 'compose*.yaml', '.dockerignore', '.github/workflows/backend-ci.yml', 'docs/stage/**']
+    paths: ['backend/**', 'web/**', 'compose*.yaml', '.dockerignore', '.github/workflows/backend-ci.yml', '.github/workflows/web-ci.yml', 'docs/stage/**']
   workflow_dispatch:
 permissions:
   contents: read
