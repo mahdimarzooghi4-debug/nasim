@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api, ApiError, canReadCareRoutines } from "./api";
+import { api, ApiError, canManageCareRoutines, canReadCareRoutines } from "./api";
 import { errorMessage } from "./format";
 import CareRoutineEvents from "./CareRoutineEvents";
 import type { ActorContext, CareRoutineView } from "./types";
