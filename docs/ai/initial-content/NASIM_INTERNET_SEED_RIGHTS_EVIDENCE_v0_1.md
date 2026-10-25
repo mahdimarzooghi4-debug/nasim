@@ -24,6 +24,12 @@
 6. No article text was downloaded into this review note. No model loading, inference, Training, Evaluation Run, or publication was performed.
 
 
+## Consolidated Training-candidate scope decision
+
+On 2026-10-25, the Operations Manager selected **all 10 Internet-derived records across the five sources in this register** for the internal Training-candidate path. This is a purpose selection only: it does **not** authorize admission into a Training Dataset or a Training Run. All ten records remain `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED` until exact source-version evidence, attribution/rights review, Persian content review, and any source-specific conditions are completed and recorded.
+
+The GOV.UK candidate remains subject to its third-party-rights caveat. The three source groups without captured source snapshots also remain blocked on exact-version evidence. The prior individual JMIR, MDPI, and Springer selections are consistent with this consolidated scope.
+
 ## Source-specific purpose selection
 
 On 2026-10-25, the Operations Manager selected `NASIM-WEB-001` through `NASIM-WEB-004` (the JMIR Aging article) for the **internal Training candidate path**, subject to completing the exact source snapshot, attribution review, Persian/content review, and remaining eligibility evidence. This selection does not authorize use in a Training Dataset or any Training Run. The four candidate records remain `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED` until those gates are completed and recorded.
