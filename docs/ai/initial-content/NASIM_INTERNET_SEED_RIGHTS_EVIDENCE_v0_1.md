@@ -23,6 +23,11 @@
 5. All 10 records remain `CANDIDATE_NOT_AUTHORIZED`; Training, Evaluation, and runtime publication remain `NOT_AUTHORIZED`. The separately authorized 84-record synthetic Evaluation set is not part of this source register.
 6. No article text was downloaded into this review note. No model loading, inference, Training, Evaluation Run, or publication was performed.
 
+
+## Source-specific purpose selection
+
+On 2026-10-25, the Operations Manager selected `NASIM-WEB-001` through `NASIM-WEB-004` (the JMIR Aging article) for the **internal Training candidate path**, subject to completing the exact source snapshot, attribution review, Persian/content review, and remaining eligibility evidence. This selection does not authorize use in a Training Dataset or any Training Run. The four candidate records remain `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED` until those gates are completed and recorded.
+
 ## Primary evidence links
 
 - JMIR article and policy: `https://aging.jmir.org/2019/1/e12276`; `https://aging.jmir.org/publishing-policies/open-access-policy`
