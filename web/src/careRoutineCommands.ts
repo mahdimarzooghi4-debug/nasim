@@ -23,7 +23,7 @@ export interface RecordedCareRoutineEvent {
 }
 
 function assertUuid(value: string): void {
-  if (!/^[a-f\\d]{8}-[a-f\\d]{4}-[1-8][a-f\\d]{3}-[89ab][a-f\\d]{3}-[a-f\\d]{12}$/i.test(value)) {
+  if (!/^[a-f\d]{8}-[a-f\d]{4}-[1-8][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}$/i.test(value)) {
     throw new ApiError(422, "INVALID_RECORD_REFERENCE");
   }
 }
@@ -47,7 +47,7 @@ export async function recordCareRoutineEvent(
   if (!/^[0-9a-f-]{36}$/i.test(key)) {
     throw new ApiError(422, "INVALID_IDEMPOTENCY_KEY");
   }
-  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(command.occurrence_date) ||
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(command.occurrence_date) ||
       !Number.isFinite(Date.parse(command.occurred_at)) ||
       !["DONE", "NOT_DONE", "SKIPPED"].includes(command.status)) {
     throw new ApiError(422, "INVALID_EVENT");
