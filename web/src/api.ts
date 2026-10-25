@@ -3,6 +3,8 @@ import type {
   ProviderCandidateView, ProviderWorkspaceView,
 } from "./types";
 import type { ContactRecord } from "./caseCommands";
+import type { InteractionRecorded } from "./correctionCommands";
+import type { ObservationView } from "./types";
 
 export class ApiError extends Error {
   constructor(readonly status: number, readonly code: string) {
@@ -69,6 +71,12 @@ export const api = {
     getJson<CaseProfileView>("/api/v1/cases/" + id(caseId), signal),
   contacts: (caseId: string, signal?: AbortSignal) =>
     getJson<ContactRecord[]>("/api/v1/cases/" + id(caseId) + "/contacts", signal),
+  interactions: (caseId: string, cursor?: string | null, signal?: AbortSignal) =>
+    getJson<Page<InteractionRecorded>>(
+      "/api/v1/cases/" + id(caseId) + "/interactions" + params({ cursor, limit: 20 }), signal),
+  observations: (caseId: string, cursor?: string | null, signal?: AbortSignal) =>
+    getJson<Page<ObservationView>>(
+      "/api/v1/cases/" + id(caseId) + "/observations" + params({ cursor, limit: 20 }), signal),
   journey: (
     caseId: string, opts: {
       referralId?: string | null;

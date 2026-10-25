@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, ApiError } from "./api";
 import CaseOperations from "./CaseOperations";
+import CaseCorrections from "./CaseCorrections";
 import { errorMessage, formatDate } from "./format";
 import type { ActorContext, CaseProfileView } from "./types";
 
@@ -48,6 +49,11 @@ export default function CaseProfileOperations({
         <p className="disclaimer">این نما دسترسی به ارجاع، پیگیری یا نتیجه خدمت اعطا نمی‌کند.</p>
       </article>
       <CaseOperations
+        actor={actor} profile={profile}
+        onChanged={() => setRevision(value => value + 1)}
+        onAuthenticationLost={onAuthenticationLost}
+      />
+      <CaseCorrections
         actor={actor} profile={profile}
         onChanged={() => setRevision(value => value + 1)}
         onAuthenticationLost={onAuthenticationLost}
