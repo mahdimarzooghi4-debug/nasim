@@ -93,7 +93,10 @@ def check_manifest(manifest: dict[str, Any], dataset_path: Path) -> list[str]:
     authorization = evaluation.get("authorization")
     if not has_evidence(authorization, "AUTHORIZED"):
         failures.append("evaluation authorization and its reference are required")
-    elif not isinstance(authorization.get("approved_at"), str) or not authorization["approved_at"].strip():
+    elif (
+        not isinstance(authorization.get("approved_at"), str)
+        or not authorization["approved_at"].strip()
+    ):
         failures.append("evaluation authorization approved_at is required")
 
     if not has_evidence(evaluation.get("rights_evidence"), "CLEARED"):
