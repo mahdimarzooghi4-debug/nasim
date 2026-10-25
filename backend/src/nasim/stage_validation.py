@@ -134,10 +134,8 @@ def validate_http(base_url: str) -> None:
         },
     )
     if status != 401:
-        raise RuntimeError("Anonymous care routine write did not fail closed")
-    status, _ = request(
-        base_url, f"/api/v1/cases/{case_id}/care-routines/{routine_id}/events"
-    )
+        raise RuntimeError(f"Anonymous care routine write did not fail closed: HTTP {status}")
+    status, _ = request(base_url, f"/api/v1/cases/{case_id}/care-routines/{routine_id}/events")
     if status != 401:
         raise RuntimeError("Anonymous care routine event read did not fail closed")
     status, _ = request(
