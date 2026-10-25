@@ -89,3 +89,65 @@ export async function recordCareRoutineEvent(
   try { return (await response.json()) as RecordedCareRoutineEvent; }
   catch { throw new ApiError(502, "INVALID_API_RESPONSE"); }
 }
+
+export interface CreateCareRoutineCommand {
+  expected_current_assignment_id: string;
+  routine_type: "APP_REMINDER" | "CAREGIVER_TASK";
+  title: string;
+  schedule: {
+    timezone: string;
+    local_time: string;
+    cadence: "DAILY" | "WEEKLY";
+    weekdays: number[];
+  };
+  active: boolean;
+  supersedes_routine_id: string | null;
+}
+
+export async function createCareRoutine(
+  caseId: string,
+  command: CreateCareRoutineCommand,
+  key: string,
+): Promise<import("./types").CareRoutineView> {
+  assertUuid(caseId);
+  assertUuid(command.expected_current_assignment_id);
+  if (command.supersedes_routine_id) assertUuid(command.supersedes_routine_id);
+  if (!/^[0-9a-f-]{36}$/i.test(key)) {
+    throw new ApiError(422, "INVALID_IDEMPOTENCY_KEY");
+  }
+  let response: Response;
+  try {
+    response = await fetch(
+      "/api/v1/cases/" + encodeURIComponent(caseId) + "/care-routines",
+      {
+        method: "POST",
+        mode: "same-origin",
+        credentials: "same-origin",
+        redirect: "error",
+        cache: "no-store",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Idempotency-Key": key,
+        },
+        body: JSON.stringify(command),
+      },
+    );
+  } catch {
+    throw new ApiError(0, "NETWORK_UNAVAILABLE");
+  }
+  if (!response.ok) {
+    const code = response.status === 401 ? "AUTHENTICATION_REQUIRED"
+      : response.status === 403 ? "ACCESS_DENIED"
+        : response.status === 409 ? "CONFLICT"
+          : response.status === 422 ? "VALIDATION_ERROR"
+            : response.status === 404 ? "NOT_FOUND" : "REQUEST_FAILED";
+    throw new ApiError(response.status, code);
+  }
+  if (response.status !== 201 ||
+      !(response.headers.get("content-type") ?? "").includes("application/json")) {
+    throw new ApiError(502, "INVALID_API_RESPONSE");
+  }
+  try { return (await response.json()) as import("./types").CareRoutineView; }
+  catch { throw new ApiError(502, "INVALID_API_RESPONSE"); }
+}
