@@ -133,6 +133,10 @@ export const canReadJourney = (actor: ActorContext) =>
 export const canReadCareRoutines = (actor: ActorContext) =>
   actor.actor_type === "HUMAN" && actor.capabilities.includes("care_routine.read.assigned");
 
+export const canManageCareRoutines = (actor: ActorContext, assignedActorId: string) =>
+  actor.actor_type === "HUMAN" && actor.actor_id === assignedActorId &&
+  actor.capabilities.includes("care_routine.manage.assigned");
+
 export const canReadProviders = (actor: ActorContext) =>
   actor.actor_type !== "AI" && actor.capabilities.includes("provider_candidate.read");
 
