@@ -12,6 +12,7 @@ from nasim.provider_registry.contracts import (
     PROVIDER_QUALIFICATION_REVIEW_PERMISSIONS,
 )
 from nasim.referral.contracts import REFERRAL_FOLLOW_UP_PERMISSIONS, REFERRAL_PERMISSIONS
+from nasim.care_routines.contracts import CARE_ROUTINE_PERMISSIONS
 
 PERMISSIONS = (
     "case.create",
@@ -26,6 +27,7 @@ PERMISSIONS = (
     *PROVIDER_CANDIDATE_PERMISSIONS,
     *PROVIDER_QUALIFICATION_EVIDENCE_PERMISSIONS,
     *PROVIDER_QUALIFICATION_REVIEW_PERMISSIONS,
+    *CARE_ROUTINE_PERMISSIONS,
 )
 # BC-005 §§1/5 and DC-003 §§1/3. Vocabulary only, not final Pilot inventory/authority.
 ROLES = {
