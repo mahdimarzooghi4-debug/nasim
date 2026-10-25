@@ -24,6 +24,20 @@
 6. No article text was downloaded into this review note. No model loading, inference, Training, Evaluation Run, or publication was performed.
 
 
+## Factual source check
+
+Checked on 2026-10-25 against the publisher/official source pages linked above. This is a source-fact consistency check, not a legal admission decision or a full Persian-language review.
+
+| Records | Result | Boundary retained in the Persian candidate |
+|---|---|---|
+| `NASIM-WEB-001..004` | **PASS** — the JMIR page reports 12 dyads, 8 dyads in the final sample, average usability, additional training, and technical support needs. | Small Baltimore/Maryland usability study; no generalization to all older adults or Nasim. |
+| `NASIM-WEB-005` | **PASS** — the GOV.UK page describes maintaining friendships/family networks, community participation, and reducing participation barriers. | England-specific public-health guidance; not Nasim policy or individual health advice. |
+| `NASIM-WEB-006` | **PASS** — the MDPI article reports 21 older parents and four family members, and the six support dimensions listed in the summary. | Qualitative study description only; not a care protocol or Nasim policy. |
+| `NASIM-WEB-007..008` | **PASS** — Springer reports 13 purposively sampled Khorramabad caregivers and the six categories; its limitation section says the findings are not generalizable to all caregiver populations. | Small, purposively selected sample; not representative guidance. |
+| `NASIM-WEB-009..010` | **PASS** — Bentham reports a cross-sectional sample of 1,280 community-dwelling older adults in Tehran and an association between provided support and well-being; authors state the design cannot establish causality. | Association only; no causal claim or individual recommendation. |
+
+The Operations Manager accepted the summarized Persian content for records 001–004. For records 005–010, this source-fact check does not substitute for Persian wording/localization review. All 10 records remain unauthorized for Training, Evaluation, and runtime publication pending the remaining source-version, rights, attribution, and review evidence.
+
 ## Consolidated Training-candidate scope decision
 
 On 2026-10-25, the Operations Manager selected **all 10 Internet-derived records across the five sources in this register** for the internal Training-candidate path. This is a purpose selection only: it does **not** authorize admission into a Training Dataset or a Training Run. All ten records remain `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED` until exact source-version evidence, attribution/rights review, Persian content review, and any source-specific conditions are completed and recorded.
