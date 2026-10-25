@@ -1,5 +1,5 @@
 import type {
-  ActorContext, AssignmentView, CareJourneyWorkspaceView, CaseProfileView, FollowUpView, Page,
+  ActorContext, AssignmentView, CareJourneyWorkspaceView, CareRoutineView, CaseProfileView, FollowUpView, Page,
   ProviderCandidateView, ProviderWorkspaceView, TimelineEntry,
 } from "./types";
 import type { ContactRecord } from "./caseCommands";
@@ -94,6 +94,9 @@ export const api = {
       referral_id: opts.referralId, observation_cursor: opts.observationCursor,
       referral_cursor: opts.referralCursor, follow_up_cursor: opts.followUpCursor, limit: 20,
     }), signal),
+  careRoutines: (caseId: string, signal?: AbortSignal) =>
+    getJson<CareRoutineView[]>(
+      "/api/v1/cases/" + id(caseId) + "/care-routines?limit=100", signal),
   caseFollowUps: (caseId: string, cursor?: string | null, signal?: AbortSignal) =>
     getJson<Page<FollowUpView>>(
       "/api/v1/cases/" + id(caseId) + "/referral-follow-ups" +
@@ -122,6 +125,9 @@ export const canReadJourney = (actor: ActorContext) =>
   actor.capabilities.some(c => c === "referral.read.assigned" || c === "referral.read.oversight") &&
   actor.capabilities.some(c =>
     c === "referral.follow_up.read.assigned" || c === "referral.follow_up.read.oversight");
+
+export const canReadCareRoutines = (actor: ActorContext) =>
+  actor.actor_type === "HUMAN" && actor.capabilities.includes("care_routine.read.assigned");
 
 export const canReadProviders = (actor: ActorContext) =>
   actor.actor_type !== "AI" && actor.capabilities.includes("provider_candidate.read");

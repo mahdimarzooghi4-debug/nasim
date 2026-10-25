@@ -48,6 +48,37 @@ export interface CareJourneyWorkspaceView {
   selected_referral: ReferralView | null;
   follow_ups: Page<FollowUpView> | null;
 }
+export interface CareRoutineScheduleView {
+  timezone: string;
+  local_time: string;
+  cadence: "DAILY" | "WEEKLY";
+  weekdays: number[];
+}
+export interface CareRoutineView {
+  id: string;
+  case_id: string;
+  routine_type: "APP_REMINDER" | "CAREGIVER_TASK";
+  title: string;
+  schedule: CareRoutineScheduleView;
+  active: boolean;
+  supersedes_routine_id: string | null;
+  recorded_at: string;
+  recorded_by_actor_id: string;
+  recorded_by_actor_type: ActorType;
+  correlation_id: string;
+}
+export interface CareRoutineEventView {
+  id: string;
+  case_id: string;
+  routine_id: string;
+  occurrence_date: string;
+  status: "DONE" | "NOT_DONE" | "SKIPPED";
+  occurred_at: string;
+  recorded_at: string;
+  recorded_by_actor_id: string;
+  recorded_by_actor_type: ActorType;
+  correlation_id: string;
+}
 export interface ProviderCandidateView {
   id: string; display_name: string; registered_at: string;
   registered_by_actor_id: string; registered_by_actor_type: ActorType;
