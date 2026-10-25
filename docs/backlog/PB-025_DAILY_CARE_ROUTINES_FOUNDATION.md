@@ -1,6 +1,6 @@
 # PB-025 — Daily care routines: assigned-caregiver backend foundation
 
-**Status:** Implemented in Sprint 025; exact-head CI pending.
+**Status:** Implemented in Sprint 025 and present in `main`; full Backend and Web CI passed on follow-on PR #52 exact HEAD.
 **Source:** D-0178.
 
 ## Scope

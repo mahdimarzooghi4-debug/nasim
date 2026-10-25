@@ -1,6 +1,6 @@
 # Nasim backend — implementation and development guide
 
-The backend uses Python 3.12, FastAPI, PostgreSQL, async SQLAlchemy 2.x, Alembic and Pydantic v2. Work through Sprint 024 is merged into `main`; this README documents the original TS-03 Case foundation and its boundaries. It is not a complete product/API inventory. Hosted Stage remains unavailable under D-0130, and no Stage QA or Production release is claimed.
+The backend uses Python 3.12, FastAPI, PostgreSQL, async SQLAlchemy 2.x, Alembic and Pydantic v2. Work through Sprint 025 is merged into `main`; the backend includes the assigned-caregiver daily-routine foundation. This README documents the original TS-03 Case foundation and its boundaries. It is not a complete product/API inventory. Hosted Stage remains unavailable under D-0130, and no Stage QA or Production release is claimed.
 
 The original TS-03 scope is described in [T-001](../docs/technical/T-001_TS03_CORE_CASE_JOURNEY_TECHNICAL_BASELINE.md).
 
@@ -184,7 +184,7 @@ Stable conflicts: `CASE_ASSIGNMENT_CHANGED`, `STALE_RECORD_REVISION`,
 
 ## Current scope and release boundary
 
-The repository includes completed code and decisions through Sprint 024, including the Case, Referral and Provider foundations and proposed learning-manifest metadata. Read the relevant technical guides and Decision Register for the current slice contracts; the historical TS-03 sections below describe that slice, not every current capability.
+The repository includes completed code through Sprint 025, including the Case, Referral, Provider, learning-metadata and assigned-caregiver daily-routine foundations. Read the relevant technical guides and Decision Register for the current slice contracts; the historical TS-03 sections below describe that slice, not every current capability.
 
 The repository does not yet provide an end-to-end operational service lifecycle, real Provider activation, a production-connected identity provider, or a live Hosted Stage. The learning metadata is not an operational Dataset Builder, Trainer, Evaluation pipeline or Model Registry. Existing operational events and synthetic examples do not automatically qualify for AI training or evaluation.
 
