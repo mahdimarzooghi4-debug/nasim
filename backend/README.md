@@ -1,15 +1,12 @@
-# Nasim backend — Sprint 001 / TS-03
+# Nasim backend — implementation and development guide
 
-Python 3.12, FastAPI, PostgreSQL, async SQLAlchemy 2.x, Alembic and Pydantic v2.
-The implementation is ready for **Code Review**, not approved for Stage or Production.
-The binding scope is [T-001](../docs/technical/T-001_TS03_CORE_CASE_JOURNEY_TECHNICAL_BASELINE.md).
+The backend uses Python 3.12, FastAPI, PostgreSQL, async SQLAlchemy 2.x, Alembic and Pydantic v2. Work through Sprint 024 is merged into `main`; this README documents the original TS-03 Case foundation and its boundaries. It is not a complete product/API inventory. Hosted Stage remains unavailable under D-0130, and no Stage QA or Production release is claimed.
+
+The original TS-03 scope is described in [T-001](../docs/technical/T-001_TS03_CORE_CASE_JOURNEY_TECHNICAL_BASELINE.md).
 
 ## Start a development environment
 
-Use the existing checkout. Cloud tasks are already isolated: do not create a Git worktree
-unless the user explicitly requests one. Preserve existing work when switching branches.
-Sprint implementation belongs on `sprint-001-ts03-core-case-journey` and must not be merged
-into `main` automatically.
+Run these commands from the current checkout. Keep local changes intact when switching branches; implementation work should follow the repository's current branch/PR workflow rather than the original Sprint 001 branch instructions.
 
 Prerequisites: Python 3.12, `uv`, Docker with a working daemon and Docker Compose v2.
 From the repository root:
@@ -185,16 +182,15 @@ Stable conflicts: `CASE_ASSIGNMENT_CHANGED`, `STALE_RECORD_REVISION`,
 `IDEMPOTENCY_KEY_REUSED_WITH_DIFFERENT_PAYLOAD`. Authorization errors:
 `ACTOR_CONTEXT_REQUIRED`, `CAPABILITY_REQUIRED`, `ASSIGNED_CAREGIVER_REQUIRED`.
 
-## Scope and next gate
+## Current scope and release boundary
 
-TS-03 records supplied upstream Enrollment provenance; it does not determine Eligibility.
-There is no Case status/closure lifecycle, Referral, Service, Provider, Outcome/Reassessment,
-Emergency, AI runtime, Dataset Builder, training eligibility, billing, external integration
-or named job-role RBAC. No SQLite fallback exists. Actor provenance vocabulary includes
-HUMAN/SYSTEM/AI/AUTOMATION without granting those types authority by itself.
+The repository includes completed code and decisions through Sprint 024, including the Case, Referral and Provider foundations and proposed learning-manifest metadata. Read the relevant technical guides and Decision Register for the current slice contracts; the historical TS-03 sections below describe that slice, not every current capability.
 
-[Code Review evidence](../docs/sprints/SPRINT-001_CODE_REVIEW_EVIDENCE.md) records verification.
-Review is the next gate. No automatic main merge, Stage admission or production release.
+The repository does not yet provide an end-to-end operational service lifecycle, real Provider activation, a production-connected identity provider, or a live Hosted Stage. The learning metadata is not an operational Dataset Builder, Trainer, Evaluation pipeline or Model Registry. Existing operational events and synthetic examples do not automatically qualify for AI training or evaluation.
+
+Do not infer operational authority from a technical record, role name, CI result or merged code. Provider qualification/activation criteria, official published AI content, lawful source-specific Training eligibility, actual identity grants and first Phase/Pilot scope remain separate business or infrastructure inputs. See the [Pre-Stage Readiness Register](../docs/business/PRE_STAGE_COMPLETION_READINESS_REGISTER.md).
+
+Code review and main-branch CI have completed for the merged work. Hosted Stage admission, independent Stage QA, Release approval and Production are later gates; D-0130 still blocks Hosted Stage until a real environment is provisioned.
 
 ## Stage Foundation
 
@@ -208,7 +204,7 @@ force until actual provisioning and admission. It adds no identity or TS-03 busi
 ## TS-05 Identity / Authorization foundation
 
 See [TS-05 developer contract](../docs/technical/TS05_DEVELOPER_GUIDE.md).
-The current repository migration head is `0006_provider_qreview`. The registry seeds vocabulary only;
+The current repository migration head is `0009_learning_partition_claim`. The registry seeds vocabulary only;
 no actor-role assignments or role-permission grants are seeded. The serving DB
 role has read-only access to authorization tables. External authentication and
 public management commands remain outside scope.
