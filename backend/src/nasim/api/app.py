@@ -488,7 +488,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         service: CareRoutineService,
         limit: int = Query(default=50, ge=1, le=100),
     ) -> Any:
-        return await service.list(case_id, actor, limit)
+        return await service.list_plans(case_id, actor, limit)
 
     @app.post(
         "/api/v1/cases/{case_id}/care-routines/{routine_id}/events",
