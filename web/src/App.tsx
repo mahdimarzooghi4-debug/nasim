@@ -12,7 +12,7 @@ import ProviderIntake from "./ProviderIntake";
 import { canRecordProvider } from "./providerCommands";
 import type { ReactNode } from "react";
 import {
-  api, ApiError, canReadCases, canReadJourney, canReadCareRoutines, canReadProviders,
+  api, ApiError, canReadCases, canReadJourney, canReadCareRoutines, canManageCareRoutines, canReadProviders,
   canReadProviderWorkspace,
 } from "./api";
 import { errorMessage, formatDate, shortId } from "./format";
@@ -171,7 +171,7 @@ function CaseJourney({ caseId, actor, back, onLost }: {
           setRevision(value => value + 1);
         }}
       />
-      {canReadCareRoutines(actor) && <CareRoutines
+      {(canReadCareRoutines(actor) || canManageCareRoutines(actor, view.case.current_assignment.caregiver_actor_id)) && <CareRoutines
         caseId={caseId} actor={actor}
         assignmentId={view.case.current_assignment.id}
         assignedActorId={view.case.current_assignment.caregiver_actor_id}

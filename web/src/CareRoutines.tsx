@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { api, ApiError, canReadCareRoutines } from "./api";
+import { api, ApiError, canManageCareRoutines, canReadCareRoutines } from "./api";
 import { errorMessage } from "./format";
 import CareRoutineEvents from "./CareRoutineEvents";
+import CareRoutinePlanForm from "./CareRoutinePlanForm";
 import type { ActorContext, CareRoutineView } from "./types";
 
 const expired = (error: unknown) => error instanceof ApiError && error.status === 401;
@@ -25,7 +26,12 @@ export default function CareRoutines({ caseId, actor, assignmentId, assignedActo
   const [routines, setRoutines] = useState<CareRoutineView[] | null>(null);
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [revision, setRevision] = useState(0);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editing, setEditing] = useState<CareRoutineView | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
   const allowed = canReadCareRoutines(actor);
+  const canManage = canManageCareRoutines(actor, assignedActorId);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -46,7 +52,7 @@ export default function CareRoutines({ caseId, actor, assignmentId, assignedActo
       if (!controller.signal.aborted) setBusy(false);
     });
     return () => controller.abort();
-  }, [caseId, allowed, onLost]);
+  }, [caseId, allowed, onLost, revision]);
 
   return <section className="card" aria-label="برنامه‌های روزانه مراقبت">
     <header className="section-title">
@@ -58,6 +64,23 @@ export default function CareRoutines({ caseId, actor, assignmentId, assignedActo
     {!allowed && <p className="empty">مجوز مشاهده برنامه‌های مراقبت برای این حساب موجود نیست.</p>}
     {busy && allowed && <p role="status" className="muted">در حال دریافت برنامه‌های مجاز…</p>}
     {error && <div role="alert" className="notice">{error}</div>}
+    {notice && <p role="status" className="notice">{notice}</p>}
+    {canManage && <button type="button" onClick={() => {
+      setEditing(null); setNotice(null); setFormOpen(value => !value);
+    }}>{formOpen && !editing ? "بستن فرم" : "افزودن برنامه"}</button>}
+    {formOpen && canManage && <CareRoutinePlanForm
+      key={editing?.id ?? "new"}
+      caseId={caseId}
+      assignmentId={assignmentId}
+      routine={editing}
+      onLost={onLost}
+      onCancel={() => { setFormOpen(false); setEditing(null); }}
+      onSaved={active => {
+        setFormOpen(false); setEditing(null);
+        setNotice(active ? "برنامهٔ مراقبت ثبت شد." : "نسخهٔ غیرفعال برنامه ثبت شد.");
+        setRevision(value => value + 1);
+      }}
+    />}
     {routines && routines.length === 0 && (
       <p className="empty">برنامهٔ فعالی برای نمایش ثبت نشده است.</p>
     )}
@@ -68,6 +91,9 @@ export default function CareRoutines({ caseId, actor, assignmentId, assignedActo
           <div className="section-title">
             <strong>{routine.title}</strong>
             <span className="chip">{reminder ? "یادآوری اپ" : "کار سالمندیار"}</span>
+            {canManage && <button type="button" className="subtle" onClick={() => {
+              setEditing(routine); setNotice(null); setFormOpen(true);
+            }}>نسخهٔ جدید / تغییر برنامه</button>}
           </div>
           <p className="meta">{scheduleText(routine)}</p>
           <CareRoutineEvents
