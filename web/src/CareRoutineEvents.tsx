@@ -124,7 +124,7 @@ export default function CareRoutineEvents({
         setPending(null);
         onLost();
       } else {
-        if (cause instanceof ApiError && cause.status > 0) setPending(null);
+        if (cause instanceof ApiError && cause.status > 0 && cause.status < 500) setPending(null);
         setError(eventError(cause));
       }
     } finally {
@@ -148,7 +148,7 @@ export default function CareRoutineEvents({
     </ul>}
     {error && <div role="alert" className="notice">{error}</div>}
     {canRecord && <form className="record-form" onSubmit={event => { void submit(event); }}>
-      <label htmlFor={"routine-event-time-" + routine.id}>زمان وقوع واقعی</label>
+      <label htmlFor={"routine-event-time-" + routine.id}>زمان وقوع واقعی (به وقت دستگاه)</label>
       <input
         id={"routine-event-time-" + routine.id}
         type="datetime-local"
