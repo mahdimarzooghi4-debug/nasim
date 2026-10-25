@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CareActions from "./CareActions";
+import CareRoutines from "./CareRoutines";
 import CaseCorrections from "./CaseCorrections";
 import CaseHistory from "./CaseHistory";
 import CaseCreate from "./CaseCreate";
@@ -11,7 +12,7 @@ import ProviderIntake from "./ProviderIntake";
 import { canRecordProvider } from "./providerCommands";
 import type { ReactNode } from "react";
 import {
-  api, ApiError, canReadCases, canReadJourney, canReadProviders,
+  api, ApiError, canReadCases, canReadJourney, canReadCareRoutines, canReadProviders,
   canReadProviderWorkspace,
 } from "./api";
 import { errorMessage, formatDate, shortId } from "./format";
@@ -170,6 +171,9 @@ function CaseJourney({ caseId, actor, back, onLost }: {
           setRevision(value => value + 1);
         }}
       />
+      {canReadCareRoutines(actor) && <CareRoutines
+        caseId={caseId} actor={actor} onLost={onLost}
+      />}
       {view.selected_referral && view.follow_ups && <section className="card">
         <div className="section-title">
           <h3>پیگیری‌های انسانیِ ارجاع <bdi>{shortId(view.selected_referral.id)}</bdi></h3>
