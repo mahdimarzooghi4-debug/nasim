@@ -34,6 +34,8 @@ The GOV.UK candidate remains subject to its third-party-rights caveat. The three
 
 On 2026-10-25, the Operations Manager selected `NASIM-WEB-001` through `NASIM-WEB-004` (the JMIR Aging article) for the **internal Training candidate path**, subject to completing the exact source snapshot, attribution review, Persian/content review, and remaining eligibility evidence. This selection does not authorize use in a Training Dataset or any Training Run. The four candidate records remain `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED` until those gates are completed and recorded.
 
+On 2026-10-25, the Operations Manager accepted the reviewed Persian summary scope for `NASIM-WEB-001` through `NASIM-WEB-004` (small Maryland study, its limited sample, the authors' training recommendation, and the reported technical support issues). This confirms content-review acceptance for those four summarized candidates only. It does not waive the missing source snapshot/hash, attribution checks, or source-specific Training eligibility; the records remain `CANDIDATE_NOT_AUTHORIZED` and `training_permission: NOT_AUTHORIZED`.
+
 On 2026-10-25, the Operations Manager also selected `NASIM-WEB-006` (the MDPI study on family support in home care for Iranian older people) for the **internal Training candidate path**. This is likewise not a Training grant. The exact source snapshot, attribution confirmation, Persian/content review, and remaining eligibility evidence are still open; the record remains `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED`.
 
 
