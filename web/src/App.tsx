@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import CareActions from "./CareActions";
+import ProviderIntake from "./ProviderIntake";
+import { canRecordProvider } from "./providerCommands";
 import type { ReactNode } from "react";
 import {
   api, ApiError, canReadCases, canReadJourney, canReadProviders,
@@ -231,12 +233,13 @@ function CaseIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAccess 
   </section>;
 }
 
-function ProviderDetail({ id, back, onLost }: {
-  id: string; back: () => void; onLost: LostAccess;
+function ProviderDetail({ id, actor, back, onLost }: {
+  id: string; actor: ActorContext; back: () => void; onLost: LostAccess;
 }) {
   const [data, setData] = useState<ProviderWorkspaceView | null>(null);
   const [evidenceCursor, setEvidenceCursor] = useState<string | null>(null);
   const [requestCursor, setRequestCursor] = useState<string | null>(null);
+  const [revision, setRevision] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(true);
 
@@ -253,7 +256,7 @@ function ProviderDetail({ id, back, onLost }: {
       else setError(errorMessage(e));
     }).finally(() => { if (!controller.signal.aborted) setBusy(false); });
     return () => controller.abort();
-  }, [id, evidenceCursor, requestCursor, onLost]);
+  }, [id, evidenceCursor, requestCursor, revision, onLost]);
 
   return <section>
     <button type="button" className="subtle" onClick={back}>بازگشت به Candidateها</button>
@@ -264,6 +267,13 @@ function ProviderDetail({ id, back, onLost }: {
         <h2>{data.candidate.display_name}</h2>
       </div><span className="chip">Candidate</span></header>
       <p className="disclaimer">مدارک ارائه‌شده و درخواست بررسی، معادل تأیید صلاحیت یا فعال‌سازی ارائه‌دهنده نیستند.</p>
+      <ProviderIntake actor={actor} candidateId={id}
+        onAuthenticationLost={onLost}
+        onSaved={() => {
+          setEvidenceCursor(null); setRequestCursor(null);
+          setRevision(value => value + 1);
+        }}
+      />
       <div className="cards two-col">
         <section className="card"><h3>شواهد ارائه‌شده</h3>
           {data.evidence.items.length === 0 && <Empty text="سندی ثبت نشده است." />}
@@ -295,6 +305,7 @@ function ProviderDetail({ id, back, onLost }: {
 
 function ProviderIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAccess }) {
   const [cursor, setCursor] = useState<string | null>(null);
+  const [revision, setRevision] = useState(0);
   const [history, setHistory] = useState<(string | null)[]>([]);
   const [data, setData] = useState<Page<ProviderCandidateView> | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
@@ -304,6 +315,10 @@ function ProviderIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAcc
   useEffect(() => {
     const controller = new AbortController();
     setBusy(true); setData(null); setError(null);
+    if (!canReadProviders(actor)) {
+      setBusy(false);
+      return () => controller.abort();
+    }
     api.providers(cursor, controller.signal).then(next => {
       if (!controller.signal.aborted) setData(next);
     }).catch(e => {
@@ -312,11 +327,11 @@ function ProviderIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAcc
       else setError(errorMessage(e));
     }).finally(() => { if (!controller.signal.aborted) setBusy(false); });
     return () => controller.abort();
-  }, [cursor, onLost]);
+  }, [cursor, revision, actor, onLost]);
 
   if (selected) {
     return canReadProviderWorkspace(actor)
-      ? <ProviderDetail id={selected} back={() => setSelected(null)} onLost={onLost} />
+      ? <ProviderDetail id={selected} actor={actor} back={() => setSelected(null)} onLost={onLost} />
       : <section className="card">
         <button type="button" onClick={() => setSelected(null)}>بازگشت</button>
         <Alert>برای مشاهده شواهد و درخواست‌های بررسی باید هر سه مجوز خواندن Provider موجود باشند.</Alert>
@@ -327,6 +342,17 @@ function ProviderIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAcc
       <p className="eyebrow">ثبت‌های اولیه</p><h2>Provider Candidateها</h2>
     </div></header>
     <p className="disclaimer">فهرست Candidateها هیچ نشانه‌ای از تأیید، ظرفیت یا آمادگی ارائه خدمت نیست.</p>
+    <ProviderIntake
+      actor={actor}
+      candidateId={null}
+      onAuthenticationLost={onLost}
+      onSaved={newCandidateId => {
+        setCursor(null); setHistory([]);
+        setRevision(value => value + 1);
+        if (newCandidateId && canReadProviderWorkspace(actor)) setSelected(newCandidateId);
+      }}
+    />
+    {!canReadProviders(actor) && <Alert>مجوز مشاهده Candidateها موجود نیست؛ فقط ثبت مجاز است.</Alert>}
     <Status busy={busy} error={error} />
     {data && <>
       {data.items.length === 0 && <Empty text="Candidate قابل مشاهده‌ای در این صفحه وجود ندارد." />}
@@ -355,7 +381,7 @@ function OperationalShell({ actor, onLost }: {
   actor: ActorContext; onLost: LostAccess;
 }) {
   const cases = canReadCases(actor);
-  const providers = canReadProviders(actor);
+  const providers = canReadProviders(actor) || canRecordProvider(actor, "candidate");
   const [tab, setTab] = useState<"cases" | "providers">(cases ? "cases" : "providers");
   return <div className="app-shell">
     <aside className="sidebar">
@@ -370,14 +396,14 @@ function OperationalShell({ actor, onLost }: {
         </button>}
         {providers && <button type="button" className={tab === "providers" ? "active" : ""}
           aria-current={tab === "providers" ? "page" : undefined} onClick={() => setTab("providers")}>
-          ثبت‌های Provider
+          ثبت‌ها و مدارک Provider
         </button>}
       </nav>
       <p className="sidebar-note">تغییر وضعیت رسمی، انتخاب Provider و نتیجه خدمت در این محیط فعال نیست.</p>
     </aside>
     <main className="content">
       <header className="topbar">
-        <div><p className="eyebrow">محیط عملیاتی · فقط مشاهده</p>
+        <div><p className="eyebrow">محیط عملیاتی · ثبت انسانی و مشاهده مجاز</p>
           <h1>{tab === "cases" ? "پرونده‌ها و پیگیری‌ها" : "بررسی مقدماتی Provider"}</h1></div>
         <div className="identity" title="هویت برگرفته از API تأییدشده">
           <span>کاربر تأییدشده</span><bdi>{actor.actor_id}</bdi>
@@ -386,7 +412,7 @@ function OperationalShell({ actor, onLost }: {
       {!cases && !providers && <Alert>برای دسترسی به هیچ‌یک از محیط‌های خواندنی مجوز صریح وجود ندارد.</Alert>}
       {tab === "cases" && cases && <CaseIndex actor={actor} onLost={onLost} />}
       {tab === "providers" && providers && <ProviderIndex actor={actor} onLost={onLost} />}
-      <footer>نمایش سوابق واقعی ثبت‌شده، بدون تفسیر خودکار یا تأیید خدمت · طراحی نهایی Figma بعداً تعیین می‌شود</footer>
+      <footer>ثبت‌های مجاز انسانی و مشاهده سوابق واقعی؛ بدون تفسیر خودکار یا تأیید خدمت · طراحی نهایی Figma بعداً تعیین می‌شود</footer>
     </main>
   </div>;
 }

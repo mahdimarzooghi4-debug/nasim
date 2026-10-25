@@ -25,3 +25,12 @@ When an existing trusted principal is authenticated, the Case Journey now contai
 - This is **not** a Provider dispatch, proof of accepted service, verified outcome, consent, contact delivery or training signal. No write can execute while the authentication gate is blocked.
 
 **Security gate:** There is still no selected/implemented browser IdP, protected browser session, final SameSite/CSRF middleware or approved host origin. Merely using `credentials: same-origin` does **not** supply CSRF protection for a future cookie-backed identity layer. Before any real browser-auth deployment, the trusted host must implement origin and CSRF protections, server-owned sessions and independent E2E authorization tests. This Draft slice cannot be exposed to personal data as a standalone production app.
+
+## Provider Candidate human intake — Sprint 013 (Draft)
+
+The existing `ProviderCandidates`, `ProviderQualificationEvidence` and `ProviderQualificationReviewRequests` POST contracts now have **explicit permission-gated real web forms** for human operators. These records are descriptive registration/submission/review-request records, *not* qualification approval, completed verification, service-capacity grant, activation, assignment or Provider selection. The UI does not guess missing Provider type, geographic reach, service mapping or qualification score.
+
+- Candidate registration requires `provider_candidate.register`, and an existing read grant is separately required to display the Candidate directory. A user authorized only to register does not receive implicit directory visibility.
+- Evidence and Review Request submission require their separate `provider_qualification_evidence.record` / `provider_qualification_review.request` capabilities and a selected known Candidate. Backend re-enforces each scoped permission.
+- Three exact immutable 201 POST routes, secure per-payload idempotency identities, same-origin JSON only, generic 401/403/409 handling, no hidden retry and fresh Backend read on accepted records. No dummy Provider or forged status is created.
+- A real browser IdP, session/CSRF/origin protection, user-role mapping, document upload/validation provider, privacy and approved legal sharing authority remain **unimplemented**. Before any protected web release, close those gates and perform real E2E browser QA. D-0130 Hosted Stage remains unavailable.
