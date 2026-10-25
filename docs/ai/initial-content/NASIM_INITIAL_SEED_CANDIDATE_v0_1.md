@@ -16,6 +16,12 @@
 
 The JSONL package keeps each original record verbatim inside `record`, with a wrapper carrying the source file's Git blob SHA, source set, and permission/review state. Original record flags are not rewritten. IDs are unique across all 94 records.
 
+## Initial review scope and structural audit
+
+On 2026-10-25, the Operations Manager selected **internal evaluation only** as the intended future use of the 84 Nasim-authored synthetic candidates (52 behavior examples + 32 grounded-positive examples). This records intended scope only; it does not grant Training or Evaluation permission, approve a held-out set, or change any candidate record's status.
+
+A read-only structural audit of this package found 94 parseable JSONL records, 94 unique IDs, no duplicate IDs, and no missing prompt/target-answer or source-lineage fields. All 10 internet-derived candidates contain citation and license metadata. All 94 records remain unassigned and unauthorized for Training, Evaluation, and runtime publication.
+
 ## Use state
 
 Every package record is marked:
