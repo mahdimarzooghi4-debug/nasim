@@ -67,6 +67,23 @@ def check_manifest(manifest: dict[str, Any], dataset_path: Path) -> list[str]:
     if model.get("revision") != MODEL_REVISION:
         failures.append("model.revision must match D-0179's pinned revision")
 
+    scorecard = manifest.get("acceptance_scorecard")
+    if not has_evidence(scorecard, "ACCEPTED"):
+        failures.append("accepted evaluation scorecard and its reference are required")
+    elif scorecard.get("reference") != "D-0180":
+        failures.append("acceptance_scorecard.reference must point to D-0180")
+
+    runtime = manifest.get("runtime")
+    if (
+        not isinstance(runtime, dict)
+        or runtime.get("deployment") != "INTERNAL"
+        or not isinstance(runtime.get("version"), str)
+        or not runtime["version"].strip()
+        or not isinstance(runtime.get("reference"), str)
+        or not runtime["reference"].strip()
+    ):
+        failures.append("an internal runtime version and its technical reference are required")
+
     evaluation = manifest.get("evaluation_set")
     if not isinstance(evaluation, dict):
         evaluation = {}
