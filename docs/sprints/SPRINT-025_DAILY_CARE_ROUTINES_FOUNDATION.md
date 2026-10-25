@@ -1,6 +1,6 @@
 # Sprint 025 — Daily care routines backend foundation
 
-- **Status:** Code prepared; PR validation pending.
+- **Status:** Merged into `main` via PR #46; subsequent full Backend and Web CI passed on PR #52 exact HEAD.
 - **Source:** D-0178 and T-027.
 
 ## Delivered scope
