@@ -20,6 +20,7 @@ EXPECTED = {
     "/api/v1/provider-candidates/{candidate_id}/qualification-evidence": {"get", "post"},
     "/api/v1/provider-qualification-evidence/{evidence_id}": {"get"},
     "/api/v1/provider-candidates/{candidate_id}/qualification-review-requests": {"get", "post"},
+    "/api/v1/provider-candidates/{candidate_id}/qualification-review-workspace": {"get"},
     "/api/v1/provider-qualification-review-requests/{request_id}": {"get"},
     "/api/v1/cases/{case_id}/referrals": {"get", "post"},
     "/api/v1/referrals/{referral_id}": {"get"},
