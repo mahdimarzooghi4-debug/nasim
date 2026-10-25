@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+from nasim.application.care_journey import CareJourneyWorkspace, CareJourneyWorkspaceView
 from nasim.application.casework import Casework
 from nasim.authorization.contracts import TrustedPrincipal
 from nasim.authorization.service import AuthorizationResolver
@@ -109,8 +110,13 @@ def get_casework(request: Request) -> Casework:
     return request.app.state.casework
 
 
+def get_care_journey(request: Request) -> CareJourneyWorkspace:
+    return request.app.state.care_journey
+
+
 Actor = Annotated[ActorContext, Depends(get_actor)]
 Service = Annotated[Casework, Depends(get_casework)]
+CareJourneyService = Annotated[CareJourneyWorkspace, Depends(get_care_journey)]
 ReferralService = Annotated[Referrals, Depends(get_referrals)]
 ReferralFollowUpService = Annotated[ReferralFollowUps, Depends(get_referral_follow_ups)]
 ProviderCandidateService = Annotated[ProviderCandidates, Depends(get_provider_candidates)]
@@ -169,6 +175,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.authorization = AuthorizationResolver(make_sessions(engine))
     app.state.referrals = Referrals(make_sessions(engine))
     app.state.referral_follow_ups = ReferralFollowUps(make_sessions(engine))
+    app.state.care_journey = CareJourneyWorkspace(
+        app.state.casework, app.state.referrals, app.state.referral_follow_ups
+    )
     app.state.provider_candidates = ProviderCandidates(make_sessions(engine))
     app.state.provider_qualification_evidence = ProviderQualificationEvidence(make_sessions(engine))
     app.state.provider_qualification_review_requests = ProviderQualificationReviewRequests(
@@ -379,6 +388,31 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         service: ReferralFollowUpService,
     ) -> Any:
         return await service.get(record_id, actor)
+
+    @app.get(
+        "/api/v1/cases/{case_id}/journey-workspace",
+        response_model=CareJourneyWorkspaceView,
+        responses=ERRORS,
+    )
+    async def get_care_journey_workspace(
+        case_id: UUID,
+        actor: Actor,
+        service: CareJourneyService,
+        referral_id: UUID | None = None,
+        observation_cursor: Annotated[str | None, Query(max_length=500)] = None,
+        referral_cursor: Annotated[str | None, Query(max_length=500)] = None,
+        follow_up_cursor: Annotated[str | None, Query(max_length=500)] = None,
+        limit: Limit = 50,
+    ) -> Any:
+        return await service.read(
+            case_id,
+            actor,
+            referral_id,
+            observation_cursor,
+            referral_cursor,
+            follow_up_cursor,
+            limit,
+        )
 
     @app.get("/api/v1/authorization/self", response_model=ActorContext, responses=ERRORS)
     async def authorization_self(actor: Actor) -> ActorContext:
