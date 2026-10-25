@@ -15,7 +15,14 @@ def encode_cursor(time: datetime, identifier: UUID) -> str:
 def decode_cursor(cursor: str) -> tuple[datetime, UUID]:
     try:
         values = json.loads(base64.b64decode(cursor, altchars=b"-_", validate=True))
-        if not isinstance(values, list) or len(values) != 2:
+        if (
+            not isinstance(values, list)
+            or len(values) != 2
+            or not isinstance(values[0], str)
+            or not isinstance(values[1], str)
+        ):
+            # UUID() may raise AttributeError for a JSON number/object; reject
+            # non-string elements before parsing so every malformed cursor is 422.
             raise ValueError
         time = datetime.fromisoformat(values[0])
         if time.tzinfo is None:

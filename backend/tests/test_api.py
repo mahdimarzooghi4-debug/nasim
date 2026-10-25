@@ -1,3 +1,5 @@
+import base64
+import json
 import os
 from collections.abc import AsyncIterator
 from datetime import UTC, datetime
@@ -204,3 +206,55 @@ async def test_rest_validation_no_leak_and_scope_denial(api, manager):
             assert (await client.post(f"/api/v1/{path}", json={})).status_code == 404
         assert (await client.delete(f"/api/v1/cases/{uuid4()}")).status_code == 405
         assert (await client.patch(f"/api/v1/cases/{uuid4()}", json={})).status_code == 405
+
+
+@pytest.mark.parametrize("read_kind", ["case", "referral", "provider"])
+@pytest.mark.parametrize(
+    "payload",
+    [
+        ["2026-10-08T12:00:00+00:00", 123],
+        [123, "123e4567-e89b-12d3-a456-426614174000"],
+    ],
+)
+async def test_malformed_cursor_http_contract_across_existing_reads(
+    api, manager, read_kind, payload
+):
+    """Shared cursor parser must return 422 through all approved HTTP read contexts."""
+    token = base64.urlsafe_b64encode(json.dumps(payload).encode()).decode()
+    as_actor(api, manager)
+    async with httpx.AsyncClient(
+        transport=httpx.ASGITransport(app=api), base_url="http://test"
+    ) as client:
+        created = await client.post(
+            "/api/v1/cases",
+            json={
+                "upstream_enrollment_ref": "enrolled-test",
+                "elder_reference": "synthetic-test-ref",
+                "initial_caregiver_actor_id": "caregiver-test",
+            },
+            headers={"Idempotency-Key": "create-for-cursor-regression"},
+        )
+        assert created.status_code == 201, created.text
+        case_id = created.json()["case"]["id"]
+        if read_kind == "case":
+            path = f"/api/v1/cases/{case_id}/timeline"
+        elif read_kind == "referral":
+            path = f"/api/v1/cases/{case_id}/referrals"
+            as_actor(
+                api,
+                manager.model_copy(
+                    update={"capabilities": manager.capabilities | {"referral.read.oversight"}}
+                ),
+            )
+        else:
+            path = "/api/v1/provider-candidates"
+            as_actor(
+                api,
+                manager.model_copy(
+                    update={"capabilities": manager.capabilities | {"provider_candidate.read"}}
+                ),
+            )
+        response = await client.get(path, params={"cursor": token})
+        assert response.status_code == 422, response.text
+        assert response.json()["error"]["code"] == "INVALID_CURSOR"
+        assert "synthetic-test-ref" not in response.text
