@@ -1,0 +1,64 @@
+# Internet seed candidate source-rights evidence — v0.1
+
+- **Reviewed:** 2026-10-25
+- **Scope:** Publisher/official source license statements for the 10 Internet-derived seed candidates in `nasim_internet_seed_candidates_v0_3.jsonl`.
+- **Decision state:** Evidence inventory only. No Training, Evaluation, or runtime-publication permission is granted by this document.
+
+## Source register
+
+| Candidate records | Source | Officially stated license and reuse conditions | Snapshot evidence in candidate file | Nasim disposition |
+|---|---|---|---|---|
+| `NASIM-WEB-001..004` | [JMIR Aging article](https://aging.jmir.org/2019/1/e12276) | CC BY 4.0. JMIR requires the original work and full bibliographic details, original-publication link, and license information to be included. See [JMIR open-access policy](https://aging.jmir.org/publishing-policies/open-access-policy). | Official Version-of-Record PDF SHA-256 captured 2026-10-25: `b685406284902eaa01005d844be864ea19a5e321592d8c18d22a883fa5b7ea0c`. | Candidate only; attribution review, accepted Persian summary scope, and purpose-specific eligibility decision remain open. |
+| `NASIM-WEB-005` | [GOV.UK healthy-ageing guidance](https://www.gov.uk/government/publications/healthy-ageing/healthy-ageing-applying-all-our-health) | Page states OGL v3.0 except where stated otherwise. The page specifically says third-party copyright material needs permission from its rights holders. OGL requires attribution and does not cover third-party rights the provider cannot license. | Live official HTML response SHA-256 captured 2026-10-25: `270e9c57f3fd666939f33319fa774b00d097fede2b0acea39c0fb941146ab289`; not an immutable archived edition. | Candidate only; identify any third-party material used by the paraphrase and review England-specific scope/localization before any use decision. |
+| `NASIM-WEB-006` | [MDPI article](https://www.mdpi.com/1660-4601/18/12/6361) | Publisher article page states CC BY 4.0. Attribution and license terms apply. | Official Version-of-Record PDF SHA-256 captured 2026-10-25: `f22d14132728c6cd487d8a8318a23d0a1bba44c152fa01e20c35f8e592c42ca7`. | Candidate only; attribution review, Persian review, and purpose-specific eligibility decision remain open. |
+| `NASIM-WEB-007..008` | [BMC Geriatrics / Springer Nature article](https://link.springer.com/article/10.1186/s12877-022-02881-3) | CC BY 4.0 permits adaptation with attribution, a link to the license, and indication of changes. Third-party material may be excluded where its credit line says so. | Version-of-record PDF SHA-256 is recorded in the candidates: `6fdd849f84becc3388428a8a7ae11af9db9e6574e40353c3f90ff07063a02534`. | Candidate only; human content/localization review and source-specific purpose decision remain open. |
+| `NASIM-WEB-009..010` | [Bentham Open article](https://clinical-practice-and-epidemiology-in-mental-health.com/VOLUME/18/ELOCATOR/e174501792112241/) | Article page states CC BY 4.0; its stated condition is crediting the original author and source. | PDF SHA-256 is recorded in the candidates: `7be74b754d02b5b37e6b44080c585f71a63a4891b5c9ec0e81c6f884ce0bbcf5`. | Candidate only; human content/localization review and source-specific purpose decision remain open. |
+
+## Findings and limits
+
+1. The four scholarly articles (9 candidate records) state CC BY 4.0 on publisher pages. Their reuse statements require attribution; the Springer article also calls out third-party material exclusions.
+2. The GOV.UK page (1 candidate record) states OGL v3.0 but warns that identified third-party material requires separate permission. The page is UK/England public-health guidance, not official Nasim policy or Iran-specific service information.
+3. All five source groups now have an exact source-byte hash recorded in the candidate inventory. The JMIR and MDPI hashes identify publisher Version-of-Record PDFs; the GOV.UK hash identifies the live HTML response captured on 2026-10-25, not an immutable historical edition. Source files are not archived in this repository. Hashes support provenance and do not grant rights or dataset-use permission.
+4. These license statements do not themselves grant Nasim a source-specific Training or Evaluation admission. They also do not replace review of the Persian paraphrases, source scope, attribution, or whether the selected purpose is appropriate.
+5. All 10 records remain `CANDIDATE_NOT_AUTHORIZED`; Training, Evaluation, and runtime publication remain `NOT_AUTHORIZED`. The separately authorized 84-record synthetic Evaluation set is not part of this source register.
+6. JMIR and MDPI publisher PDFs and the GOV.UK page response were fetched only to capture exact byte hashes; their source files are not included in this repository. No model loading, inference, Training, Evaluation Run, or publication was performed.
+
+
+## Factual source check
+
+Checked on 2026-10-25 against the publisher/official source pages linked above. This is a source-fact consistency check, not a legal admission decision or a full Persian-language review.
+
+| Records | Result | Boundary retained in the Persian candidate |
+|---|---|---|
+| `NASIM-WEB-001..004` | **PASS** — the JMIR page reports 12 dyads, 8 dyads in the final sample, average usability, additional training, and technical support needs. | Small Baltimore/Maryland usability study; no generalization to all older adults or Nasim. |
+| `NASIM-WEB-005` | **PASS** — the GOV.UK page describes maintaining friendships/family networks, community participation, and reducing participation barriers. | England-specific public-health guidance; not Nasim policy or individual health advice. |
+| `NASIM-WEB-006` | **PASS** — the MDPI article reports 21 older parents and four family members, and the six support dimensions listed in the summary. | Qualitative study description only; not a care protocol or Nasim policy. |
+| `NASIM-WEB-007..008` | **PASS** — Springer reports 13 purposively sampled Khorramabad caregivers and the six categories; its limitation section says the findings are not generalizable to all caregiver populations. | Small, purposively selected sample; not representative guidance. |
+| `NASIM-WEB-009..010` | **PASS** — Bentham reports a cross-sectional sample of 1,280 community-dwelling older adults in Tehran and an association between provided support and well-being; authors state the design cannot establish causality. | Association only; no causal claim or individual recommendation. |
+
+The Operations Manager accepted the summarized Persian content for records 001–004. For records 005–010, this source-fact check does not substitute for Persian wording/localization review. All 10 records remain unauthorized for Training, Evaluation, and runtime publication pending the remaining source-version, rights, attribution, and review evidence.
+
+## Consolidated Training-candidate scope decision
+
+On 2026-10-25, the Operations Manager selected **all 10 Internet-derived records across the five sources in this register** for the internal Training-candidate path. This is a purpose selection only: it does **not** authorize admission into a Training Dataset or a Training Run. All ten records remain `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED` until attribution/rights review, Persian content review, and any source-specific eligibility conditions are completed and recorded; exact source-byte hashes are recorded in the v0.2.0 package.
+
+The GOV.UK candidate remains subject to its third-party-rights caveat and its hash refers to a live page response rather than an immutable archival edition. Attribution and human Persian review remain open across the applicable records. The prior individual JMIR, MDPI, and Springer selections are consistent with this consolidated scope.
+
+## Source-specific purpose selection
+
+On 2026-10-25, the Operations Manager selected `NASIM-WEB-001` through `NASIM-WEB-004` (the JMIR Aging article) for the **internal Training candidate path**, subject to attribution review, Persian/content review, and remaining eligibility evidence; the publisher PDF hash is recorded. This selection does not authorize use in a Training Dataset or any Training Run. The publisher PDF hash is now recorded; the four candidate records remain `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED` until attribution checks and purpose-specific gates are completed and recorded.
+
+On 2026-10-25, the Operations Manager accepted the reviewed Persian summary scope for `NASIM-WEB-001` through `NASIM-WEB-004` (small Maryland study, its limited sample, the authors' training recommendation, and the reported technical support issues). This confirms content-review acceptance for those four summarized candidates only. It does not waive attribution checks or source-specific Training eligibility; the records remain `CANDIDATE_NOT_AUTHORIZED` and `training_permission: NOT_AUTHORIZED`.
+
+On 2026-10-25, the Operations Manager also selected `NASIM-WEB-006` (the MDPI study on family support in home care for Iranian older people) for the **internal Training candidate path**. This is likewise not a Training grant. The publisher PDF hash is now recorded. Attribution confirmation, Persian/content review, and remaining eligibility evidence are still open; the record remains `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED`.
+
+
+On 2026-10-25, the Operations Manager also selected `NASIM-WEB-007` and `NASIM-WEB-008` (the Springer Nature qualitative study of 13 family caregivers in Khorramabad) for the **internal Training candidate path**. This is not a Training grant. The exact publisher-version PDF hash is already recorded in the candidate inventory; Persian/content review, attribution review (including third-party credit lines), and remaining purpose-specific eligibility evidence remain open. The records remain `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED`.
+
+## Primary evidence links
+
+- JMIR article and policy: `https://aging.jmir.org/2019/1/e12276`; `https://aging.jmir.org/publishing-policies/open-access-policy`
+- GOV.UK page and OGL v3: `https://www.gov.uk/government/publications/healthy-ageing/healthy-ageing-applying-all-our-health`; `https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/`
+- MDPI article: `https://www.mdpi.com/1660-4601/18/12/6361`
+- Springer Nature article: `https://link.springer.com/article/10.1186/s12877-022-02881-3`
+- Bentham Open article: `https://clinical-practice-and-epidemiology-in-mental-health.com/VOLUME/18/ELOCATOR/e174501792112241/`
