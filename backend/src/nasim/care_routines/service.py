@@ -127,7 +127,7 @@ class CareRoutines:
         if not key.strip() or len(key) > 200:
             raise DomainError("INVALID_IDEMPOTENCY_KEY", 422)
 
-    async def list(
+    async def list_plans(
         self, case_id: UUID, actor: ActorContext, limit: int = 50
     ) -> list[CareRoutineView]:
         self._human(actor)
