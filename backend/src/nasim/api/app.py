@@ -14,6 +14,13 @@ from nasim.application.case_index import AssignedCaseIndex
 from nasim.application.casework import Casework
 from nasim.authorization.contracts import TrustedPrincipal
 from nasim.authorization.service import AuthorizationResolver
+from nasim.care_routines.contracts import (
+    CareRoutineEventView,
+    CareRoutineView,
+    CreateCareRoutine,
+    RecordCareRoutineEvent,
+)
+from nasim.care_routines.service import CareRoutines
 from nasim.domain.contracts import (
     AddContactPoint,
     AssignmentView,
@@ -83,6 +90,10 @@ async def get_actor(request: Request) -> ActorContext:
     return actor
 
 
+def get_care_routines(request: Request) -> CareRoutines:
+    return request.app.state.care_routines
+
+
 def get_provider_candidates(request: Request) -> ProviderCandidates:
     return request.app.state.provider_candidates
 
@@ -127,6 +138,7 @@ Actor = Annotated[ActorContext, Depends(get_actor)]
 Service = Annotated[Casework, Depends(get_casework)]
 CaseIndexService = Annotated[AssignedCaseIndex, Depends(get_case_index)]
 CareJourneyService = Annotated[CareJourneyWorkspace, Depends(get_care_journey)]
+CareRoutineService = Annotated[CareRoutines, Depends(get_care_routines)]
 ReferralService = Annotated[Referrals, Depends(get_referrals)]
 ReferralFollowUpService = Annotated[ReferralFollowUps, Depends(get_referral_follow_ups)]
 ProviderCandidateService = Annotated[ProviderCandidates, Depends(get_provider_candidates)]
@@ -199,6 +211,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.care_journey = CareJourneyWorkspace(
         app.state.casework, app.state.referrals, app.state.referral_follow_ups
     )
+    app.state.care_routines = CareRoutines(make_sessions(engine))
     app.state.provider_candidates = ProviderCandidates(make_sessions(engine))
     app.state.provider_qualification_evidence = ProviderQualificationEvidence(make_sessions(engine))
     app.state.provider_qualification_review_requests = ProviderQualificationReviewRequests(
@@ -448,6 +461,64 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             follow_up_cursor,
             limit,
         )
+
+    @app.post(
+        "/api/v1/cases/{case_id}/care-routines",
+        response_model=CareRoutineView,
+        responses=ERRORS,
+        status_code=201,
+    )
+    async def create_care_routine(
+        case_id: UUID,
+        body: CreateCareRoutine,
+        actor: Actor,
+        service: CareRoutineService,
+        key: Key,
+    ) -> Any:
+        return await service.create(case_id, body, actor, key)
+
+    @app.get(
+        "/api/v1/cases/{case_id}/care-routines",
+        response_model=list[CareRoutineView],
+        responses=ERRORS,
+    )
+    async def list_care_routines(
+        case_id: UUID,
+        actor: Actor,
+        service: CareRoutineService,
+        limit: int = Query(default=50, ge=1, le=100),
+    ) -> Any:
+        return await service.list_plans(case_id, actor, limit)
+
+    @app.post(
+        "/api/v1/cases/{case_id}/care-routines/{routine_id}/events",
+        response_model=CareRoutineEventView,
+        responses=ERRORS,
+        status_code=201,
+    )
+    async def record_care_routine_event(
+        case_id: UUID,
+        routine_id: UUID,
+        body: RecordCareRoutineEvent,
+        actor: Actor,
+        service: CareRoutineService,
+        key: Key,
+    ) -> Any:
+        return await service.record_event(case_id, routine_id, body, actor, key)
+
+    @app.get(
+        "/api/v1/cases/{case_id}/care-routines/{routine_id}/events",
+        response_model=list[CareRoutineEventView],
+        responses=ERRORS,
+    )
+    async def list_care_routine_events(
+        case_id: UUID,
+        routine_id: UUID,
+        actor: Actor,
+        service: CareRoutineService,
+        limit: int = Query(default=100, ge=1, le=500),
+    ) -> Any:
+        return await service.list_events(case_id, routine_id, actor, limit)
 
     @app.get("/api/v1/authorization/self", response_model=ActorContext, responses=ERRORS)
     async def authorization_self(actor: Actor) -> ActorContext:
