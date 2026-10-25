@@ -391,3 +391,233 @@ async def test_malformed_pagination_is_bounded(env, slot):
             await followups.list(ref_id, actor, cursor=token)
     assert error.value.status == 422
     assert error.value.code == ("INVALID_PAGE_LIMIT" if slot == "limit" else "INVALID_CURSOR")
+
+
+async def test_case_wide_follow_up_index_pages_all_referrals_without_mutation(env, admin_engine):
+    followups, referrals, case_id, aid, ref_id, actor = env
+    second = await referrals.create(
+        case_id,
+        CreateReferral(
+            source_need_observation_id=(
+                await referrals.get(ref_id, actor)
+            ).source_need_observation_id,
+            expected_current_assignment_id=aid,
+            reason="Independent recorded referral",
+        ),
+        actor,
+        "case-index-second-referral",
+    )
+    second_id = UUID(second["id"])
+    expected = []
+    for n, referral_id in enumerate((ref_id, second_id, ref_id), 1):
+        note = await followups.record(
+            referral_id, command(env, f"Recorded human note {n}"), actor, f"case-index-note-{n}"
+        )
+        expected.append(note["id"])
+    before = await counts(admin_engine)
+    page = await followups.list_for_case(case_id, actor, limit=1)
+    ids = []
+    while True:
+        assert len(page.items) == 1
+        ids.append(str(page.items[0].id))
+        if page.next_cursor is None:
+            break
+        page = await followups.list_for_case(case_id, actor, cursor=page.next_cursor, limit=1)
+    assert ids == expected
+    assert await counts(admin_engine) == before
+    assert (await followups.list_for_case(case_id, actor, limit=100)).next_cursor is None
+
+
+@pytest.mark.parametrize(
+    "missing",
+    [
+        "case.read.assigned",
+        "referral.read.assigned",
+        "referral.follow_up.read.assigned",
+    ],
+)
+async def test_case_index_requires_every_read_family(env, missing):
+    followups, _, case_id, _, ref_id, actor = env
+    await followups.record(ref_id, command(env), actor, "scoped-note")
+    wrong = actor.model_copy(update={"capabilities": actor.capabilities - {missing}})
+    with pytest.raises(DomainError) as err:
+        await followups.list_for_case(case_id, wrong)
+    assert err.value.code == "CAPABILITY_REQUIRED"
+    assert err.value.status == 403
+
+
+async def test_case_index_does_not_borrow_oversight_between_permission_families(env):
+    followups, _, case_id, _, ref_id, actor = env
+    await followups.record(ref_id, command(env), actor, "oversight-note")
+    other_actor = actor.model_copy(
+        update={
+            "actor_id": "different-caregiver",
+            "capabilities": frozenset(
+                {
+                    "case.read.oversight",
+                    "referral.read.assigned",
+                    "referral.follow_up.read.oversight",
+                }
+            ),
+        }
+    )
+    with pytest.raises(DomainError) as err:
+        await followups.list_for_case(case_id, other_actor)
+    assert err.value.status == 403
+    oversight = other_actor.model_copy(
+        update={
+            "capabilities": frozenset(
+                {
+                    "case.read.oversight",
+                    "referral.read.oversight",
+                    "referral.follow_up.read.oversight",
+                }
+            )
+        }
+    )
+    assert len((await followups.list_for_case(case_id, oversight)).items) == 1
+
+
+async def test_case_index_rejects_ai_wrong_assignee_and_missing_case(env):
+    followups, _, case_id, _, ref_id, actor = env
+    await followups.record(ref_id, command(env), actor, "access-note")
+    for denied in (
+        actor.model_copy(update={"actor_type": ActorType.AI}),
+        actor.model_copy(update={"actor_id": "unassigned-caregiver"}),
+    ):
+        with pytest.raises(DomainError) as err:
+            await followups.list_for_case(case_id, denied)
+        assert err.value.status == 403
+    with pytest.raises(DomainError) as err:
+        await followups.list_for_case(uuid4(), actor)
+    assert err.value.code == "CASE_NOT_FOUND"
+    assert err.value.status == 404
+
+
+async def test_case_index_refuses_stale_caregiver_after_reassignment(
+    env, service, manager, admin_engine
+):
+    followups, _, case_id, assignment, ref_id, actor = env
+    await followups.record(ref_id, command(env), actor, "before-reassign")
+    assert len((await followups.list_for_case(case_id, actor)).items) == 1
+    await service.mutate(
+        "reassign",
+        ReassignCaregiver(
+            expected_current_assignment_id=assignment,
+            caregiver_actor_id="replacement",
+            reason="Approved assignment replacement, not a Referral outcome",
+        ),
+        manager,
+        "case-index-reassignment",
+        case_id,
+    )
+    before = await counts(admin_engine)
+    with pytest.raises(DomainError) as err:
+        await followups.list_for_case(case_id, actor)
+    assert err.value.status == 403
+    assert await counts(admin_engine) == before
+
+
+async def test_case_index_excludes_followups_from_other_case(env, service, manager):
+    followups, referrals, case_id, _, ref_id, actor = env
+    await followups.record(ref_id, command(env, "local-record"), actor, "local-record")
+    foreign = await service.mutate(
+        "create",
+        CreateCase(
+            upstream_enrollment_ref="separate-upstream",
+            elder_reference="another-elder",
+            initial_caregiver_actor_id=actor.actor_id,
+        ),
+        manager,
+        "separate-case",
+    )
+    foreign_id = UUID(foreign["case"]["id"])
+    foreign_assignment = UUID(foreign["current_assignment"]["id"])
+    need = await service.mutate(
+        "observation_add",
+        RecordObservation(
+            expected_current_assignment_id=foreign_assignment,
+            record_type="NEED_CAPTURE",
+            occurred_at=datetime.now(UTC),
+            content="Independent observation",
+        ),
+        actor,
+        "foreign-index-need",
+        foreign_id,
+    )
+    foreign_ref = await referrals.create(
+        foreign_id,
+        CreateReferral(
+            expected_current_assignment_id=foreign_assignment,
+            source_need_observation_id=UUID(need["id"]),
+            reason="Separate Referral",
+        ),
+        actor,
+        "foreign-index-referral",
+    )
+    await followups.record(
+        UUID(foreign_ref["id"]),
+        RecordReferralFollowUp(
+            expected_current_assignment_id=foreign_assignment,
+            note="Foreign Case follow-up",
+            reason="Descriptive note",
+        ),
+        actor,
+        "foreign-index-note",
+    )
+    local = await followups.list_for_case(case_id, actor)
+    assert len(local.items) == 1
+    assert str(local.items[0].referral_id) == str(ref_id)
+    assert local.items[0].note == "local-record"
+
+
+async def test_case_index_invalid_cursor_and_bounds_rejected(env):
+    followups, _, case_id, _, _, actor = env
+    for limit in (0, 101):
+        with pytest.raises(DomainError) as err:
+            await followups.list_for_case(case_id, actor, limit=limit)
+        assert err.value.code == "INVALID_PAGE_LIMIT"
+    token = base64.urlsafe_b64encode(
+        json.dumps(["2026-10-09T00:00:00+00:00", {"not": "a UUID"}]).encode()
+    ).decode()
+    with pytest.raises(DomainError) as err:
+        await followups.list_for_case(case_id, actor, cursor=token)
+    assert err.value.code == "INVALID_CURSOR"
+
+
+async def test_case_index_http_contract_auth_denial_and_no_mutation(env, admin_engine):
+    followups, _, case_id, _, ref_id, actor = env
+    await followups.record(ref_id, command(env), actor, "http-case-index")
+    before = await counts(admin_engine)
+    app = create_app(Settings(database_url=PostgresDsn(os.environ["NASIM_TEST_APP_DATABASE_URL"])))
+    url = f"/api/v1/cases/{case_id}/referral-follow-ups"
+    try:
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app=app), base_url="http://test"
+        ) as client:
+            assert (await client.get(url)).status_code == 401
+            app.dependency_overrides[get_actor] = lambda: actor
+            response = await client.get(url, params={"limit": 1})
+            assert response.status_code == 200, response.text
+            assert response.json()["items"][0]["note"] == command(env).note
+            assert response.json()["items"][0]["referral_id"] == str(ref_id)
+            assert (await client.get(url, params={"limit": 0})).status_code == 422
+            assert (await client.get(url, params={"cursor": "wrong"})).status_code == 422
+            assert (await client.post(url, json={})).status_code == 405
+            assert (
+                await client.get(url, headers={"Origin": "https://example.invalid"})
+            ).status_code == 401
+            app.dependency_overrides[get_actor] = lambda: actor.model_copy(
+                update={"capabilities": frozenset({"case.read.assigned"})}
+            )
+            assert (await client.get(url)).status_code == 403
+            spec = (await client.get("/openapi.json")).json()
+            contract = spec["paths"]["/api/v1/cases/{case_id}/referral-follow-ups"]
+            assert list(contract) == ["get"]
+            assert "Page_ReferralFollowUpView_" in str(
+                contract["get"]["responses"]["200"]["content"]["application/json"]["schema"]
+            )
+    finally:
+        app.dependency_overrides.clear()
+        await app.state.engine.dispose()
+    assert await counts(admin_engine) == before

@@ -1,0 +1,3 @@
+# Sprint-022 — Source attestation, not Dataset approval
+
+Base Draft PR #33. Deliver the exact original 84 synthetic candidates from PR #10, offline immutable ID/digest inventory, tests, CI, review, Draft PR. Consent/legal real-data gate BC-007 and independent QA Issue #13 are still open; do not invent training partition, AI runtime, Keycloak, Provider rules or production. Stage D-0130 unavailable.\n

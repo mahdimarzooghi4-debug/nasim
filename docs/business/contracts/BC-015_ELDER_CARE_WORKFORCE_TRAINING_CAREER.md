@@ -414,3 +414,13 @@ BC-015 موارد زیر را تصویب نمی‌کند:
 - نسبت سالمند به سالمندیار نباید Hard-code شود.
 - Training completion و Training version باید در طراحی آینده قابل ردیابی باشند.
 - Day-one release باید Training لازم برای استفاده مسئولانه از AI را در Scope آمادگی سالمندیار لحاظ کند.
+
+
+## 27. Initial teaching materials — unapproved drafts prepared 2026-10-08
+
+The Product Owner requested that the initial caregiver and AI teaching **text** be prepared now without serial micro-decisions. Two real authored **draft files** exist on Draft PR #10, collected in [Nasim Training Pack Index](../../training/README.md):
+
+- [TR-001 — راهنمای اولیه آموزش سالمندیار](../../training/drafts/TR-001_CAREGIVER_FOUNDATION_ORIENTATION_FA.md): introductory role boundary, communication, factual documentation and provenance, authorized assignments/referrals, privacy, risk awareness, practical fictional exercises and a non-graded trainer discussion sheet.
+- [TR-002 — راهنمای استفاده ایمن از دستیار AI نسیم](../../training/drafts/TR-002_NASIM_AI_SAFE_USE_GUIDE_FA.md): narrow Day-one information-only use, official publication/audience boundary, safe missing/conflicting source behavior, conditional human follow-up, data protection, separation of Training Eligibility from Dataset automation, examples and an **unpublished** elder quick-reference draft.
+
+**Content drafting ≠ authoritative curriculum approval ≠ reviewed specialty/legal training ≠ an actual professional certificate/qualification ≠ Workforce Activation.** Real reviewer/instructor, course duration, evidence of completion, Assessment/Pass rule, operational readiness and recurrence remain **OPEN**, and AI training in BC-015 must not be confused with permission to **train the AI model**. None of these drafts is official published guidance or an approved input to AI Runtime/Dataset. Publication/classification and real authorized personnel remain governed independently by D-0136…D-0141 and Issue #11; Dataset/Training Eligibility by Issue #12 and BC-007.
