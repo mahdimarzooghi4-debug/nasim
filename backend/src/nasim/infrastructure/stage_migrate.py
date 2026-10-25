@@ -39,6 +39,7 @@ async def grant_runtime_access(migration_url: str, app_role: str) -> None:
                 "outbox_event",
                 "idempotency_record",
                 "referral_record",
+                "referral_follow_up_record",
                 "provider_candidate_record",
                 "provider_qualification_evidence_record",
                 "provider_qualification_review_request_record",
