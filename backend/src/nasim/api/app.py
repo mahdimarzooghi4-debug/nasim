@@ -12,6 +12,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from nasim.application.care_journey import CareJourneyWorkspace, CareJourneyWorkspaceView
 from nasim.application.case_index import AssignedCaseIndex
 from nasim.application.casework import Casework
+from nasim.authorization.contracts import TrustedPrincipal
+from nasim.authorization.service import AuthorizationResolver
 from nasim.care_routines.contracts import (
     CareRoutineEventView,
     CareRoutineView,
@@ -19,8 +21,6 @@ from nasim.care_routines.contracts import (
     RecordCareRoutineEvent,
 )
 from nasim.care_routines.service import CareRoutines
-from nasim.authorization.contracts import TrustedPrincipal
-from nasim.authorization.service import AuthorizationResolver
 from nasim.domain.contracts import (
     AddContactPoint,
     AssignmentView,
