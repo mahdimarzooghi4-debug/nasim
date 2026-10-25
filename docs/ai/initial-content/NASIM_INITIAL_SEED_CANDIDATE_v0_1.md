@@ -24,7 +24,7 @@ A read-only structural audit of this package found 94 parseable JSONL records, 9
 
 ## Derived internal Evaluation set
 
-The Operations Manager explicitly authorized internal Evaluation use of the 84 synthetic records on 2026-10-25. The derived file places all 84 records in `EVALUATION_ONLY`, leaves Training and runtime publication unauthorized, and excludes all 10 internet-derived candidates. This is not an Evaluation Run or model activation. The exact derivative artifact hash and overlap check against any training input must be verified before a run, and T-026's fail-closed preflight must pass.
+The Operations Manager explicitly authorized internal Evaluation use of the 84 synthetic records on 2026-10-25. The derived file places all 84 records in `EVALUATION_ONLY`, leaves Training and runtime publication unauthorized, and excludes all 10 internet-derived candidates. This is not an Evaluation Run or model activation. The exact UTF-8 JSONL SHA-256 is `85a4383e17b47de3206ed1bbc694f4096312e054e44c265bcc7bd096c76b9857`. Verify no overlap with any training input before a run, and pass T-026's fail-closed preflight.
 
 See `NASIM_INTERNAL_EVALUATION_AUTHORIZATION_v0_1.md` for the scope and source-version confirmation.
 
