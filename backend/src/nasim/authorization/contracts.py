@@ -5,6 +5,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from nasim.care_routines.contracts import CARE_ROUTINE_PERMISSIONS
+
 from nasim.identity_context.contracts import ActorType
 from nasim.provider_registry.contracts import (
     PROVIDER_CANDIDATE_PERMISSIONS,
@@ -12,7 +14,6 @@ from nasim.provider_registry.contracts import (
     PROVIDER_QUALIFICATION_REVIEW_PERMISSIONS,
 )
 from nasim.referral.contracts import REFERRAL_FOLLOW_UP_PERMISSIONS, REFERRAL_PERMISSIONS
-from nasim.care_routines.contracts import CARE_ROUTINE_PERMISSIONS
 
 PERMISSIONS = (
     "case.create",
