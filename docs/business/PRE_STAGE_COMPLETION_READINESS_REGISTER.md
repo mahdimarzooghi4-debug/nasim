@@ -3,7 +3,7 @@
 - **Project:** نسیم — نظام سالمند‌یاری محله‌محور
 - **Status:** Current-state snapshot and execution plan; not a business acceptance or Stage certification
 - **Updated:** 2026-10-25
-- **Current main:** `52bf6ef15c701aa5ecec6a1a30635d83a2d0344b` (docs-only process update). Backend implementation through Sprint 024 is present in main; exact-head CI was previously verified on `25363a7d0c6d5fa129608dcff57de4d2af5610b5`. CI for the newer docs-only head is not asserted here.
+- **Current main:** `64d9f6ad1a34a742aaec6980e3f2e06b9a09a584` (PR #52 merge commit). Sprint 025 backend and assigned-caregiver routine web workflows from PRs #51–#52 are integrated. Backend and Web CI both passed on exact PR HEAD `da4f1e1347c8e91a2b74ab5ab8cc8810a3481580`; this does not certify Hosted Stage or deployed workflows.
 - **Hosted Stage:** **UNAVAILABLE** under D-0130. No Stage admission, Stage QA, Release approval or Production deployment is claimed.
 
 > This register records evidence and remaining gates. A merged technical foundation does not create business authority, operational permission, training eligibility or an external service. `OPEN ≠ ACCEPTED`; a closed issue is evidence only for the scope actually reviewed.
@@ -12,9 +12,9 @@
 
 | Area | Current state | Remaining boundary |
 |---|---|---|
-| Main branch | Backend work through Sprint 024 is integrated; current docs-only HEAD is `52bf6ef15c701aa5ecec6a1a30635d83a2d0344b` | Exact-head CI for the current docs-only SHA is not recorded; CI does not certify a deployed environment or user workflow |
-| Backend | Case, Referral, Provider and learning-data foundations exist; migration head is `0009_learning_partition_claim` | Foundations do not by themselves complete operational Provider/service/Need/referral/outcome journeys |
-| Web | React/TypeScript work is present for parts of Case and Provider operations | No complete supporter/admin product or Figma sign-off |
+| Main branch | Sprint 025 backend and PR #51–#52 routine web workflows are integrated at `64d9f6ad1a34a742aaec6980e3f2e06b9a09a584` | CI passed on PR #52's exact HEAD; Hosted Stage, environment QA and release remain separate gates |
+| Backend | Case, Referral, Provider, learning-data and assigned-caregiver routine foundations exist; migration head is `0010_care_routines` | Notifications, generated due instances, elder/family access and complete Provider/service/outcome journeys remain outside the implemented scope |
+| Web | Case/Provider operational slices include assigned-caregiver routine plan display and explicit human event read/record; PR #52 CI passed | No complete supporter/admin product, configured browser identity or Figma sign-off |
 | Mobile | React Native/TypeScript is the accepted direction in D-0171 | No React Native app is implemented in this repository |
 | Identity | Keycloak is the selected OIDC architecture (D-0169) | No real Keycloak realm/client, authentication integration or actor grants |
 | AI | D-0135 selects read-only, source-grounded information for elder and caregiver; learning metadata foundations are present | No approved published corpus, operational AI runtime, Dataset Builder, Trainer, Evaluation or promotion pipeline |
