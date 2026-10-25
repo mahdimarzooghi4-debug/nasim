@@ -1,15 +1,15 @@
 # T-027 — Internal Qwen inference runtime contract
 
 - **Date:** 2026-10-25
-- **Status:** PROPOSED FOR INTERNAL EVALUATION — not deployed or activated
+- **Status:** SELECTED FOR INTERNAL EVALUATION ONLY — not deployed or activated
 - **Selected model:** `Qwen/Qwen3.5-9B` at `c202236235762e1c871ad0ccb60c8ee5ba337b9a` (D-0179)
 - **Purpose:** prepare an internal-only runtime path for the accepted single-model evaluation scorecard (D-0180)
 
-## Runtime recommendation
+## Selected runtime
 
-Use **vLLM 0.32.0** as the initial internal serving engine for compatibility work, pinned to its release artifact digest after the GPU/CUDA target is selected. The exact Qwen model card documents vLLM serving and its local OpenAI-compatible API. vLLM added Qwen3.5 dense support in v0.27.0; the current v0.32.0 release includes additional Qwen3.5 compatibility fixes. The Qwen card also documents `--language-model-only` for text-only serving, which fits Nasim's first informational assistant scope and avoids loading its vision encoder for this use case.
+Use **vLLM 0.32.0** as the internal serving engine for the initial single-model evaluation path. Pin its release artifact digest after the GPU/CUDA target is selected. The exact Qwen model card documents vLLM serving and its local OpenAI-compatible API. vLLM added Qwen3.5 dense support in v0.27.0; the current v0.32.0 release includes additional Qwen3.5 compatibility fixes. The Qwen card also documents `--language-model-only` for text-only serving, which fits Nasim's first informational assistant scope and avoids loading its vision encoder for this use case.
 
-This recommendation is **not yet a deployment decision**. The exact image digest/package lock, GPU/CUDA combination, service host, capacity, and load profile remain unselected. Before activation, run a compatibility smoke against the exact pinned model snapshot on the selected hardware and record the resulting artifacts.
+This runtime selection is **not a deployment or activation decision**. The exact image digest/package lock, GPU/CUDA combination, service host, capacity, and load profile remain unselected. Before activation, run a compatibility smoke against the exact pinned model snapshot on the selected hardware and record the resulting artifacts.
 
 ## Service boundary
 
