@@ -25,7 +25,8 @@ from nasim.infrastructure.models import AuditEntry, IdempotencyRecord, OutboxEve
 
 
 def _digest(value: dict[str, Any]) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    serialized = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+    return hashlib.sha256(serialized).hexdigest()
 
 
 class CareRoutines:
@@ -126,7 +127,9 @@ class CareRoutines:
         if not key.strip() or len(key) > 200:
             raise DomainError("INVALID_IDEMPOTENCY_KEY", 422)
 
-    async def list(self, case_id: UUID, actor: ActorContext, limit: int = 50) -> list[CareRoutineView]:
+    async def list(
+        self, case_id: UUID, actor: ActorContext, limit: int = 50
+    ) -> list[CareRoutineView]:
         self._human(actor)
         async with self.sessions() as session, session.begin():
             assignment = await self.references.lock_assignment(session, case_id)
@@ -308,7 +311,9 @@ class CareRoutines:
         self._human(actor)
         async with self.sessions() as session, session.begin():
             assignment = await self.references.lock_assignment(session, case_id)
-            require_assigned(actor, "care_routine.event.read.assigned", assignment.caregiver_actor_id)
+            require_assigned(
+                actor, "care_routine.event.read.assigned", assignment.caregiver_actor_id
+            )
             exists = await session.scalar(
                 select(CareRoutineRecord.id).where(
                     CareRoutineRecord.case_id == case_id,
