@@ -34,3 +34,15 @@ The existing `ProviderCandidates`, `ProviderQualificationEvidence` and `Provider
 - Evidence and Review Request submission require their separate `provider_qualification_evidence.record` / `provider_qualification_review.request` capabilities and a selected known Candidate. Backend re-enforces each scoped permission.
 - Three exact immutable 201 POST routes, secure per-payload idempotency identities, same-origin JSON only, generic 401/403/409 handling, no hidden retry and fresh Backend read on accepted records. No dummy Provider or forged status is created.
 - A real browser IdP, session/CSRF/origin protection, user-role mapping, document upload/validation provider, privacy and approved legal sharing authority remain **unimplemented**. Before any protected web release, close those gates and perform real E2E browser QA. D-0130 Hosted Stage remains unavailable.
+
+## Sprint 014 — Case Creation, Assignment and Contact (Draft)
+
+The approved TS-03 immutable Case writes can be exercised by authenticated **HUMAN** operators through the RTL panel. This is not a new Enrollment/eligibility workflow.
+
+- `POST /api/v1/cases`: explicit `case.assignment.manage` grant, required externally supplied `upstream_enrollment_ref`, `elder_reference` and initial caregiver actor ID. The system **records** the upstream reference; it does not verify that Enrollment was legal/completed or invent a default caregiver.
+- `POST /api/v1/cases/{case_id}/reassignments`: management capability, human-entered new caregiver ID and reason, exact `expected_current_assignment_id` from live backend read. DB enforces one active assignment and no silent history mutation; conflict triggers fresh read and human review.
+- `POST /api/v1/cases/{case_id}/contacts`: the currently assigned HUMAN with exact `case.contact.manage.assigned` may register an explicit contact type/value, not claim message delivery, ownership proof or preferred communication. Existing contact records are loaded from the protected `GET /api/v1/cases/{id}/contacts` route.
+- `GET /api/v1/cases/{id}`: for a user who can read a Case but has no Referral/Follow-up read grants, a separate narrow profile/operations view prevents an invented Referral grant. A management-only human can create a Case without gaining list/read access.
+- Browser commands are fixed same-origin 201 JSON, cryptographically secured per-payload idempotency and no actor/authorization spoofing. 401 closes the operational UI; 403/409 fail closed; accepted results prompt fresh server reads; client renders no optimistic official Case state.
+
+**Not authorized by this code:** Enrollment verification, real browser Identity Provider, cookie-session/CSRF/Origin defenses, final RBAC provisioning, outbound contact, Provider choice, Case closure, service Outcome or AI Training. Before real protected use, these require separate approved contracts and security/E2E evidence. CI container smoke is not Hosted Stage (D-0130).
