@@ -57,6 +57,20 @@ async def grant_runtime_access(migration_url: str, app_role: str) -> None:
             )
             if audit_update:
                 raise RuntimeError("Runtime role must not update audit history")
+            # The serving role must not write the dormant AI manifest registry.
+            # Only a future independent, approved worker may receive INSERT.
+            readonly_learning_tables = (
+                "learning_proposed_manifest",
+                "learning_proposed_source",
+            )
+            for table in readonly_learning_tables:
+                if await connection.scalar(
+                    text(
+                        "SELECT has_table_privilege(:role, :table, 'INSERT,UPDATE,DELETE,TRUNCATE')"
+                    ),
+                    {"role": app_role, "table": table},
+                ):
+                    raise RuntimeError("Serving runtime must not write Dataset manifest lineage")
             authorization_tables = (
                 "role_definition",
                 "permission_definition",

@@ -11,3 +11,7 @@ GRANT INSERT ON elder_case, case_profile_revision, contact_point_revision,
 GRANT UPDATE (ended_at) ON case_assignment TO nasim_app;
 -- SELECT FOR UPDATE requires an UPDATE privilege; immutable trigger forbids actual changes.
 GRANT UPDATE (id) ON elder_case TO nasim_app;
+
+-- Inert proposed AI Dataset manifest metadata is never exposed to serving runtime.
+-- Neither read nor write access exists until a separately approved policy/worker.
+REVOKE ALL ON learning_proposed_manifest, learning_proposed_source FROM nasim_app;
