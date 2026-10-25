@@ -7,6 +7,7 @@ Notifications, elder self-access, and missed-response automation are not configu
 """
 
 from collections.abc import Sequence
+from uuid import NAMESPACE_URL, uuid5
 
 import sqlalchemy as sa
 from alembic import op
@@ -123,6 +124,39 @@ def upgrade() -> None:
         "FOR EACH ROW EXECUTE FUNCTION nasim_reject_history_change()"
     )
     op.execute("REVOKE ALL ON care_routine_record, care_routine_event_record FROM PUBLIC")
+
+    # Register capability vocabulary without assigning it to any role.
+    connection = op.get_bind()
+    for code in (
+        "care_routine.manage.assigned",
+        "care_routine.read.assigned",
+        "care_routine.event.record.assigned",
+        "care_routine.event.read.assigned",
+    ):
+        identifier = str(uuid5(NAMESPACE_URL, "nasim:permission:" + code))
+        audit_id = str(uuid5(NAMESPACE_URL, "nasim:audit:" + identifier))
+        values = {"id": identifier, "audit_id": audit_id, "code": code}
+        connection.execute(
+            sa.text("""
+              INSERT INTO permission_definition
+                (id,code,title,revision_no,recorded_at,recorded_by_actor_id,
+                 recorded_by_actor_type,correlation_id,reason)
+              VALUES (:id,:code,:code,1,transaction_timestamp(),'schema-migration','SYSTEM',
+                '0010_care_routines','Capability vocabulary registration only; no authority grant')
+            """),
+            values,
+        )
+        connection.execute(
+            sa.text("""
+              INSERT INTO authorization_audit
+                (id,actor_id,actor_type,timestamp,reason,correlation_id,resource_type,
+                 resource_id,action,before_reference,after_reference)
+              VALUES (:audit_id,'schema-migration','SYSTEM',transaction_timestamp(),
+                'Capability vocabulary registration only; no authority grant',
+                '0010_care_routines','permission_definition',:id,'REGISTERED',NULL,:id)
+            """),
+            values,
+        )
 
 
 def downgrade() -> None:
