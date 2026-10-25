@@ -172,7 +172,10 @@ function CaseJourney({ caseId, actor, back, onLost }: {
         }}
       />
       {canReadCareRoutines(actor) && <CareRoutines
-        caseId={caseId} actor={actor} onLost={onLost}
+        caseId={caseId} actor={actor}
+        assignmentId={view.case.current_assignment.id}
+        assignedActorId={view.case.current_assignment.caregiver_actor_id}
+        onLost={onLost}
       />}
       {view.selected_referral && view.follow_ups && <section className="card">
         <div className="section-title">

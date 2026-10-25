@@ -1,5 +1,5 @@
 import type {
-  ActorContext, AssignmentView, CareJourneyWorkspaceView, CareRoutineView, CaseProfileView, FollowUpView, Page,
+  ActorContext, AssignmentView, CareJourneyWorkspaceView, CareRoutineEventView, CareRoutineView, CaseProfileView, FollowUpView, Page,
   ProviderCandidateView, ProviderWorkspaceView, TimelineEntry,
 } from "./types";
 import type { ContactRecord } from "./caseCommands";
@@ -97,6 +97,10 @@ export const api = {
   careRoutines: (caseId: string, signal?: AbortSignal) =>
     getJson<CareRoutineView[]>(
       "/api/v1/cases/" + id(caseId) + "/care-routines?limit=100", signal),
+  careRoutineEvents: (caseId: string, routineId: string, signal?: AbortSignal) =>
+    getJson<CareRoutineEventView[]>(
+      "/api/v1/cases/" + id(caseId) + "/care-routines/" + id(routineId) +
+        "/events?limit=100", signal),
   caseFollowUps: (caseId: string, cursor?: string | null, signal?: AbortSignal) =>
     getJson<Page<FollowUpView>>(
       "/api/v1/cases/" + id(caseId) + "/referral-follow-ups" +

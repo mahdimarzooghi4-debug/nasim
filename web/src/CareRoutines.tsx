@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, ApiError, canReadCareRoutines } from "./api";
 import { errorMessage } from "./format";
+import CareRoutineEvents from "./CareRoutineEvents";
 import type { ActorContext, CareRoutineView } from "./types";
 
 const expired = (error: unknown) => error instanceof ApiError && error.status === 401;
@@ -14,9 +15,11 @@ function scheduleText(routine: CareRoutineView): string {
   return `${frequency} · ساعت ${time.slice(0, 5)} · ${timezone}`;
 }
 
-export default function CareRoutines({ caseId, actor, onLost }: {
+export default function CareRoutines({ caseId, actor, assignmentId, assignedActorId, onLost }: {
   caseId: string;
   actor: ActorContext;
+  assignmentId: string;
+  assignedActorId: string;
   onLost: () => void;
 }) {
   const [routines, setRoutines] = useState<CareRoutineView[] | null>(null);
@@ -67,6 +70,14 @@ export default function CareRoutines({ caseId, actor, onLost }: {
             <span className="chip">{reminder ? "یادآوری اپ" : "کار سالمندیار"}</span>
           </div>
           <p className="meta">{scheduleText(routine)}</p>
+          <CareRoutineEvents
+            caseId={caseId}
+            routine={routine}
+            actor={actor}
+            assignmentId={assignmentId}
+            assignedActorId={assignedActorId}
+            onLost={onLost}
+          />
           <p className="meta">
             {reminder
               ? "این برنامه برای یادآوری توسط اپ تعریف شده؛ ارسال اعلان از این نما قابل تأیید نیست."
