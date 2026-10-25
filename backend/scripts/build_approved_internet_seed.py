@@ -107,6 +107,10 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
+        if args.input.resolve() == args.output.resolve():
+            raise ValueError("input and output must be different files")
+        if args.output.exists():
+            raise ValueError(f"refusing to overwrite existing output: {args.output}")
         items, rejected = read_items(args.input)
         if not items:
             print(
