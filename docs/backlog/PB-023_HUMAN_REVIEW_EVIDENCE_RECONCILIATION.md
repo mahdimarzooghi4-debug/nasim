@@ -1,0 +1,1 @@
+# PB-023 — Complete 84-record evidence crosscheck\n\nDeliver strict offline crosscheck of externally submitted 84 row outcomes, source/version/digests, two optional patch outcomes, actual evidence references, tests, CI, review. Exclude any forged attestation, Training selection, Runtime or Model activation. See T-023.\n

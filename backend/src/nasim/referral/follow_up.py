@@ -133,6 +133,63 @@ class ReferralFollowUps:
                 else None,
             )
 
+    async def list_for_case(
+        self, case_id: UUID, actor: ActorContext, cursor: str | None = None, limit: int = 50
+    ) -> Page[ReferralFollowUpView]:
+        """Authorized descriptive index of already-recorded notes across one Case.
+
+        This does not imply a service status, follow-up cadence, verified outcome
+        or frozen cross-context snapshot. The underlying Referral tables remain
+        owned by this bounded context.
+        """
+
+        self._require_read(actor)
+        # All three independent grants are required; role labels cannot widen
+        # visibility of sensitive note text through a Case-level index.
+        families = (
+            ("case.read.assigned", "case.read.oversight"),
+            ("referral.read.assigned", "referral.read.oversight"),
+            ("referral.follow_up.read.assigned", "referral.follow_up.read.oversight"),
+        )
+        if any(actor.capabilities.isdisjoint(family) for family in families):
+            raise DomainError("CAPABILITY_REQUIRED", 403)
+        if not 1 <= limit <= 100:
+            raise DomainError("INVALID_PAGE_LIMIT", 422)
+
+        async with self.sessions() as session, session.begin():
+            assignment = await self.references.lock_assignment(session, case_id)
+            # Every capability family must independently authorize this Case.
+            # An oversight grant in one family cannot bypass another family's
+            # current-assignment scope.
+            for assigned, oversight in families:
+                if oversight not in actor.capabilities:
+                    require_assigned(actor, assigned, assignment.caregiver_actor_id)
+            query = (
+                select(ReferralFollowUpRecord)
+                .join(ReferralRecord, ReferralFollowUpRecord.referral_id == ReferralRecord.id)
+                .where(ReferralRecord.case_id == case_id)
+            )
+            if cursor:
+                stamp, identifier = decode_cursor(cursor)
+                query = query.where(
+                    tuple_(ReferralFollowUpRecord.recorded_at, ReferralFollowUpRecord.id)
+                    > tuple_(literal(stamp), literal(identifier))
+                )
+            rows = (
+                await session.scalars(
+                    query.order_by(
+                        ReferralFollowUpRecord.recorded_at, ReferralFollowUpRecord.id
+                    ).limit(limit + 1)
+                )
+            ).all()
+            selected = rows[:limit]
+            return Page[ReferralFollowUpView](
+                items=[ReferralFollowUpView.model_validate(row) for row in selected],
+                next_cursor=encode_cursor(selected[-1].recorded_at, selected[-1].id)
+                if len(rows) > limit
+                else None,
+            )
+
     async def get(self, record_id: UUID, actor: ActorContext) -> ReferralFollowUpView:
         self._require_read(actor)
         async with self.sessions() as session, session.begin():

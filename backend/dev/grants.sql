@@ -14,4 +14,4 @@ GRANT UPDATE (id) ON elder_case TO nasim_app;
 
 -- Inert proposed AI Dataset manifest metadata is never exposed to serving runtime.
 -- Neither read nor write access exists until a separately approved policy/worker.
-REVOKE ALL ON learning_proposed_manifest, learning_proposed_source FROM nasim_app;
+REVOKE ALL ON learning_proposed_manifest, learning_proposed_source, learning_source_purpose_claim FROM nasim_app;

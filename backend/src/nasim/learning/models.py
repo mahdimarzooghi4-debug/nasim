@@ -56,3 +56,28 @@ class ProposedDatasetSource(Base):
             name="ck_learning_source_digests",
         ),
     )
+
+
+class SourcePurposeClaim(Base):
+    """One immutable technical TRAINING/EVALUATION source partition reservation.
+
+    An opaque source identity may recur in manifests with the SAME purpose,
+    never the opposite purpose. This is NOT household-level independence.
+    """
+
+    __tablename__ = "learning_source_purpose_claim"
+
+    namespace: Mapped[str] = mapped_column(String(80), primary_key=True)
+    source_id: Mapped[UUID] = mapped_column(primary_key=True)
+    purpose: Mapped[str] = mapped_column(String(12))
+
+    __table_args__ = (
+        CheckConstraint(
+            "namespace ~ '^[a-z][a-z0-9_.-]{0,79}$'",
+            name="ck_learning_partition_source_namespace",
+        ),
+        CheckConstraint(
+            "purpose IN ('TRAINING', 'EVALUATION')",
+            name="ck_learning_partition_purpose",
+        ),
+    )

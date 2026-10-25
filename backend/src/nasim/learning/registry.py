@@ -13,6 +13,7 @@ from uuid import UUID, uuid5
 
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from nasim.learning.dataset_manifest import (
@@ -86,39 +87,49 @@ class ProposedManifestRegistry:
         manifest = self._builder.build(purpose, sources)
         attest_stored_manifest(manifest)
 
-        async with self._sessions() as session, session.begin():
-            result = await session.execute(
-                pg_insert(ProposedDatasetManifest)
-                .values(
-                    id=manifest.manifest_id,
-                    manifest_sha256=manifest.manifest_sha256,
-                    purpose=manifest.purpose.value,
-                    policy_sha256=manifest.policy_sha256,
-                    approval_evidence_sha256=manifest.approval_evidence_sha256,
-                    source_count=len(manifest.sources),
-                    recorded_at=datetime.now(UTC),
-                )
-                .on_conflict_do_nothing(index_elements=["id"])
-                .returning(ProposedDatasetManifest.id)
-            )
-            inserted = result.scalar_one_or_none() is not None
-            if inserted:
-                session.add_all(
-                    ProposedDatasetSource(
-                        manifest_id=manifest.manifest_id,
-                        namespace=s.namespace,
-                        source_id=s.source_id,
-                        source_version_sha256=s.source_version_sha256,
-                        curation_evidence_sha256=s.curation_evidence_sha256,
+        try:
+            async with self._sessions() as session, session.begin():
+                result = await session.execute(
+                    pg_insert(ProposedDatasetManifest)
+                    .values(
+                        id=manifest.manifest_id,
+                        manifest_sha256=manifest.manifest_sha256,
+                        purpose=manifest.purpose.value,
+                        policy_sha256=manifest.policy_sha256,
+                        approval_evidence_sha256=manifest.approval_evidence_sha256,
+                        source_count=len(manifest.sources),
+                        recorded_at=datetime.now(UTC),
                     )
-                    for s in manifest.sources
+                    .on_conflict_do_nothing(index_elements=["id"])
+                    .returning(ProposedDatasetManifest.id)
                 )
-            else:
-                # If a concurrent identical proposal already committed, verify
-                # all bytes, not just the UUID, before treating it as replay.
-                existing = await self._read(session, manifest.manifest_id)
-                if existing != manifest:
-                    raise ManifestError("MANIFEST_REPLAY_CONFLICT")
+                inserted = result.scalar_one_or_none() is not None
+                if inserted:
+                    session.add_all(
+                        ProposedDatasetSource(
+                            manifest_id=manifest.manifest_id,
+                            namespace=s.namespace,
+                            source_id=s.source_id,
+                            source_version_sha256=s.source_version_sha256,
+                            curation_evidence_sha256=s.curation_evidence_sha256,
+                        )
+                        for s in manifest.sources
+                    )
+                else:
+                    # If a concurrent identical proposal already committed, verify
+                    # all bytes, not just the UUID, before treating it as replay.
+                    existing = await self._read(session, manifest.manifest_id)
+                    if existing != manifest:
+                        raise ManifestError("MANIFEST_REPLAY_CONFLICT")
+        except IntegrityError as error:
+            # The PostgreSQL trigger is the authoritative cross-manifest
+            # partition guard, including concurrent competing proposals.
+            # Never reinterpret unrelated DB failures as business eligibility.
+            if getattr(
+                error.orig, "sqlstate", None
+            ) == "23514" and "LEARNING_SOURCE_PARTITION_CONFLICT" in str(error.orig):
+                raise ManifestError("TRAINING_EVALUATION_SOURCE_OVERLAP") from error
+            raise
         return manifest
 
     async def read(self, manifest_id: UUID) -> DatasetManifest | None:

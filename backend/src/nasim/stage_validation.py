@@ -19,6 +19,7 @@ EXPECTED_ROUTES = {
     "/api/v1/referrals/{referral_id}": {"get"},
     "/api/v1/referrals/{referral_id}/follow-up-records": {"get", "post"},
     "/api/v1/referral-follow-up-records/{record_id}": {"get"},
+    "/api/v1/cases/{case_id}/referral-follow-ups": {"get"},
     "/api/v1/authorization/self": {"get"},
     "/api/v1/cases": {"get", "post"},
     "/api/v1/cases/{case_id}": {"get"},

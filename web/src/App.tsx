@@ -4,6 +4,7 @@ import CaseCorrections from "./CaseCorrections";
 import CaseHistory from "./CaseHistory";
 import CaseCreate from "./CaseCreate";
 import CaseOperations from "./CaseOperations";
+import CaseFollowUpIndex from "./CaseFollowUpIndex";
 import CaseProfileOperations from "./CaseProfileOperations";
 import { mayManageCases } from "./caseCommands";
 import ProviderIntake from "./ProviderIntake";
@@ -151,6 +152,10 @@ function CaseJourney({ caseId, actor, back, onLost }: {
         onChanged={() => setRevision(value => value + 1)}
       />
       <CaseHistory caseId={caseId} actor={actor} onAuthenticationLost={onLost} />
+      <CaseFollowUpIndex
+        key={caseId + ":" + revision}
+        caseId={caseId} actor={actor} onAuthenticationLost={onLost}
+      />
       <CareActions
         actor={actor}
         caseId={caseId}
