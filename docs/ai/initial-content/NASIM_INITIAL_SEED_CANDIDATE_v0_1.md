@@ -20,7 +20,13 @@ The JSONL package keeps each original record verbatim inside `record`, with a wr
 
 On 2026-10-25, the Operations Manager selected **internal evaluation only** as the intended future use of the 84 Nasim-authored synthetic candidates (52 behavior examples + 32 grounded-positive examples). On the same date, the Operations Manager confirmed the content review covered the exact two source versions identified above. This records review/version reconciliation and intended scope only; it does not grant Training or Evaluation permission, approve a held-out set, or change any candidate record's use permission.
 
-A read-only structural audit of this package found 94 parseable JSONL records, 94 unique IDs, no duplicate IDs, and no missing prompt/target-answer or source-lineage fields. All 10 internet-derived candidates contain citation and license metadata. All 94 records remain unassigned and unauthorized for Training, Evaluation, and runtime publication.
+A read-only structural audit of this package found 94 parseable JSONL records, 94 unique IDs, no duplicate IDs, and no missing prompt/target-answer or source-lineage fields. All 10 internet-derived candidates contain citation and license metadata. The original 94-record candidate package remains unassigned and unauthorized for Training, Evaluation, and runtime publication. A separate 84-record derivative is authorized for internal Evaluation only, pending technical preflight.
+
+## Derived internal Evaluation set
+
+The Operations Manager explicitly authorized internal Evaluation use of the 84 synthetic records on 2026-10-25. The derived file places all 84 records in `EVALUATION_ONLY`, leaves Training and runtime publication unauthorized, and excludes all 10 internet-derived candidates. This is not an Evaluation Run or model activation. The exact derivative artifact hash and overlap check against any training input must be verified before a run, and T-026's fail-closed preflight must pass.
+
+See `NASIM_INTERNAL_EVALUATION_AUTHORIZATION_v0_1.md` for the scope and source-version confirmation.
 
 ## Use state
 
