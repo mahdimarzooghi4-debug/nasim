@@ -97,7 +97,7 @@ AI نباید صرفاً با تولید یک پاسخ، حقیقت رسمی پ�
 
 `Production Data → Eligible Data → Prepared/Curated Dataset → Training → Evaluation → Approved Model Version → Production`
 
-این زنجیره در این مرحله فقط یک **چارچوب حاکمیتی پیشنهادی برای جلوگیری از یادگیری کنترل‌نشده** است؛ نوع Training، الگوریتم، مدل و Gateهای دقیق هنوز تصمیم نشده‌اند.
+این زنجیره یک **چارچوب حاکمیتی پیشنهادی برای جلوگیری از یادگیری کنترل‌نشده** است. طبق D-0179 مدل پایهٔ Qwen/Qwen3.5-9B با نسخهٔ ثابت انتخاب شده است؛ نوع Training، الگوریتم، Runtime و Gateهای اجرایی/Promotion همچنان OPEN هستند.
 
 ## 8. No Silent Self-Promotion
 
@@ -162,7 +162,7 @@ AI نباید صرفاً با تولید یک پاسخ، حقیقت رسمی پ�
 
 BC-006 موارد زیر را تصویب نمی‌کند:
 
-- نوع مدل
+- مدل رقیب/اضافی یا جایگزین
 - LLM بودن یا نبودن
 - الگوریتم Training
 - Online Learning
@@ -203,7 +203,7 @@ BC-006 موارد زیر را تصویب نمی‌کند:
 
 تا پیش از Accepted شدن BC-006:
 
-- Technical نباید مدل، الگوریتم یا Training method را قطعی فرض کند.
+- Technical باید مدل پایهٔ انتخاب‌شده در D-0179 را مبنا بگیرد؛ الگوریتم و Training method را تا پذیرش قرارداد مربوط قطعی فرض نکند.
 - Production data نباید بدون Data Governance وارد Training path شود.
 - خروجی AI نباید مستقیماً Official Record شود.
 - مدل جدید نباید بدون Promotion policy جایگزین مدل فعال شود.
