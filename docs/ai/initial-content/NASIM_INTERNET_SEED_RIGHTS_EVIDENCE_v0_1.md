@@ -30,6 +30,9 @@ On 2026-10-25, the Operations Manager selected `NASIM-WEB-001` through `NASIM-WE
 
 On 2026-10-25, the Operations Manager also selected `NASIM-WEB-006` (the MDPI study on family support in home care for Iranian older people) for the **internal Training candidate path**. This is likewise not a Training grant. The exact source snapshot, attribution confirmation, Persian/content review, and remaining eligibility evidence are still open; the record remains `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED`.
 
+
+On 2026-10-25, the Operations Manager also selected `NASIM-WEB-007` and `NASIM-WEB-008` (the Springer Nature qualitative study of 13 family caregivers in Khorramabad) for the **internal Training candidate path**. This is not a Training grant. The exact publisher-version PDF hash is already recorded in the candidate inventory; Persian/content review, attribution review (including third-party credit lines), and remaining purpose-specific eligibility evidence remain open. The records remain `CANDIDATE_NOT_AUTHORIZED` with `training_permission: NOT_AUTHORIZED`.
+
 ## Primary evidence links
 
 - JMIR article and policy: `https://aging.jmir.org/2019/1/e12276`; `https://aging.jmir.org/publishing-policies/open-access-policy`
