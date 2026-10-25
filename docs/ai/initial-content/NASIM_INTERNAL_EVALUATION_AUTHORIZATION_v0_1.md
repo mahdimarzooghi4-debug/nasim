@@ -5,6 +5,7 @@
 - **Decision authority:** Nasim Operations Manager (explicit confirmation in this project conversation)
 - **Authorized artifact:** `nasim_internal_evaluation_set_v0_1.jsonl`
 - **Records:** 84 Nasim-authored synthetic records (52 behavior + 32 grounded-positive)
+- **Authorized Evaluation artifact SHA-256 (UTF-8 JSONL bytes):** `85a4383e17b47de3206ed1bbc694f4096312e054e44c265bcc7bd096c76b9857`
 - **Purpose:** Internal evaluation of the selected Qwen model only
 
 ## Decision
