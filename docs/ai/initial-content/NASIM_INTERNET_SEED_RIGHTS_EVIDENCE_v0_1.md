@@ -16,7 +16,7 @@
 
 ## Findings and limits
 
-1. The four scholarly articles (8 candidate records) state CC BY 4.0 on publisher pages. Their reuse statements require attribution; the Springer article also calls out third-party material exclusions.
+1. The four scholarly articles (9 candidate records) state CC BY 4.0 on publisher pages. Their reuse statements require attribution; the Springer article also calls out third-party material exclusions.
 2. The GOV.UK page (1 candidate record) states OGL v3.0 but warns that identified third-party material requires separate permission. The page is UK/England public-health guidance, not official Nasim policy or Iran-specific service information.
 3. Three source groups (6 records) do not yet carry a captured exact source snapshot/hash in the candidate inventory. Their publisher pages and stated licenses are identified above; exact version evidence still needs capture before a content-use decision.
 4. These license statements do not themselves grant Nasim a source-specific Training or Evaluation admission. They also do not replace review of the Persian paraphrases, source scope, attribution, or whether the selected purpose is appropriate.
