@@ -16,6 +16,8 @@ EXPECTED_ROUTES = {
     "/api/v1/provider-candidates/{candidate_id}/qualification-review-workspace": {"get"},
     "/api/v1/provider-qualification-review-requests/{request_id}": {"get"},
     "/api/v1/cases/{case_id}/referrals": {"get", "post"},
+    "/api/v1/cases/{case_id}/care-routines": {"get", "post"},
+    "/api/v1/cases/{case_id}/care-routines/{routine_id}/events": {"get", "post"},
     "/api/v1/referrals/{referral_id}": {"get"},
     "/api/v1/referrals/{referral_id}/follow-up-records": {"get", "post"},
     "/api/v1/referral-follow-up-records/{record_id}": {"get"},
@@ -115,6 +117,42 @@ def validate_http(base_url: str) -> None:
         status, _ = request(base_url, path)
         if status != 401:
             raise RuntimeError("Anonymous Referral read did not fail closed")
+
+    routine_id = uuid4()
+    status, _ = request(base_url, f"/api/v1/cases/{case_id}/care-routines")
+    if status != 401:
+        raise RuntimeError("Anonymous care routine read did not fail closed")
+    status, _ = request(
+        base_url,
+        f"/api/v1/cases/{case_id}/care-routines",
+        "POST",
+        {
+            "expected_current_assignment_id": str(uuid4()),
+            "routine_type": "CAREGIVER_TASK",
+            "title": "smoke routine",
+            "schedule": {"timezone": "UTC", "local_time": "09:00:00", "cadence": "DAILY"},
+        },
+    )
+    if status != 401:
+        raise RuntimeError("Anonymous care routine write did not fail closed")
+    status, _ = request(
+        base_url, f"/api/v1/cases/{case_id}/care-routines/{routine_id}/events"
+    )
+    if status != 401:
+        raise RuntimeError("Anonymous care routine event read did not fail closed")
+    status, _ = request(
+        base_url,
+        f"/api/v1/cases/{case_id}/care-routines/{routine_id}/events",
+        "POST",
+        {
+            "expected_current_assignment_id": str(uuid4()),
+            "occurrence_date": "2026-10-25",
+            "status": "DONE",
+            "occurred_at": "2026-10-25T09:00:00Z",
+        },
+    )
+    if status != 401:
+        raise RuntimeError("Anonymous care routine event write did not fail closed")
     for path in (
         f"/api/v1/referrals/{referral_id}/follow-up-records",
         f"/api/v1/referral-follow-up-records/{uuid4()}",
