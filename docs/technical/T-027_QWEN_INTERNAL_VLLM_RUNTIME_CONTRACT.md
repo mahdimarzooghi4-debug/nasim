@@ -7,7 +7,7 @@
 
 ## Runtime recommendation
 
-Use **vLLM 0.27.0** as the initial internal serving engine for compatibility work. The exact Qwen model card documents vLLM serving and its local OpenAI-compatible API. vLLM's official v0.27.0 release notes list Qwen3.5 text-only dense support. The Qwen card also documents `--language-model-only` for text-only serving, which fits Nasim's first informational assistant scope and avoids loading its vision encoder for this use case.
+Use **vLLM 0.32.0** as the initial internal serving engine for compatibility work, pinned to its release artifact digest after the GPU/CUDA target is selected. The exact Qwen model card documents vLLM serving and its local OpenAI-compatible API. vLLM added Qwen3.5 dense support in v0.27.0; the current v0.32.0 release includes additional Qwen3.5 compatibility fixes. The Qwen card also documents `--language-model-only` for text-only serving, which fits Nasim's first informational assistant scope and avoids loading its vision encoder for this use case.
 
 This recommendation is **not yet a deployment decision**. The exact image digest/package lock, GPU/CUDA combination, service host, capacity, and load profile remain unselected. Before activation, run a compatibility smoke against the exact pinned model snapshot on the selected hardware and record the resulting artifacts.
 
@@ -40,5 +40,5 @@ The 9B parameter count implies about **18 GB of raw BF16 weights** (9 billion ×
 ## Evidence
 
 - Pinned Qwen model card and its vLLM/text-only serving instructions: https://huggingface.co/Qwen/Qwen3.5-9B/blob/c202236235762e1c871ad0ccb60c8ee5ba337b9a/README.md
-- vLLM v0.27.0 release notes (Qwen3.5 dense-model support): https://github.com/vllm-project/vllm/releases/tag/v0.27.0
+- vLLM v0.32.0 release notes (current release and Qwen3.5 fixes): https://github.com/vllm-project/vllm/releases/tag/v0.32.0
 - vLLM Qwen3.5 serving recipe: https://docs.vllm.ai/projects/recipes/en/stable/Qwen/Qwen3.5.html
