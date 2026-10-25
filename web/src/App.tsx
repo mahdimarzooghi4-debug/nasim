@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import CareActions from "./CareActions";
 import type { ReactNode } from "react";
 import {
   api, ApiError, canReadCases, canReadJourney, canReadProviders,
@@ -36,14 +37,15 @@ function Status({ busy, error }: { busy: boolean; error: string | null }) {
 type LostAccess = () => void;
 const expired = (error: unknown) => error instanceof ApiError && error.status === 401;
 
-function CaseJourney({ caseId, back, onLost }: {
-  caseId: string; back: () => void; onLost: LostAccess;
+function CaseJourney({ caseId, actor, back, onLost }: {
+  caseId: string; actor: ActorContext; back: () => void; onLost: LostAccess;
 }) {
   const [selected, setSelected] = useState<string | null>(null);
   const [obsCursor, setObsCursor] = useState<string | null>(null);
   const [refCursor, setRefCursor] = useState<string | null>(null);
   const [followCursor, setFollowCursor] = useState<string | null>(null);
   const [view, setView] = useState<CareJourneyWorkspaceView | null>(null);
+  const [revision, setRevision] = useState(0);
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -63,7 +65,7 @@ function CaseJourney({ caseId, back, onLost }: {
       else setError(errorMessage(e));
     }).finally(() => { if (!controller.signal.aborted) setBusy(false); });
     return () => controller.abort();
-  }, [caseId, selected, obsCursor, refCursor, followCursor, onLost]);
+  }, [caseId, selected, obsCursor, refCursor, followCursor, revision, onLost]);
 
   function selectReferral(next: string | null) {
     setSelected(next);
@@ -129,6 +131,20 @@ function CaseJourney({ caseId, back, onLost }: {
           {refCursor && <button className="subtle" type="button" onClick={() => setRefCursor(null)}>شروع ارجاعات</button>}
         </section>
       </div>
+      <CareActions
+        actor={actor}
+        caseId={caseId}
+        assignmentId={view.case.current_assignment.id}
+        assignedActorId={view.case.current_assignment.caregiver_actor_id}
+        observations={view.observations.items}
+        selectedReferralId={selected}
+        onAuthenticationLost={onLost}
+        onRecorded={() => {
+          // Re-read authoritative state, including a fresh assignment on the server.
+          setObsCursor(null); setRefCursor(null); setFollowCursor(null);
+          setRevision(value => value + 1);
+        }}
+      />
       {view.selected_referral && view.follow_ups && <section className="card">
         <div className="section-title">
           <h3>پیگیری‌های انسانیِ ارجاع <bdi>{shortId(view.selected_referral.id)}</bdi></h3>
@@ -178,7 +194,9 @@ function CaseIndex({ actor, onLost }: { actor: ActorContext; onLost: LostAccess 
       <button type="button" onClick={() => setSelected(null)}>بازگشت به پرونده‌ها</button>
       <Alert>برای مشاهده سفر پرونده، مجوزهای خواندن ارجاع و پیگیری نیز ضروری هستند.</Alert>
     </section>;
-    return <CaseJourney caseId={selected} onLost={onLost} back={() => setSelected(null)} />;
+    return <CaseJourney
+      caseId={selected} actor={actor} onLost={onLost} back={() => setSelected(null)}
+    />;
   }
 
   return <section>

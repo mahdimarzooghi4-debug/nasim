@@ -85,3 +85,16 @@ code { color: #3b586a; font-family: Consolas, monospace; font-size: .82em; overf
   .gate-card { padding: 23px; }
 }
 @media (prefers-reduced-motion: reduce) { button { transition: none; } }
+
+.record-form { display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 640px; }
+.record-form label { font-size: .85rem; font-weight: 600; color: #385561; }
+.record-form input, .record-form select, .record-form textarea {
+  display: block; width: 100%; min-width: 0; border-radius: 9px;
+  border: 1px solid #91a9b0; background: white; color: #193b46;
+  padding: 10px 12px; font: inherit; font-size: .88rem;
+}
+.record-form :is(input, select, textarea):focus-visible {
+  outline: 3px solid #e6b66c; outline-offset: 2px;
+}
+.record-form button[type="submit"] { justify-self: start; margin-top: 8px; }
+.record-form .notice { margin: 0; }
