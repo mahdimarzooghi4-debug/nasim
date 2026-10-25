@@ -3,7 +3,7 @@
 - **Project:** نسیم — نظام سالمند‌یاری محله‌محور
 - **Status:** Current-state snapshot and execution plan; not a business acceptance or Stage certification
 - **Updated:** 2026-10-25
-- **Current main:** `64d9f6ad1a34a742aaec6980e3f2e06b9a09a584` (PR #52 merge commit). Sprint 025 backend and assigned-caregiver routine web workflows from PRs #51–#52 are integrated. Backend and Web CI both passed on exact PR HEAD `da4f1e1347c8e91a2b74ab5ab8cc8810a3481580`; this does not certify Hosted Stage or deployed workflows.
+- **Code baseline before this documentation update:** `5760f21ae3af0ff1616d4fc4be4a059f0b8b9178` (PR #54 merge commit). Sprint 025 backend and assigned-caregiver routine workflows from PRs #51–#54 are included: web read, explicit human event recording and assigned-caregiver plan management. Backend and Web CI both passed on exact PR #54 HEAD `af0b64dbc80e5d87d7b363ec497c1ab69e9d84b5`, including a container Stage-like smoke; this does not certify Hosted Stage or deployed workflows.
 - **Hosted Stage:** **UNAVAILABLE** under D-0130. No Stage admission, Stage QA, Release approval or Production deployment is claimed.
 
 > This register records evidence and remaining gates. A merged technical foundation does not create business authority, operational permission, training eligibility or an external service. `OPEN ≠ ACCEPTED`; a closed issue is evidence only for the scope actually reviewed.
@@ -12,9 +12,9 @@
 
 | Area | Current state | Remaining boundary |
 |---|---|---|
-| Main branch | Sprint 025 backend and PR #51–#52 routine web workflows are integrated at `64d9f6ad1a34a742aaec6980e3f2e06b9a09a584` | CI passed on PR #52's exact HEAD; Hosted Stage, environment QA and release remain separate gates |
+| Code baseline | Sprint 025 backend and PR #51–#54 assigned-caregiver routine workflows are integrated at `5760f21ae3af0ff1616d4fc4be4a059f0b8b9178` | Backend and Web CI passed on PR #54's exact HEAD; Hosted Stage, environment QA and release remain separate gates |
 | Backend | Case, Referral, Provider, learning-data and assigned-caregiver routine foundations exist; migration head is `0010_care_routines` | Notifications, generated due instances, elder/family access and complete Provider/service/outcome journeys remain outside the implemented scope |
-| Web | Case/Provider operational slices include assigned-caregiver routine plan display and explicit human event read/record; PR #52 CI passed | No complete supporter/admin product, configured browser identity or Figma sign-off |
+| Web | Assigned-caregiver routine plan display, explicit human event read/record, and plan create/successor-version/deactivation workflows are integrated in PRs #51–#54; PR #54 CI passed | No complete supporter/admin product, configured browser identity or Figma sign-off |
 | Mobile | React Native/TypeScript is the accepted direction in D-0171 | No React Native app is implemented in this repository |
 | Identity | Keycloak is the selected OIDC architecture (D-0169) | No real Keycloak realm/client, authentication integration or actor grants |
 | AI | D-0135 selects read-only, source-grounded information for elder and caregiver; learning metadata foundations are present | No approved published corpus, operational AI runtime, Dataset Builder, Trainer, Evaluation or promotion pipeline |
@@ -44,7 +44,7 @@ Do not infer qualifications, Provider activation, financial authority, consent, 
 
 ### C. Complete only the in-scope operational workflows
 
-After the Phase/Pilot boundary and required Business decisions are recorded, define technical contracts and deliver bounded, reviewed slices for whichever workflows are in scope. Candidate gaps include Provider qualification/activation, service and Need catalogues, referral response and completion, Case outcomes/reassessment, and organization/supporter operations. Do not treat an existing record-creation API as a complete lifecycle.
+Assigned-caregiver routine workflows now support plan display, explicit human event history/recording, and authorized plan creation, successor-version changes and deactivation (PRs #51–#54). Remaining capability candidates include Provider qualification/activation, service and Need catalogues, referral response and completion, Case outcomes/reassessment, and organization/supporter operations. After the Phase/Pilot boundary and required Business decisions are recorded, define technical contracts and deliver bounded, reviewed slices for whichever workflows are in scope. Do not treat an existing record-creation API as a complete lifecycle.
 
 ### D. Deliver AI capabilities behind their separate gates
 
