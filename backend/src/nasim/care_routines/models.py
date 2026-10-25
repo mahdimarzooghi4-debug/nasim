@@ -80,7 +80,10 @@ class CareRoutineEventRecord(Identified, Base):
             name="fk_care_routine_event_routine",
         ),
         UniqueConstraint("routine_id", "occurrence_date", name="uq_care_routine_occurrence"),
-        CheckConstraint("status IN ('DONE','NOT_DONE','SKIPPED')", name="ck_care_routine_event_status"),
+        CheckConstraint(
+            "status IN ('DONE','NOT_DONE','SKIPPED')",
+            name="ck_care_routine_event_status",
+        ),
         CheckConstraint(
             "recorded_by_actor_type = 'HUMAN'",
             name="ck_care_routine_event_human_actor",
